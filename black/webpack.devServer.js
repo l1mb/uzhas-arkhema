@@ -27,7 +27,7 @@ module.exports = (env, argv) => {
       // proxy config will be remove if target is empty
       proxy: {
         // requires for ignoring CORS issues
-        "/api": { target: proxy, changeOrigin: true, withCredentials: true, secure: false },
+        "/api": 'http://localhost:5000/'
       },
       hot: true,
       historyApiFallback: {

@@ -9,7 +9,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/users', usersRouter)
+app.use('/api/users', usersRouter)
 
 app.use((req, res, next) => {
     res.status(err.status || 404).json({

@@ -44,7 +44,6 @@ const SignUpForm: React.FC<AuthFormProps> = (props): JSX.Element => {
           inputType="text"
           propName="username"
           label="UserName"
-          validation={new UsernameValidation()}
         />
         <InputText
           setValue={(e) => {
@@ -53,7 +52,6 @@ const SignUpForm: React.FC<AuthFormProps> = (props): JSX.Element => {
           inputType="text"
           propName="phone"
           label="Phone number"
-          validation={new PhoneValidation()}
         />
         <InputText
           setValue={(e) => {
@@ -62,7 +60,6 @@ const SignUpForm: React.FC<AuthFormProps> = (props): JSX.Element => {
           inputType="text"
           propName="email"
           label="Email"
-          validation={new EmailValidation()}
         />
         <InputText
           setValue={(e) => {
@@ -71,7 +68,6 @@ const SignUpForm: React.FC<AuthFormProps> = (props): JSX.Element => {
           inputType="text"
           propName="password"
           label="Password"
-          validation={new PasswordValidation()}
         />
 
         <button type="submit" disabled={isInvalid}>

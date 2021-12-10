@@ -1,16 +1,17 @@
-const getProductSearchEndpoint = "/api/products/search";
-const getProductListEndpoint = "/api/products/list";
-const getProductByPlatform = "/api/products/byPlatform";
-const getProductsById = "/api/products/id";
-const products = "/api/products/";
+const host = 'http://localhost:5000/api'
+const getProductSearchEndpoint = `${host}/products/search`;
+const getProductListEndpoint = `${host}/products/list`;
+const getProductByPlatform = `${host}/products/byPlatform`;
+const getProductsById = `${host}/products/id`;
+const products = `${host}/products/`;
 
-const postSignUp = "/api/auth/sign-up";
-const postSignIn = "/api/auth/sign-in";
-const user = "/api/user";
-const userPassword = `${user}/password`;
-const orders = "api/orders";
-const ordersComplete = `${orders}/buy`;
-const ordersCompleted = `${orders}/completed`;
+const postSignUp = `${host}/users/signup`;
+const postSignIn = `${host}/auth/sign-in`;
+const user = `${host}/user`;
+const userPassword = `${host}/${user}/password`;
+const orders = `${host}/orders`;
+const ordersComplete = `${host}/${orders}/buy`;
+const ordersCompleted = `${host}/${orders}/completed`;
 export default {
   getProductSearchEndpoint,
   getProductListEndpoint,

@@ -18,6 +18,7 @@ class Auth {
     this.authenticated = false;
   }
 
+  // TODO: posmotri suda
   signIn = async (user: signInUserDto) => {
     const tdata = await fetch(`/api/auth/sign-in/`, requestOptions(user));
     return tdata;
