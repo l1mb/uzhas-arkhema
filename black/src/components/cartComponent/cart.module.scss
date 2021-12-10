@@ -14,7 +14,7 @@
   justify-content: center;
 
   .tableContainer {
-    background-color: $half-transparent-black;
+    background-color: rgba(#000, 0.8);
     padding: 70px 120px;
     border-radius: 10px;
     box-shadow: 0 0 10px red;
@@ -63,7 +63,7 @@
       box-shadow: 0 0 8px white;
       border-radius: 5px;
       padding: 7px 5px;
-      background-color: $half-transparent-black;
+      background-color: rgba(#000, 0.8);
       transition: box-shadow 0.2s ease;
     }
 
