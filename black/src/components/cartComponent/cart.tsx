@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
-import emptyCart from "src\\assets\\images\\cart\\empty-cart.png";
+import emptyCart from "src/assets/images/cart/empty-cart.png";
 import orders from "@/api/httpService/orders/orders";
 import OrderProduct from "@/types/interfaces/order/orderProducts";
 import setCountDispatch from "@/redux/actions/orders/setCount";
