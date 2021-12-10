@@ -1,0 +1,32 @@
+.extraDiv {
+  height: 100vh;
+  width: 100vw;
+  font-family: "Raleway", sans-serif;
+}
+.page_wrapper {
+  height: calc(100% - 164px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-image: url("../../assets/images/products.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.header {
+  text-align: center;
+  color: white;
+  margin: 36px 0 42px 0;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
