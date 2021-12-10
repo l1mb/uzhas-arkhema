@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { NavLink } from "react-router-dom";
-import DropMenu from "@/elements/dropdownMenuElement/dropdown";
-import HeaderProps from "@/types/interfaces/props/headerProps/headerProps";
 import { useSelector } from "react-redux";
 import HeaderCartItem from "@/elements/cart/headerCartElement/header";
 import StateType from "@/redux/types/stateType";
 import roles from "@/types/constants/roles/roles";
 import styles from "./nav.module.scss";
 
-const Navigation: React.FC<HeaderProps> = (props): JSX.Element => {
+function Navigation(props): JSX.Element {
   const appState = useSelector<StateType, StateType>((state) => state);
 
   return (
@@ -20,10 +18,11 @@ const Navigation: React.FC<HeaderProps> = (props): JSX.Element => {
           </NavLink>
         </li>
 
-        <div tabIndex={0} className={styles.dropdown_link_wrapper}>
-          <span>Products</span>
-          <DropMenu props={{ data: props.data.products, className: styles.dropdown_wrapper }} />
-        </div>
+        <li>
+          <NavLink activeClassName={styles.active} to={props.data.computers.route}>
+            {props.data.computers.label}
+          </NavLink>
+        </li>
         <li>
           <NavLink activeClassName={styles.active} to={props.data.about.route}>
             {props.data.about.label}
@@ -62,5 +61,5 @@ const Navigation: React.FC<HeaderProps> = (props): JSX.Element => {
       </ol>
     </nav>
   );
-};
+}
 export default Navigation;

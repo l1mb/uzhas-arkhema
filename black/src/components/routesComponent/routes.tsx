@@ -5,16 +5,18 @@ import styles from "./scrollWrapper.module.scss";
 import Footer from "../footerComponent/footer";
 import WrappedContent from "./wrapper";
 
-const Routes = (): JSX.Element => (
-  <div className={styles.globalWrapper}>
-    <Suspense fallback={<Spinner />}>
-      <Router>
-        <WrappedContent />
-      </Router>
-    </Suspense>
+function Routes(): JSX.Element {
+  return (
+    <div className={styles.globalWrapper}>
+      <Suspense fallback={<Spinner />}>
+        <Router>
+          <WrappedContent />
+        </Router>
+      </Suspense>
 
-    <Footer />
-  </div>
-);
+      <Footer />
+    </div>
+  );
+}
 
 export default Routes;
