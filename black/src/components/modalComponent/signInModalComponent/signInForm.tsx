@@ -11,22 +11,22 @@ interface inputState {
 }
 
 function SignInForm(props): JSX.Element {
-  const [emailProp, setEmail] = useState<inputState>(defaultInputState);
+  const [usernameProp, setusername] = useState<inputState>(defaultInputState);
   const [passwordProp, setPassword] = useState<inputState>(defaultInputState);
   const [isFormInvalid, setInvalid] = useState(true);
 
   const onSubmitForm = (e: FormEvent) => {
     e.preventDefault();
     const body = {
-      email: emailProp.value,
+      username: usernameProp.value,
       password: passwordProp.value,
     };
     props.onSubmit(body);
   };
 
   useEffect(() => {
-    setInvalid(emailProp.error != null || passwordProp.error != null);
-  }, [emailProp.error, passwordProp.error]);
+    setInvalid(usernameProp.error != null || passwordProp.error != null);
+  }, [usernameProp.error, passwordProp.error]);
 
   return (
     <div className={styles.formWrapper}>
@@ -34,11 +34,11 @@ function SignInForm(props): JSX.Element {
       <form action="submit" className={styles.form} onSubmit={onSubmitForm}>
         <InputText
           setValue={(e) => {
-            setEmail(e);
+            setusername(e);
           }}
           inputType="text"
-          propName="email"
-          label="Email"
+          propName="username"
+          label="username"
           validation={new UsernameValidation()}
         />
         <InputText
