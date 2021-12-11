@@ -1,10 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import InputText from "@/elements/inputElement/inputText";
 import defaultInputState from "@/elements/inputElement/state/defaultstate";
-import EmailValidation from "@/types/classes/validation/emailValidation";
-import PasswordValidation from "@/types/classes/validation/passwordValidation";
 import ErrorState from "@/types/interfaces/validation/errorState";
 import styles from "./signInForm.module.scss";
+import UsernameValidation from "@/types/classes/validation/usernameValidation";
 
 interface inputState {
   value: string;
@@ -40,7 +39,7 @@ function SignInForm(props): JSX.Element {
           inputType="text"
           propName="email"
           label="Email"
-          validation={new EmailValidation()}
+          validation={new UsernameValidation()}
         />
         <InputText
           setValue={(e) => {
@@ -49,7 +48,7 @@ function SignInForm(props): JSX.Element {
           inputType="text"
           propName="password"
           label="Password"
-          validation={new PasswordValidation()}
+          validation={new UsernameValidation()}
         />
         <div className={styles.inputItem} />
 
