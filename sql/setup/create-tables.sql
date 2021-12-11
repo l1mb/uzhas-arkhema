@@ -1,4 +1,4 @@
-exec util_package.drop_table('users');
+drop table "users";
 create table "users" (
 	"id" number generated always as identity,
 	"username" varchar2(50 char) unique not null,

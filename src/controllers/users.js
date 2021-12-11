@@ -13,7 +13,7 @@ const userRegister = async (req, res, next) => {
             const password_hash = await bcrypt.hash(password, 10)
 
             await connection.execute(
-                `begin rent_package.AddUser(:username, :email, :password_hash); end;`,
+                `begin rent_users.AddUser(:username, :email, :password_hash); end;`,
                 {
                     username: username,
                     email: email,
@@ -53,7 +53,7 @@ const userLogin = async (req, res, next) => {
             const { username, password } = req.body
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
             const result = await connection.execute(
-                `begin rent_package.GetUserByUsername(:username, :user); end;`,
+                `begin rent_users.GetUserByUsername(:username, :user); end;`,
                 {
                     username: username,
                     user: {
@@ -104,7 +104,7 @@ const getAllUsers = async (req, res, next) => {
 
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
             const result = await connection.execute(
-                `begin rent_package.GetAllUsers(:users); end;`,
+                `begin rent_users.GetAllUsers(:users); end;`,
                 {
                     users: {
                         dir: oracledb.BIND_OUT,
@@ -135,19 +135,8 @@ const getAllUsers = async (req, res, next) => {
     }
 }
 
-const getMe = async (req, res) => {
-    const userId = req.user.userId
-
-    // get user from db by id
-    res.status(200).json({
-        id: 1,
-        name: 'yan korzun',
-    })
-}
-
 module.exports = {
     userLogin,
     userRegister,
-    getMe,
     getAllUsers,
 }

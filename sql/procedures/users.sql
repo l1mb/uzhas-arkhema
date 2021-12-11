@@ -1,22 +1,4 @@
-create or replace package util_package as
-    procedure drop_table(table_name user_tables.table_name%type);
-end;
-/
-
-create or replace package body util_package as
-procedure drop_table(table_name user_tables.table_name%type) 
-    is begin
-        execute immediate 'DROP TABLE ' || table_name;
-    exception
-        when others then
-          if sqlcode != -942 then
-             raise;
-          end if;
-    end;
-end;
-/
-
-create or replace package rent_package as
+create or replace package rent_users as
     procedure AddUser(
         username "users"."username"%type,
         email "users"."email"%type,
@@ -30,7 +12,7 @@ create or replace package rent_package as
 end;
 /
 
-create or replace package body rent_package as
+create or replace package body rent_users as
     procedure AddUser(
         username "users"."username"%type,
         email "users"."email"%type,
