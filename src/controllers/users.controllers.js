@@ -41,7 +41,7 @@ const userRegister = async (req, res, next) => {
         console.error(err)
     }
 
-    res.status(200).json(req.body)
+    res.status(201).json(req.body)
 }
 
 const userLogin = async (req, res, next) => {
