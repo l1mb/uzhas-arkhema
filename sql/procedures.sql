@@ -23,6 +23,10 @@ create or replace package rent_package as
         password_hash "users"."passwordHash"%type
     );
     procedure GetAllUsers(out_users out sys_refcursor);
+    procedure GetUserByUsername(
+        username "users"."username"%type,
+        user out sys_refcursor
+    );
 end;
 /
 
@@ -49,5 +53,14 @@ create or replace package body rent_package as
             from "users";
     end;
     --
+    procedure GetUserByUsername(
+        username "users"."username"%type,
+        user out sys_refcursor
+    )
+    is begin
+        open user for
+            select "id", "username", "email", "passwordHash"
+            from "users" where username = "username";
+    end;
 end;
 /
