@@ -20,7 +20,7 @@ class Auth {
 
   // TODO: posmotri suda
   signIn = async (user: signInUserDto) => {
-    const tdata = await fetch(`/api/auth/sign-in/`, requestOptions(user));
+    const tdata = await fetch(endpoints.postSignIn, requestOptions(user));
     return tdata;
   };
 

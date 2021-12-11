@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import HeaderCartItem from "@/elements/cart/headerCartElement/header";
 import StateType from "@/redux/types/stateType";
-import roles from "@/types/constants/roles/roles";
 import styles from "./nav.module.scss";
 
 function Navigation(props): JSX.Element {
@@ -28,17 +27,13 @@ function Navigation(props): JSX.Element {
             {props.data.about.label}
           </NavLink>
         </li>
-        <li>
-          {!appState.user.authencated ? (
+        {!appState.user.authencated ? (
+          <li>
             <NavLink activeClassName={styles.active} to={props.data.signIn.route}>
               {props.data.signIn.label}
             </NavLink>
-          ) : (
-            <NavLink activeClassName={styles.active} to={props.data.profile.route}>
-              {appState.role === roles.admin ? appState.role : appState.user.userName}
-            </NavLink>
-          )}
-        </li>
+          </li>
+        ) : null}
 
         {!appState.user.authencated ? (
           <li>
