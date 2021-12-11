@@ -42,7 +42,7 @@ function SignIn(props: componentProps) {
   const openModal = (e: boolean) => setOpen(e);
 
   const isSignInOk = (body: signInUserDto) => {
-    if (body.email && body.password) {
+    if (body.username && body.password) {
       dispatch(signInDispatch(body));
     }
   };
