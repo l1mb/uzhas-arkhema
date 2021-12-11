@@ -1,13 +1,13 @@
-import authService from "@/api/httpService/authService";
-import userService from "@/api/httpService/user/userService";
-import signInUserDto from "@/api/types/user/signInUserDto";
-import userDto from "@/api/types/user/userDto";
-import getRole from "@/helpers/role/getRole";
-import getToken from "@/helpers/token/getToken";
-import toastProps from "@/types/constants/toasts/toastProps";
 import { Dispatch } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import authService from "@/api/httpService/authService";
+import signInUserDto from "@/api/types/user/signInUserDto";
+import userDto from "@/api/types/user/userDto";
+import toastProps from "@/types/constants/toasts/toastProps";
 import actions from "./actions";
+import userService from "@/api/httpService/user/userService";
+import getRole from "@/helpers/role/getRole";
+import getToken from "@/helpers/token/getToken";
 
 const signInDispatch =
   (user?: signInUserDto) =>
@@ -21,7 +21,7 @@ const signInDispatch =
       const response = await authService.signIn(user);
 
       if (response.status === 200) {
-        const JWT = await response.text();
+        const JWT = (await response.json()).token;
         localStorage.setItem("token", JWT);
       } else {
         toast.error("We have troubles with getting you in, try later", toastProps);
@@ -30,10 +30,10 @@ const signInDispatch =
 
     if (getToken()) {
       const userInfoPromise = await userService.getInfo();
-      const updatedUser: userDto = await userInfoPromise.json();
-      updatedUser.authencated = true;
+      const updatedUser: { user: userDto; token: string } = await userInfoPromise.json();
+      updatedUser.user.authencated = true;
       dispatch(actions.setRole(getRole()));
-      dispatch(actions.setUser(updatedUser));
+      dispatch(actions.setUser(updatedUser.user));
     }
   };
 
