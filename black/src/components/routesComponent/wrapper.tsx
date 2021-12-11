@@ -13,6 +13,7 @@ import RoutesData from "./types/routes/RoutesData";
 import Home from "../home/home";
 import About from "../about/about";
 import Products from "../products/products";
+import getRole from "@/helpers/role/getRole";
 
 const SignIn = React.lazy(() => import("../authComponents/signIn"));
 const SignUp = React.lazy(() => import("../authComponents/signUp"));
@@ -34,8 +35,7 @@ function Wrapper() {
   useEffect(() => {
     dispatch(setCountDispatch());
     dispatch(signInDispatch());
-    // dispatch(actions.setRole(getRole()));
-    dispatch(actions.setRole("admin"));
+    dispatch(actions.setRole(getRole()));
   }, []);
 
   return (
