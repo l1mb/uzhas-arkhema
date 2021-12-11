@@ -9,7 +9,7 @@ interface categoriesProps {
 function Categories(props: categoriesProps) {
   return (
     <div className={styles.category} onClick={() => props.setValue(props.label)}>
-      <p className={props.label === props.selected ? styles.selected : ""}>{props.label}</p>
+      <p className={props.label === props.selected ? styles.selected : styles.default}>{props.label}</p>
     </div>
   );
 }

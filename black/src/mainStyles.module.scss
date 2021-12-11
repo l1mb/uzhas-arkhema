@@ -3,3 +3,10 @@
   font-weight: bold;
   color: white !important;
 }
+
+.selected {
+  cursor: pointer;
+  a {
+    color: red;
+  }
+}
