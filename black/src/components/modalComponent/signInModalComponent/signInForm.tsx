@@ -1,10 +1,9 @@
-import signInUserDto from "@/api/types/user/signInUserDto";
+import { FormEvent, useEffect, useState } from "react";
 import InputText from "@/elements/inputElement/inputText";
 import defaultInputState from "@/elements/inputElement/state/defaultstate";
 import EmailValidation from "@/types/classes/validation/emailValidation";
 import PasswordValidation from "@/types/classes/validation/passwordValidation";
 import ErrorState from "@/types/interfaces/validation/errorState";
-import { FormEvent, useEffect, useState } from "react";
 import styles from "./signInForm.module.scss";
 
 interface inputState {
@@ -12,9 +11,7 @@ interface inputState {
   error: ErrorState | null;
 }
 
-const SignInForm: React.FC<{
-  onSubmit: (e: signInUserDto) => void;
-}> = (props): JSX.Element => {
+function SignInForm(props): JSX.Element {
   const [emailProp, setEmail] = useState<inputState>(defaultInputState);
   const [passwordProp, setPassword] = useState<inputState>(defaultInputState);
   const [isFormInvalid, setInvalid] = useState(true);
@@ -66,6 +63,6 @@ const SignInForm: React.FC<{
       </form>
     </div>
   );
-};
+}
 
 export default SignInForm;

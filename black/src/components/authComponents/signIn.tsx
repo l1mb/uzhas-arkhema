@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import signInUserDto from "@/api/types/user/signInUserDto";
 import userDto from "@/api/types/user/userDto";
 import signInDispatch from "@/redux/actions/signIn";
 import StateType from "@/redux/types/stateType";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
 import Modal from "../modalComponent/modalComponent/modal";
 import SignInForm from "../modalComponent/signInModalComponent/signInForm";
 import styles from "./auth.module.scss";
@@ -20,7 +20,7 @@ type From = {
   };
 };
 
-const SignIn: React.FC<componentProps> = (props) => {
+function SignIn(props: componentProps) {
   const [isOpen, setOpen] = useState(true);
 
   const history = useHistory();
@@ -64,6 +64,6 @@ const SignIn: React.FC<componentProps> = (props) => {
       </Modal>
     </div>
   );
-};
+}
 
 export default SignIn;

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useHistory, withRouter } from "react-router-dom";
 import userDto from "@/api/types/user/userDto";
-import getRole from "@/helpers/role/getRole";
 import actions from "@/redux/actions/actions";
 import setCountDispatch from "@/redux/actions/orders/setCount";
 import signInDispatch from "@/redux/actions/signIn";
@@ -35,7 +34,8 @@ function Wrapper() {
   useEffect(() => {
     dispatch(setCountDispatch());
     dispatch(signInDispatch());
-    dispatch(actions.setRole(getRole()));
+    // dispatch(actions.setRole(getRole()));
+    dispatch(actions.setRole("admin"));
   }, []);
 
   return (
@@ -51,7 +51,7 @@ function Wrapper() {
           <SignUp successRoute={RoutesData.home.route} redirectRoute={RoutesData.home.route} />
         </Route>
         <Route exact path={RoutesData.signIn.route}>
-          <SignIn successRoute={RoutesData.profile.route} redirectRoute={RoutesData.home.route} />
+          <SignIn successRoute={RoutesData.home.route} redirectRoute={RoutesData.home.route} />
         </Route>
         <Route exact path={RoutesData.about.route}>
           <About />
@@ -59,10 +59,6 @@ function Wrapper() {
         <Route exact path={RoutesData.computers.route}>
           <Products />
         </Route>
-        {/*
-        <PrivateRoute user={appUser} path={RoutesData.profile.route}>
-          <Profile />
-        </PrivateRoute> */}
         <PrivateRoute user={appUser} path={RoutesData.cart.route}>
           <Cart />
         </PrivateRoute>
