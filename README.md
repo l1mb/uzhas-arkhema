@@ -54,5 +54,20 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
 ## Environment variables
-- UV_THREADPOOL_SIZE - sets max and min db connection pool size (default: 4)
+- UV_THREADPOOL_SIZE - if set to a number, sets connection pool size to this number and makes the pool static (better performance)
 - PORT - specifies port for backend server (default: 5000)
+
+## Launch server
+To launch server via nodemon
+```sh
+npm run dev
+```
+
+To launch server with static db connection pool of size 4
+```sh
+npm run static
+```
+To launch server with default settings
+```sh
+node src/app.js
+```
