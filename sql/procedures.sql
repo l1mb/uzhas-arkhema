@@ -18,24 +18,35 @@ end;
 
 create or replace package rent_package as
     procedure AddUser(
-        email users.email%type,
-        password_hash users.password_hash%type
+        username "users"."username"%type,
+        email "users"."email"%type,
+        password_hash "users"."passwordHash"%type
     );
+    procedure GetAllUsers(out_users out sys_refcursor);
 end;
 /
 
 create or replace package body rent_package as
     procedure AddUser(
-        email users.email%type,
-        password_hash users.password_hash%type
+        username "users"."username"%type,
+        email "users"."email"%type,
+        password_hash "users"."passwordHash"%type
     )
     is begin
-        insert into users(email, password_hash) values(email, password_hash);
+        insert into "users"("username", "email", "passwordHash") 
+            values(username, email, password_hash);
         commit;
     exception
         when others then
             rollback;
             raise;
+    end;
+    --
+    procedure GetAllUsers(out_users out sys_refcursor)
+    is begin
+        open out_users for
+            select "id", "username", "email", "passwordHash"
+            from "users";
     end;
     --
 end;
