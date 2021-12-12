@@ -1,5 +1,6 @@
-import styles from "./styles.module.scss";
+import { Card, Button } from "react-bootstrap";
 import defaultIMg from "../../../assets/images/profile/default-profile.jpg";
+import styles from "./styles.module.scss";
 
 export interface ProductCardProps {
   label: string;
@@ -10,18 +11,18 @@ export interface ProductCardProps {
 
 function ProductCard(props: ProductCardProps) {
   return (
-    <div className={styles.card_container}>
-      <div className={styles.card_top_row}>
-        <img src={props.img ? props.img : defaultIMg} alt="yan" />
-        <div className={styles.descript}>
-          <span>{props.label}</span>
-          <p>{props.price}</p>
-        </div>
-      </div>
-      <div>
-        <p>{props.shortDescription}</p>
-      </div>
-    </div>
+    <Card style={{ width: "18rem" }} className={styles.card_container} color="black">
+      <Card.Img variant="top" src={props.img ? props.img : defaultIMg} />
+
+      <Card.Body>
+        <Card.Title>{props.label}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{props.price}</Card.Subtitle>
+        <Card.Text>{props.shortDescription}</Card.Text>
+        <Button className={styles.btn} variant="primary">
+          Add to orders
+        </Button>
+      </Card.Body>
+    </Card>
   );
 }
 

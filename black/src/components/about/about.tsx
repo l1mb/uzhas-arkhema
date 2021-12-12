@@ -1,7 +1,8 @@
+import { companyName } from "@/types/constants/globals/theme";
 import styles from "./style.module.scss";
 
 function About() {
-  const header = 'Welcome to the "bibki" rentals';
+  const header = `Welcome to the ${companyName}`;
   return (
     <div className={styles.extraDiv}>
       <div className={styles.page_wrapper}>

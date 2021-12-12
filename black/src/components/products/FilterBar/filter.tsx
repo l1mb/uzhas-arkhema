@@ -17,12 +17,12 @@ import styles from "./filter.module.scss";
 
 interface FilterProps {
   setQuery: (e: QueryParams) => void;
-  platform: string;
+  categorie: string;
 }
 
 function FilterBar(props: FilterProps) {
-  const [genre, setGenre] = useState<QueryItem>(ProductsData.GenreOptions[0]);
-  const [age, setAge] = useState<QueryItem>(ProductsData.AgeOprions[0]);
+  const [genre, setGenre] = useState<QueryItem>();
+  const [age, setAge] = useState<QueryItem>();
   const [criteria, setCriteria] = useState<QueryItem>();
   const [type, setType] = useState<QueryItem>();
   const [queryString, setQuery] = useState("");
@@ -35,39 +35,41 @@ function FilterBar(props: FilterProps) {
       type: type?.value as OrderType,
       age: age?.value as AgeRating,
       genre: genre?.value as Genre,
+      category: props.categorie,
     });
+
+    console.log(queryString);
   };
 
   useEffect(() => {
-    setQuery(buildString(criteria?.label, type?.label, age.label, genre.label));
+    setQuery(buildString(criteria?.label, type?.label, age?.label, genre?.label, props.categorie));
     pushParameters();
-    if (queryString) {
-      history.push(queryString);
-    }
-  }, [queryString, criteria, type, age, genre, search]);
+  }, [queryString, criteria, type, age, genre, search, props.categorie]);
 
   return (
     <div className={styles.filterContainer}>
-      <Label content={props.platform} classname={styles.firstLabel} />
       <div>
+        <div>
+          <Label content={filterData.label.genres} classname={styles.labels} />
+          <RadioButtons
+            options={ProductsData.GenreOptions}
+            value={genre}
+            changeHandler={(e: QueryItem) => setGenre(e)}
+          />
+        </div>
         <Label content={filterData.label.orderBy} classname={styles.labels} />
         <SortDropdown
           label={filterData.label.orderBy}
-          value={criteria}
           options={ProductsData.OrderByOptions}
           changeHandler={(e: QueryItem) => setCriteria(e)}
         />
         <SortDropdown
           label={filterData.label.orderType}
-          value={type}
           options={ProductsData.OrderTypeOptions}
           changeHandler={(e: QueryItem) => setType(e)}
         />
       </div>
-      <div>
-        <Label content={filterData.label.genres} classname={styles.labels} />
-        <RadioButtons options={ProductsData.GenreOptions} value={genre} changeHandler={(e: QueryItem) => setGenre(e)} />
-      </div>
+
       <div>
         <Label content={filterData.label.age} classname={styles.labels} />
         <RadioButtons options={ProductsData.AgeOprions} value={age} changeHandler={(e: QueryItem) => setAge(e)} />

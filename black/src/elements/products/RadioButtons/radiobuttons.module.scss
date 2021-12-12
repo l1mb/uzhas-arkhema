@@ -29,3 +29,13 @@
     border: 6px solid red;
   }
 }
+
+.btns {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: center;
+  button {
+  }
+}
