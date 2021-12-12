@@ -1,3 +1,5 @@
+import getToken from "@/helpers/token/getToken";
+
 interface headerOptions {
   method: string;
   headers: {
@@ -13,7 +15,7 @@ const getOptions = <T>(methodType: string, useToken: boolean, body?: T): headerO
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    Authorization: useToken ? `Bearer ${JSON.parse(localStorage.getItem("token") as string)}` : undefined,
+    Authorization: useToken ? `Bearer ${getToken()}` : undefined,
   },
   body: body ? JSON.stringify(body) : undefined,
 });

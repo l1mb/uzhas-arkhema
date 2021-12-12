@@ -7,15 +7,13 @@ const getRole = (): string => {
   let role = "";
   try {
     if (token) {
-      role =
-        jwtDecode<{ "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string }>(token)[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ];
+      const decoded = jwtDecode(token);
+      role += decoded.role;
     }
   } catch (e) {
     toast.error(`${e}`);
   }
-
+  console.log(`role ${role}`);
   return role;
 };
 

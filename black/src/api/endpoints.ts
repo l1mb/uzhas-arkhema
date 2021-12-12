@@ -7,7 +7,7 @@ const products = `${host}/products/`;
 
 const postSignUp = `${host}/users/sign-up`;
 const postSignIn = `${host}/users/login`;
-const user = `${host}/user`;
+const user = `${host}/users/current`;
 const userPassword = `${host}/${user}/password`;
 const orders = `${host}/orders`;
 const ordersComplete = `${host}/${orders}/buy`;
