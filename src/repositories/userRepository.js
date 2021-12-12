@@ -1,35 +1,62 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const oracledb = require('oracledb')
-const { jwtSecret } = require('../config/environment')
 
-const userRegister = async (req, res, next) => {
+const toCamel = (s) => {
+    return s.toLowerCase().replace(/([_][a-z])/gi, ($1) => {
+        return $1.toUpperCase().replace('_', '')
+    })
+}
+
+const isArray = (a) => Array.isArray(a)
+
+const isObject = (o) =>
+    o === Object(o) && !isArray(o) && typeof o !== 'function'
+
+const keysToCamel = (o) => {
+    if (isObject(o)) {
+        const n = {}
+
+        Object.keys(o).forEach((k) => {
+            n[toCamel(k)] = keysToCamel(o[k])
+        })
+
+        return n
+    } else if (isArray(o)) {
+        return o.map((i) => {
+            return keysToCamel(i)
+        })
+    }
+
+    return o
+}
+
+module.exports.add = async (username, email, passwordHash) => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
-            const { username, email, password } = req.body
-            const password_hash = await bcrypt.hash(password, 10)
-
-            await connection.execute(
-                `begin rent_users.AddUser(:username, :email, :password_hash); end;`,
+            const result = await connection.execute(
+                `begin rent_users.AddUser(:username, :email, :passwordHash, :addedUser); end;`,
                 {
                     username,
                     email,
-                    password_hash,
+                    passwordHash,
+                    addedUser: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
                 }
             )
 
-            res.status(201).json(req.body)
+            const resultSet = result.outBinds.addedUser
+            const user = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            return user
         } catch (err) {
-            if (err.errorNum === 1) {
-                return res
-                    .status(400)
-                    .json({ error: 'user already registered' })
-            } else {
-                throw err
-            }
+            if (err.errorNum === 1) throw new Error('user already registered')
+            throw err
         } finally {
             if (connection) {
                 try {
@@ -40,19 +67,17 @@ const userRegister = async (req, res, next) => {
             }
         }
     } catch (err) {
-        console.error(err)
-        return res.status(500).json({ error: err.message })
+        throw err
     }
 }
 
-const userLogin = async (req, res, next) => {
+module.exports.getByUsername = async (username) => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
-
-            const { username, password } = req.body
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
             const result = await connection.execute(
                 `begin rent_users.GetUserByUsername(:username, :user); end;`,
                 {
@@ -65,20 +90,12 @@ const userLogin = async (req, res, next) => {
             )
 
             const resultSet = result.outBinds.user
-            const user = await resultSet.getRows(1)
+            const user = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
 
-            if (user.length <= 0)
-                return res.status(401).json({ error: 'user not found' })
+            if (!user) throw new Error('user not found')
 
-            if (bcrypt.compareSync(password, user[0].passwordHash)) {
-                const token = jwt.sign(user[0], jwtSecret, {
-                    expiresIn: '1d',
-                })
-                return res.status(200).json({ user: user[0], token })
-            } else {
-                return res.status(401).json({ error: 'wrong password' })
-            }
+            return user
         } catch (err) {
             throw err
         } finally {
@@ -91,18 +108,17 @@ const userLogin = async (req, res, next) => {
             }
         }
     } catch (err) {
-        console.error(err)
-        return res.status(500).json({ error: err.message })
+        throw err
     }
 }
 
-const getAllUsers = async (req, res, next) => {
+module.exports.getAll = async () => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
-
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
             const result = await connection.execute(
                 `begin rent_users.GetAllUsers(:users); end;`,
                 {
@@ -117,7 +133,7 @@ const getAllUsers = async (req, res, next) => {
             const users = await resultSet.getRows()
             await resultSet.close()
 
-            return res.status(200).json(users)
+            return users.map((x) => keysToCamel(x))
         } catch (err) {
             throw err
         } finally {
@@ -130,13 +146,6 @@ const getAllUsers = async (req, res, next) => {
             }
         }
     } catch (err) {
-        console.error(err)
-        return res.status(500).json({ error: err.message })
+        throw err
     }
-}
-
-module.exports = {
-    userLogin,
-    userRegister,
-    getAllUsers,
 }
