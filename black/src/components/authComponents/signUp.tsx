@@ -1,7 +1,7 @@
-import signUpUserDto from "@/api/types/user/signUpUserDto";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import signUpUserDto from "@/api/types/user/signUpUserDto";
 import signUpDispatch from "@/redux/actions/signUp";
 import Modal from "../modalComponent/modalComponent/modal";
 import styles from "./auth.module.scss";
@@ -39,6 +39,7 @@ const SignUp: React.FC<componentProps> = (props) => {
     if (body) {
       if (!!body.email && !!body.password && !!body.username) {
         dispatch(signUpDispatch(body, setStatus));
+        history.push("/sign-in");
       }
     }
   };

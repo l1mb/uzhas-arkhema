@@ -21,8 +21,8 @@ const signInDispatch =
       const response = await authService.signIn(user);
 
       if (response.status === 200) {
-        const JWT = (await response.json()).token;
-        localStorage.setItem("token", JWT);
+        const JWT = await response.json();
+        localStorage.setItem("token", JWT.token);
       } else {
         toast.error("We have troubles with getting you in, try later", toastProps);
       }
@@ -30,10 +30,14 @@ const signInDispatch =
 
     if (getToken()) {
       const userInfoPromise = await userService.getInfo();
-      const updatedUser: { user: userDto; token: string } = await userInfoPromise.json();
-      updatedUser.user.authencated = true;
+      const prikol = await userInfoPromise.json();
+
+      console.log(prikol);
+      const updatedUser: { username: string; email: string } = prikol;
+      updatedUser.authencated = true;
+
       dispatch(actions.setRole(getRole()));
-      dispatch(actions.setUser(updatedUser.user));
+      dispatch(actions.setUser(updatedUser));
     }
   };
 
