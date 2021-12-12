@@ -17,7 +17,6 @@ import styles from "./filter.module.scss";
 
 interface FilterProps {
   setQuery: (e: QueryParams) => void;
-  platform: string;
 }
 
 function FilterBar(props: FilterProps) {
@@ -36,6 +35,8 @@ function FilterBar(props: FilterProps) {
       age: age?.value as AgeRating,
       genre: genre?.value as Genre,
     });
+
+    console.log(queryString);
   };
 
   useEffect(() => {
@@ -48,26 +49,28 @@ function FilterBar(props: FilterProps) {
 
   return (
     <div className={styles.filterContainer}>
-      <Label content={props.platform} classname={styles.firstLabel} />
       <div>
+        <div>
+          <Label content={filterData.label.genres} classname={styles.labels} />
+          <RadioButtons
+            options={ProductsData.GenreOptions}
+            value={genre}
+            changeHandler={(e: QueryItem) => setGenre(e)}
+          />
+        </div>
         <Label content={filterData.label.orderBy} classname={styles.labels} />
         <SortDropdown
           label={filterData.label.orderBy}
-          value={criteria}
           options={ProductsData.OrderByOptions}
           changeHandler={(e: QueryItem) => setCriteria(e)}
         />
         <SortDropdown
           label={filterData.label.orderType}
-          value={type}
           options={ProductsData.OrderTypeOptions}
           changeHandler={(e: QueryItem) => setType(e)}
         />
       </div>
-      <div>
-        <Label content={filterData.label.genres} classname={styles.labels} />
-        <RadioButtons options={ProductsData.GenreOptions} value={genre} changeHandler={(e: QueryItem) => setGenre(e)} />
-      </div>
+
       <div>
         <Label content={filterData.label.age} classname={styles.labels} />
         <RadioButtons options={ProductsData.AgeOprions} value={age} changeHandler={(e: QueryItem) => setAge(e)} />

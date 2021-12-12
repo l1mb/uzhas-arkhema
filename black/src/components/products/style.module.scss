@@ -22,8 +22,12 @@
 }
 
 .header {
-  width: 70%;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 69px;
+  background-color: rgba($color: #000000, $alpha: 0.7);
   text-align: center;
   color: white;
   margin: 36px 0 42px 0;
@@ -31,14 +35,20 @@
 
 .categories {
   display: flex;
-  justify-content: center;
-  width: 100%;
+  justify-content: space-evenly;
+  width: 90%;
+  margin-bottom: 40px;
 }
 
 .contentRow {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  width: 90%;
   padding-bottom: 92px;
+
+  .filter {
+    margin-left: 100px;
+  }
 
   .pagination {
     display: flex;
@@ -79,4 +89,5 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  width: 75%;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Dropdown, Dropdown } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import Categories from "./categories/categories";
 import FilterBar from "./FilterBar/filter";
@@ -10,7 +11,12 @@ function Items({ currentItems }) {
     <div className={styles.cards}>
       {currentItems &&
         currentItems.map((item) => (
-          <ProductCard label={item.label} price={item.price} shortDescription={item.shortDescription} />
+          <ProductCard
+            key={item.label}
+            label={item.label}
+            price={item.price}
+            shortDescription={item.shortDescription}
+          />
         ))}
     </div>
   );
@@ -83,15 +89,16 @@ function Products() {
             {catData.map((elem) => (
               <Categories label={elem.toUpperCase()} setValue={(e: string) => setCategorie(e)} selected={categorie} />
             ))}
+            <Dropdown.Divider />
           </div>
 
           <div className={styles.contentRow}>
-            <div>
+            <div className={styles.filter}>
               <FilterBar setQuery={(e: string) => {}} categorie={categorie} />
             </div>
 
             <div className={styles.pagination}>
-              <PaginatedItems itemsPerPage={2} />
+              <PaginatedItems itemsPerPage={6} />
             </div>
           </div>
         </div>

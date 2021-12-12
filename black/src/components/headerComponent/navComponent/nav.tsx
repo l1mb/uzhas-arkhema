@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { useSelector } from "react-redux";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar, Navbar, NavDropdown } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import StateType from "@/redux/types/stateType";
 import styles from "./nav.module.scss";
 import { companyName } from "@/types/constants/globals/theme";
@@ -11,17 +12,21 @@ function Navigation(props): JSX.Element {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" className={styles.navBar} variant="dark">
       <Container>
-        <Navbar.Brand href="#home">{companyName.toUpperCase()}</Navbar.Brand>
+        <Navbar.Brand>
+          <NavLink className={`${styles.navItem} nav-link`} to="/home">
+            {companyName.toUpperCase()}
+          </NavLink>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link className={styles.navItem} href="/computers">
+            <NavLink className={`${styles.navItem} nav-link`} to="/computers">
               Features
-            </Nav.Link>
+            </NavLink>
 
-            <Nav.Link className={styles.navItem} href="#pricing">
+            <NavLink className={`${styles.navItem} nav-link`} to="/about-us">
               About
-            </Nav.Link>
+            </NavLink>
           </Nav>
           <Nav>
             {appState.user.authencated ? (
@@ -33,9 +38,9 @@ function Navigation(props): JSX.Element {
                 <NavDropdown.Item href="#action/3.3">Sign out</NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <Nav.Link className={styles.navItem} href="/sign-in">
+              <NavLink className={`${styles.navItem} nav-link`} to="/sign-in">
                 Sign in
-              </Nav.Link>
+              </NavLink>
             )}
           </Nav>
         </Navbar.Collapse>
