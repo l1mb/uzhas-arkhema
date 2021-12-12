@@ -13,13 +13,13 @@ app.use('/api/users', usersRouter)
 
 app.use((req, res, next) => {
     res.status(err.status || 404).json({
-        message: 'route not found',
+        error: 'route not found',
     })
 })
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
-        message: 'error message',
+        error: err.message,
     })
 })
 

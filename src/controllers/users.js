@@ -15,11 +15,13 @@ const userRegister = async (req, res, next) => {
             await connection.execute(
                 `begin rent_users.AddUser(:username, :email, :password_hash); end;`,
                 {
-                    username: username,
-                    email: email,
-                    password_hash: password_hash,
+                    username,
+                    email,
+                    password_hash,
                 }
             )
+
+            res.status(201).json(req.body)
         } catch (err) {
             if (err.errorNum === 1) {
                 return res
@@ -39,9 +41,8 @@ const userRegister = async (req, res, next) => {
         }
     } catch (err) {
         console.error(err)
+        return res.status(500).json({ error: err.message })
     }
-
-    res.status(201).json(req.body)
 }
 
 const userLogin = async (req, res, next) => {
@@ -55,7 +56,7 @@ const userLogin = async (req, res, next) => {
             const result = await connection.execute(
                 `begin rent_users.GetUserByUsername(:username, :user); end;`,
                 {
-                    username: username,
+                    username,
                     user: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -68,17 +69,16 @@ const userLogin = async (req, res, next) => {
             await resultSet.close()
 
             if (user.length <= 0)
-                return res.status(400).json({ error: 'user not found' })
+                return res.status(401).json({ error: 'user not found' })
 
-            bcrypt.compare(password, user[0].passwordHash, (err, result) => {
-                if (err) throw err
-                if (result) {
-                    const token = jwt.sign(user[0], jwtSecret, {
-                        expiresIn: '1d',
-                    })
-                    return res.status(200).json({ user: user[0], token: token })
-                }
-            })
+            if (bcrypt.compareSync(password, user[0].passwordHash)) {
+                const token = jwt.sign(user[0], jwtSecret, {
+                    expiresIn: '1d',
+                })
+                return res.status(200).json({ user: user[0], token })
+            } else {
+                return res.status(401).json({ error: 'wrong password' })
+            }
         } catch (err) {
             throw err
         } finally {
@@ -92,7 +92,7 @@ const userLogin = async (req, res, next) => {
         }
     } catch (err) {
         console.error(err)
-        return res.status(400)
+        return res.status(500).json({ error: err.message })
     }
 }
 
@@ -131,7 +131,7 @@ const getAllUsers = async (req, res, next) => {
         }
     } catch (err) {
         console.error(err)
-        return res.status(400)
+        return res.status(500).json({ error: err.message })
     }
 }
 
