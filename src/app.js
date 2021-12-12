@@ -3,7 +3,7 @@ const express = require('express')
 const oracledb = require('oracledb')
 const { port, dbSettings } = require('./config/environment')
 
-const usersRouter = require('./routes/users')
+const usersRouter = require('./routes/userRoute')
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
