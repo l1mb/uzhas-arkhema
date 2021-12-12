@@ -1,4 +1,4 @@
-const host = "http://localhost:5000/api";
+const host = "/api";
 const getProductSearchEndpoint = `${host}/products/search`;
 const getProductListEndpoint = `${host}/products/list`;
 const getProductByPlatform = `${host}/products/byPlatform`;

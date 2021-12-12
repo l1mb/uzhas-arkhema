@@ -7,7 +7,7 @@
     "test": "exit 0",
     "start": "npm run serve",
     "serve": "./node_modules/.bin/webpack serve --open --config webpack.devServer.js",
-    "serve-proxy": "npm run serve -- --env=proxy=https://localhost:44360/",
+    "serve-proxy": "npm run serve -- --env=proxy=http://localhost:5000/",
     "build-prod": "./node_modules/.bin/webpack --mode production --config webpack.prod.js",
     "build-prod-withMap": "npm run build-prod -- --sourceMap",
     "build-dev": "./node_modules/.bin/webpack --mode development --config webpack.dev.js",
@@ -108,9 +108,9 @@
     "webpack-mock-server": "^1.0.15"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.178",
     "@babel/runtime": "^7.16.3",
     "@reduxjs/toolkit": "^1.6.2",
+    "@types/lodash": "^4.14.178",
     "bootstrap": "^5.1.3",
     "history": "^5.1.0",
     "jwt-decode": "^3.1.2",
