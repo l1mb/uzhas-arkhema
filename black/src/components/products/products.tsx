@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Dropdown } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
+import useProductFetcher from "@/hooks/loader/loader";
 import Categories from "./categories/categories";
 import FilterBar from "./FilterBar/filter";
 import ProductCard, { ProductCardProps } from "./productCard/productCard";
@@ -58,7 +59,7 @@ function PaginatedItems({ itemsPerPage }) {
 
   return (
     <>
-      <Items currentItems={currentItems} />
+      <Items currentItems={currentItems} key={currentItems} />
 
       <ReactPaginate
         className={styles.pag_buttons}
@@ -76,6 +77,7 @@ function PaginatedItems({ itemsPerPage }) {
 function Products() {
   const catData = ["all", "dlya bichey", "chisto multiki", "poigrat'"];
   const [categorie, setCategorie] = useState(catData[0].toUpperCase());
+  const { loading, setParams } = useProductFetcher();
 
   useEffect(() => {
     // TODO: fetch data
@@ -87,14 +89,19 @@ function Products() {
           <h3 className={styles.header}>Прокат ноутбуков в Минске</h3>
           <div className={styles.categories}>
             {catData.map((elem) => (
-              <Categories label={elem.toUpperCase()} setValue={(e: string) => setCategorie(e)} selected={categorie} />
+              <Categories
+                key={elem}
+                label={elem.toUpperCase()}
+                setValue={(e: string) => setCategorie(e)}
+                selected={categorie}
+              />
             ))}
             <Dropdown.Divider />
           </div>
 
           <div className={styles.contentRow}>
             <div className={styles.filter}>
-              <FilterBar setQuery={(e: string) => {}} categorie={categorie} />
+              <FilterBar setQuery={setParams} categorie={categorie} />
             </div>
 
             <div className={styles.pagination}>

@@ -8,6 +8,7 @@ interface QueryParams {
   type: OrderType | undefined;
   age: AgeRating | undefined;
   genre: Genre | undefined;
+  category: string | undefined;
 }
 
 export default QueryParams;

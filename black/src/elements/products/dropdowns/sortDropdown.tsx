@@ -25,7 +25,9 @@ function SortDropdown(props: menuProps) {
       </Dropdown.Toggle>
       <Dropdown.Menu className={styles.menu}>
         {props.options.map((u) => (
-          <Dropdown.Item onClick={() => changed(u.label)}>{u.label}</Dropdown.Item>
+          <Dropdown.Item key={u.label} onClick={() => changed(u.label)}>
+            {u.label}
+          </Dropdown.Item>
         ))}
       </Dropdown.Menu>
     </Dropdown>

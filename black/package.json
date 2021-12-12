@@ -109,6 +109,7 @@
     "webpack-mock-server": "^1.0.15"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.178",
     "@babel/runtime": "^7.16.3",
     "@reduxjs/toolkit": "^1.6.2",
     "bootstrap": "^5.1.3",
