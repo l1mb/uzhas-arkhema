@@ -3,7 +3,7 @@ const express = require('express')
 const oracledb = require('oracledb')
 const { port, dbSettings } = require('./config/environment')
 
-const usersRouter = require('./routes/users.routes')
+const usersRouter = require('./routes/users')
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -13,13 +13,13 @@ app.use('/api/users', usersRouter)
 
 app.use((req, res, next) => {
     res.status(err.status || 404).json({
-        message: 'route not found',
+        error: 'route not found',
     })
 })
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
-        message: 'error message',
+        error: err.message,
     })
 })
 
