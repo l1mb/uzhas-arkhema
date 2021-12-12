@@ -8,6 +8,7 @@ import Routes from "./components/routesComponent/routes";
 import styles from "./mainStyles.module.scss";
 import store from "./redux/store/store";
 import "react-toastify/dist/ReactToastify.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface AppProps {
   nothing: boolean;

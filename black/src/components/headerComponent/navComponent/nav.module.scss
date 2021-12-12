@@ -1,8 +1,18 @@
 @import "../../../components/homeComponent/shared.module.scss";
 
 .navBar {
-  height: auto;
+  height: 65px;
+  width: 100%;
   align-self: baseline;
+
+  .navItem {
+    transition: all 0.3s;
+    border-radius: 4px;
+  }
+
+  .navItem:hover {
+    background-color: #333;
+  }
 
   button {
     background: transparent;

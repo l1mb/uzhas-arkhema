@@ -5,12 +5,7 @@ import Navigation from "./navComponent/nav";
 
 const Header: React.FC<HeaderProps> = (props): JSX.Element => (
   <header className={styles.header}>
-    <div className={styles.blocks}>
-      <span className={styles.label}>Bibki corp</span>
-    </div>
-    <div className={styles.blocks}>
-      <Navigation data={props.data} signOutHandle={props.signOutHandle} />
-    </div>
+    <Navigation data={props.data} signOutHandle={props.signOutHandle} />
   </header>
 );
 
