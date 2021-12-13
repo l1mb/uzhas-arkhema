@@ -3,24 +3,20 @@ const jwt = require('jsonwebtoken')
 const { jwtSecret } = require('../config/environment')
 const userRepository = require('../repositories/userRepository')
 
-const userRegister = async (req, res, next) => {
+const register = async (req, res, next) => {
     try {
         const { username, email, password } = req.body
         const passwordHash = await bcrypt.hash(password, 10)
 
-        const addedUser = await userRepository.add(
-            username,
-            email,
-            passwordHash
-        )
+        const added = await userRepository.add(username, email, passwordHash)
 
-        res.status(201).json(addedUser)
+        res.status(201).json(added)
     } catch (err) {
         next(err)
     }
 }
 
-const userLogin = async (req, res, next) => {
+const login = async (req, res, next) => {
     try {
         const { username, password } = req.body
 
@@ -59,7 +55,7 @@ const getUser = async (req, res, next) => {
     return res.send(500)
 }
 
-const getAllUsers = async (_, res, next) => {
+const getAll = async (_, res, next) => {
     try {
         const users = await userRepository.getAll()
         return res.status(200).json(users)
@@ -69,8 +65,8 @@ const getAllUsers = async (_, res, next) => {
 }
 
 module.exports = {
-    userLogin,
-    userRegister,
-    getAllUsers,
+    login,
+    register,
+    getAll,
     getUser,
 }

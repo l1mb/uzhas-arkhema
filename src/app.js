@@ -3,13 +3,19 @@ const express = require('express')
 const oracledb = require('oracledb')
 const { port, dbSettings } = require('./config/environment')
 
-const usersRouter = require('./routes/userRoute')
+const userRouter = require('./routes/userRoute')
+const productRouter = require('./routes/productRoute')
+const vendorRouter = require('./routes/vendorRoute')
+const categoryRouter = require('./routes/categoryRoute')
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/api/users', usersRouter)
+app.use('/api/users', userRouter)
+app.use('/api/products', productRouter)
+app.use('/api/vendors', vendorRouter)
+app.use('/api/categories', categoryRouter)
 
 app.use((req, res, next) => {
     res.status(err.status || 404).json({

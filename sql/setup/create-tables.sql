@@ -17,12 +17,12 @@ create table products (
 	vendor_id number not null,
 	constraint products_pk primary key (id));
 
-drop table product_categories;
-create table product_categories (
+drop table categories;
+create table categories (
 	id number generated always as identity,
 	name varchar2(50 char) not null,
 	description varchar2(200 char),
-	constraint productcategories_pk primary key (id));
+	constraint categories_pk primary key (id));
 
 drop table vendors;
 create table vendors (

@@ -1,7 +1,13 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
-module.exports.add = async (username, email, passwordHash) => {
+module.exports.add = async (
+    name,
+    description,
+    price,
+    category_id,
+    vendor_id
+) => {
     try {
         let connection
         try {
@@ -9,12 +15,14 @@ module.exports.add = async (username, email, passwordHash) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_users.add(:username, :email, :passwordHash,
-                    :added); end;`,
+                `begin rent_products.add(:name, :description, :price,
+                    :category_id, :vendor_id, :added); end;`,
                 {
-                    username,
-                    email,
-                    passwordHash,
+                    name,
+                    description,
+                    price,
+                    category_id,
+                    vendor_id,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -23,53 +31,10 @@ module.exports.add = async (username, email, passwordHash) => {
             )
 
             const resultSet = result.outBinds.added
-            const user = keysToCamel((await resultSet.getRows(1))[0])
+            const product = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
 
-            return user
-        } catch (err) {
-            if (err.errorNum === 1) throw new Error('user already registered')
-            throw err
-        } finally {
-            if (connection) {
-                try {
-                    await connection.close()
-                } catch (err) {
-                    throw err
-                }
-            }
-        }
-    } catch (err) {
-        throw err
-    }
-}
-
-module.exports.getByUsername = async (username) => {
-    try {
-        let connection
-        try {
-            connection = await oracledb.getConnection()
-            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-
-            const result = await connection.execute(
-                `begin rent_users.get_by_username(:username, :user); end;`,
-                {
-                    username,
-                    user: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
-                }
-            )
-
-            const resultSet = result.outBinds.user
-            const user = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
-
-            if (!user) throw new Error('user not found')
-
-            user.role = 'admin'
-            return user
+            return product
         } catch (err) {
             throw err
         } finally {
@@ -86,7 +51,7 @@ module.exports.getByUsername = async (username) => {
     }
 }
 
-module.exports.getAll = async () => {
+module.exports.getAll = async (offset = 0, limit = -1, order_by = 'id') => {
     try {
         let connection
         try {
@@ -94,20 +59,64 @@ module.exports.getAll = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_users.get_all(:users); end;`,
+                `begin rent_products.get_all(:offset, :limit, :order_by, :products); end;`,
                 {
-                    users: {
+                    offset,
+                    limit,
+                    order_by,
+                    products: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
                     },
                 }
             )
 
-            const resultSet = result.outBinds.users
-            const users = await resultSet.getRows()
+            const resultSet = result.outBinds.products
+            const products = await resultSet.getRows()
             await resultSet.close()
 
-            return users.map((x) => keysToCamel(x))
+            return products.map((x) => keysToCamel(x))
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports.getById = async (id) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin rent_products.get_by_id(:id, :product); end;`,
+                {
+                    id,
+                    product: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.product
+            const product = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            if (!product) throw new Error('product not found')
+
+            return product
         } catch (err) {
             throw err
         } finally {
