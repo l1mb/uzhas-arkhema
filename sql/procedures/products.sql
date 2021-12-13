@@ -7,6 +7,10 @@ create or replace package rent_products as
         in_vendor_id products.vendor_id%type,
         out_product out sys_refcursor
     );
+    procedure delete_by_id(
+        in_id products.id%type,
+        out_product out sys_refcursor
+    );
     procedure get_all(
         in_offset int,
         in_limit int,
@@ -44,6 +48,16 @@ create or replace package body rent_products as
         when others then
             rollback;
             raise;
+    end;
+    --
+    procedure delete_by_id(
+        in_id products.id%type,
+        out_product out sys_refcursor
+    )
+    as begin
+        get_by_id(in_id, out_product);
+        delete products where id = in_id;
+        commit;
     end;
     --
     procedure get_all(

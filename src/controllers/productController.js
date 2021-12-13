@@ -10,6 +10,17 @@ const add = async (req, res, next) => {
     }
 }
 
+const deleteById = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const deleted = await productRepository.deleteById(id)
+
+        return res.status(200).json(deleted)
+    } catch (err) {
+        next(err)
+    }
+}
+
 const getAll = async (req, res, next) => {
     try {
         const { offset, limit, orderby, mode } = req.query
@@ -29,6 +40,7 @@ const getById = async (req, res, next) => {
     try {
         const { id } = req.params
         const products = await productRepository.getById(id)
+
         return res.status(200).json(products)
     } catch (err) {
         next(err)
@@ -37,6 +49,7 @@ const getById = async (req, res, next) => {
 
 module.exports = {
     add,
+    deleteById,
     getAll,
     getById,
 }

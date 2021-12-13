@@ -138,3 +138,44 @@ module.exports.getById = async (id) => {
         throw err
     }
 }
+
+module.exports.deleteById = async (id) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin rent_products.delete_by_id(:id, :deleted); end;`,
+                {
+                    id,
+                    deleted: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.deleted
+            const product = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            if (!product) throw new Error('product not found')
+
+            return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
