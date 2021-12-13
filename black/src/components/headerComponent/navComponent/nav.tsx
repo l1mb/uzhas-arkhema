@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import StateType from "@/redux/types/stateType";
 import styles from "./nav.module.scss";
 import { companyName } from "@/types/constants/globals/theme";
+import roles from "@/types/constants/roles/roles";
 
 function Navigation(props): JSX.Element {
   const appState = useSelector<StateType, StateType>((state) => state);
@@ -31,7 +32,9 @@ function Navigation(props): JSX.Element {
           <Nav>
             {appState.user.authencated ? (
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                {appState.role === "admin" ? <NavDropdown.Item disabled>Welcome back admin</NavDropdown.Item> : null}
+                {appState.role === roles.admin ? (
+                  <NavDropdown.Item disabled>Welcome back admin</NavDropdown.Item>
+                ) : null}
                 <NavDropdown.Item href="#action/3.1">{appState.user.userName}</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Orders</NavDropdown.Item>
                 <NavDropdown.Divider />

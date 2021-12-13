@@ -1,13 +1,28 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Dropdown } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
+import { toast } from "react-toastify";
 import useProductFetcher from "@/hooks/loader/loader";
 import Categories from "./categories/categories";
 import FilterBar from "./FilterBar/filter";
-import ProductCard, { ProductCardProps } from "./productCard/productCard";
+import ProductCard from "./productCard/productCard";
 import styles from "./style.module.scss";
+import BtEditModal from "../modalComponent/btEditModal/editModal";
+import productsApi from "@/api/httpService/products/productsApi";
 
-function Items({ currentItems }) {
+interface ProductItem {
+  label: string;
+  shortDescription: string;
+  price: string;
+}
+interface itemsProps {
+  setMode: () => void;
+  setProduct: (e: updateProductDto) => void;
+  currentItems: ProductItem[] | null;
+}
+
+function Items(props: itemsProps) {
+  const { currentItems } = props;
   return (
     <div className={styles.cards}>
       {currentItems &&
@@ -16,6 +31,8 @@ function Items({ currentItems }) {
             key={item.label}
             label={item.label}
             price={item.price}
+            setMode={props.setMode}
+            setProduct={props.setProduct}
             shortDescription={item.shortDescription}
           />
         ))}
@@ -23,9 +40,16 @@ function Items({ currentItems }) {
   );
 }
 
-function PaginatedItems({ itemsPerPage }) {
+interface paginatedProps {
+  itemsPerPage: number;
+  setMode: () => void;
+  setProduct: (e: updateProductDto) => void;
+}
+
+function PaginatedItems(props: paginatedProps) {
+  const { itemsPerPage } = props;
   // We start with an empty list of items.
-  const data: ProductCardProps[] = [
+  const data: ProductItem[] = [
     { label: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
     { label: "Acer aspired", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
     { label: "Acer aspider", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
@@ -59,7 +83,7 @@ function PaginatedItems({ itemsPerPage }) {
 
   return (
     <>
-      <Items currentItems={currentItems} key={currentItems} />
+      <Items currentItems={currentItems} setMode={props.setMode} setProduct={props.setProduct} key={currentItems} />
 
       <ReactPaginate
         className={styles.pag_buttons}
@@ -78,6 +102,20 @@ function Products() {
   const catData = ["all", "dlya bichey", "chisto multiki", "poigrat'"];
   const [categorie, setCategorie] = useState(catData[0].toUpperCase());
   const { loading, setParams } = useProductFetcher();
+
+  const [isOpen, setOpen] = useState(false);
+  const [mode, setMode] = useState("create");
+  const [product, setProduct] = useState();
+
+  const handleSave = async (e: updateProductDto) => {
+    const response = await productsApi.postProduct(e);
+    if (response.status === 201) {
+      toast.success("Yay");
+    } else {
+      toast.error("Paru");
+    }
+  };
+  const handleUpdate = () => [console.log("kavo")];
 
   useEffect(() => {
     // TODO: fetch data
@@ -101,15 +139,40 @@ function Products() {
 
           <div className={styles.contentRow}>
             <div className={styles.filter}>
-              <FilterBar setQuery={setParams} categorie={categorie} />
+              <FilterBar
+                setMode={() => {
+                  setMode("create");
+                }}
+                setOpen={setOpen}
+                setQuery={setParams}
+                categorie={categorie}
+              />
             </div>
 
             <div className={styles.pagination}>
-              <PaginatedItems itemsPerPage={6} />
+              <PaginatedItems
+                setMode={() => {
+                  setMode("update");
+                  setOpen(true);
+                }}
+                setProduct={(e: updateProductDto) => {
+                  setProduct(e);
+                  console.log(e);
+                }}
+                itemsPerPage={6}
+              />
             </div>
           </div>
         </div>
       </div>
+      <BtEditModal
+        isOpen={isOpen}
+        mode={mode}
+        save={handleSave}
+        product={product}
+        update={handleUpdate}
+        setOpen={setOpen}
+      />
     </div>
   );
 }
