@@ -12,8 +12,13 @@ const add = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
     try {
-        const { offset, limit, orderby } = req.query
-        const products = await productRepository.getAll(offset, limit, orderby)
+        const { offset, limit, orderby, mode } = req.query
+        const products = await productRepository.getAll(
+            offset,
+            limit,
+            orderby,
+            mode
+        )
         return res.status(200).json(products)
     } catch (err) {
         next(err)

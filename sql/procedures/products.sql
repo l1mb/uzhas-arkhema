@@ -11,6 +11,7 @@ create or replace package rent_products as
         in_offset int,
         in_limit int,
         in_order_by varchar2,
+        in_order_mode varchar2,
         out_products out sys_refcursor
     );
     procedure get_by_id(
@@ -49,6 +50,7 @@ create or replace package body rent_products as
         in_offset int,
         in_limit int,
         in_order_by varchar2,
+        in_order_mode varchar2,
         out_products out sys_refcursor
     )
     as
@@ -58,7 +60,7 @@ create or replace package body rent_products as
             ||' from products p'
             ||' join vendors v on p.vendor_id = v.id'
             ||' join categories c on p.category_id = c.id'
-            ||' order by '|| in_order_by
+            ||' order by '|| in_order_by || ' ' || in_order_mode
             ||' offset '|| in_offset ||' rows';
     if in_limit != -1 then
             v_sql := v_sql ||' fetch next '|| in_limit ||' rows only';

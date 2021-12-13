@@ -51,7 +51,12 @@ module.exports.add = async (
     }
 }
 
-module.exports.getAll = async (offset = 0, limit = -1, order_by = 'id') => {
+module.exports.getAll = async (
+    offset = 0,
+    limit = -1,
+    order_by = 'id',
+    order_mode = 'asc'
+) => {
     try {
         let connection
         try {
@@ -59,11 +64,12 @@ module.exports.getAll = async (offset = 0, limit = -1, order_by = 'id') => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.get_all(:offset, :limit, :order_by, :products); end;`,
+                `begin rent_products.get_all(:offset, :limit, :order_by, :order_mode, :products); end;`,
                 {
                     offset,
                     limit,
                     order_by,
+                    order_mode,
                     products: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
