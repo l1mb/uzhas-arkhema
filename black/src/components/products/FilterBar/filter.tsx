@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
 import ProductsData from "@/api/types/products/productData";
 import QueryItem from "@/api/types/products/queryParams";
 import Label from "@/elements/home/labelElement/label";
@@ -14,10 +16,14 @@ import QueryParams from "@/types/interfaces/filter/queryParams";
 import buildString from "@/types/interfaces/filter/queryString";
 import filterData from "@/types/constants/components/products/filter/filterData";
 import styles from "./filter.module.scss";
+import StateType from "@/redux/types/stateType";
+import roles from "@/types/constants/roles/roles";
 
 interface FilterProps {
   setQuery: (e: QueryParams) => void;
+  setOpen: (e: boolean) => void;
   categorie: string;
+  setMode: () => void;
 }
 
 function FilterBar(props: FilterProps) {
@@ -28,6 +34,8 @@ function FilterBar(props: FilterProps) {
   const [queryString, setQuery] = useState("");
   const { search } = useLocation();
   const history = useHistory();
+
+  const role = useSelector<StateType, string>((state) => state.role);
 
   const pushParameters = () => {
     props.setQuery({
@@ -49,6 +57,20 @@ function FilterBar(props: FilterProps) {
   return (
     <div className={styles.filterContainer}>
       <div>
+        {role === roles.admin && (
+          <div className={styles.createButton}>
+            <Label content="Admin is here" classname={styles.labels} />
+            <Button
+              variant="light"
+              onClick={() => {
+                props.setOpen(true);
+                props.setMode();
+              }}
+            >
+              Create new product
+            </Button>
+          </div>
+        )}
         <div>
           <Label content={filterData.label.genres} classname={styles.labels} />
           <RadioButtons

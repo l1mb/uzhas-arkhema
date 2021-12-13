@@ -13,7 +13,7 @@ interface componentProps {
   redirectRoute: string;
 }
 
-const SignUp: React.FC<componentProps> = (props) => {
+function SignUp(props: componentProps) {
   const [isOpen, setOpen] = useState(true);
   const [registrationStatus, setRegStatus] = useState(0);
 
@@ -51,5 +51,5 @@ const SignUp: React.FC<componentProps> = (props) => {
       </Modal>
     </div>
   );
-};
+}
 export default SignUp;
