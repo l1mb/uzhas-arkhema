@@ -4,6 +4,10 @@ import StateType from "@/redux/types/stateType";
 import defaultIMg from "../../../assets/images/profile/default-profile.jpg";
 import styles from "./styles.module.scss";
 import roles from "@/types/constants/roles/roles";
+import getUserId from "@/helpers/token/getUserId";
+import postOrderEntity from "@/types/interfaces/order/postOrderEntity";
+import orders from "@/api/httpService/orders/orders";
+import { toast } from "react-toastify";
 
 export interface ProductCardProps {
   label: string;
@@ -17,6 +21,7 @@ export interface ProductCardProps {
 
 function ProductCard(props: ProductCardProps) {
   const role = useSelector<StateType, string>((state) => state.role);
+  const usrId = getUserId();
 
   const handleDelete = () => {
     props.setMode("delete");
@@ -34,6 +39,17 @@ function ProductCard(props: ProductCardProps) {
       id: props.id,
     };
     props.setProduct(user);
+  };
+
+  const handleAdd = async () => {
+    const postDto: postOrderEntity = { userId: Number(usrId), productId: props.id };
+    const res = await orders.postOrder(postDto);
+
+    if (res.status === 201) {
+      toast.success("Added successfully");
+    } else {
+      toast.error("Something went wrong during request");
+    }
   };
   return (
     <Card style={{ width: "18rem" }} className={styles.card_container} color="black">
@@ -54,7 +70,7 @@ function ProductCard(props: ProductCardProps) {
               </Button>
             </div>
           )}
-          <Button className={styles.btn} variant="primary">
+          <Button className={styles.btn} onClick={handleAdd} variant="primary">
             Add to orders
           </Button>
         </div>

@@ -118,7 +118,15 @@ function Products() {
       toast.error("Paru");
     }
   };
-  const handleUpdate = () => [console.log("kavo")];
+  const handleUpdate = async (e: updateProductDto) => {
+    console.log(e);
+    const response = await productsApi.putProduct(e);
+    if (response.status === 201) {
+      toast.success("Yay");
+    } else {
+      toast.error("Paru");
+    }
+  };
 
   useEffect(() => {
     // TODO: fetch data

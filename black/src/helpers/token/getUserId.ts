@@ -1,14 +1,14 @@
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
-import getToken from "../token/getToken";
+import getToken from "./getToken";
 
-const getRole = (): string => {
+const getUserId = (): string => {
   const token = getToken();
   let role = "";
   try {
     if (token) {
       const decoded = jwtDecode(token);
-      role += decoded.role;
+      role += decoded.id;
     }
   } catch (e) {
     toast.error(`${e}`);
@@ -17,4 +17,4 @@ const getRole = (): string => {
   return role;
 };
 
-export default getRole;
+export default getUserId;

@@ -13,7 +13,7 @@ import RoutesData from "./types/routes/RoutesData";
 import Home from "../home/home";
 import About from "../about/about";
 import Products from "../products/products";
-import getRole from "@/helpers/role/getRole";
+import getRole from "@/helpers/token/getRole";
 
 const SignIn = React.lazy(() => import("../authComponents/signIn"));
 const SignUp = React.lazy(() => import("../authComponents/signUp"));

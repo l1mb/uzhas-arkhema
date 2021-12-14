@@ -8,7 +8,11 @@ import { companyName } from "@/types/constants/globals/theme";
 import roles from "@/types/constants/roles/roles";
 import RoutesData from "@/components/routesComponent/types/routes/RoutesData";
 
-function Navigation(props): JSX.Element {
+interface NavProps {
+  signOut: () => void;
+}
+
+function Navigation(props: NavProps): JSX.Element {
   const appState = useSelector<StateType, StateType>((state) => state);
 
   return (
@@ -39,12 +43,17 @@ function Navigation(props): JSX.Element {
                 <NavDropdown.Item disabled>{appState.user.email}</NavDropdown.Item>
                 <NavDropdown.Item href={RoutesData.cart.route}>Orders</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.3">Sign out</NavDropdown.Item>
+                <NavDropdown.Item onClick={props.signOut}>Sign out</NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <NavLink className={`${styles.navItem} nav-link`} to="/sign-in">
-                Sign in
-              </NavLink>
+              <>
+                <NavLink className={`${styles.navItem} nav-link`} to="/sign-in">
+                  Sign in
+                </NavLink>
+                <NavLink className={`${styles.navItem} nav-link`} to="/sign-up">
+                  Sign up
+                </NavLink>
+              </>
             )}
           </Nav>
         </Navbar.Collapse>

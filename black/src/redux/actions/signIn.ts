@@ -6,7 +6,7 @@ import userDto from "@/api/types/user/userDto";
 import toastProps from "@/types/constants/toasts/toastProps";
 import actions from "./actions";
 import userService from "@/api/httpService/user/userService";
-import getRole from "@/helpers/role/getRole";
+import getRole from "@/helpers/token/getRole";
 import getToken from "@/helpers/token/getToken";
 
 const signInDispatch =
