@@ -9,24 +9,25 @@ import setCountDispatch from "@/redux/actions/orders/setCount";
 import Spinner from "@/elements/home/spinnerElement/spinner";
 import cartMessages from "@/types/constants/messages/cart";
 import SorryImage from "@/elements/cart/sorryImage/sorryImage";
-import orderTypes from "@/types/constants/orders/orderTypes";
 import errors from "@/types/constants/errors/errors";
 import styles from "./cart.module.scss";
 import RoutesData from "../routesComponent/types/routes/RoutesData";
 import EnhancedTable from "./cartBody/CartBody";
+import OrdersData from "@/types/data/ordersData";
 
 const CartRow = React.lazy(() => import("@/elements/cart/cartItemElement/cartRow"));
 
 function Cart() {
-  const [params, setParams] = useState<OrderProduct[]>([{}]);
+  const [params, setParams] = useState<OrderProduct[]>([OrdersData]);
   const [removeId, setId] = useState<number[]>([]);
   const [price, setPrice] = useState(0);
 
   const history = useHistory();
 
-  const getZipped = async () => {
-    const data = await orders.getZippedOrders(orderTypes.uncompleted);
-    setParams(data);
+  // this method will be soon
+  const getProducts = async () => {
+    // const data = await orders.getOrders(orderTypes.uncompleted);
+    // setParams(data);
   };
 
   const dispatch = useDispatch();
@@ -75,12 +76,12 @@ function Cart() {
   };
 
   useEffect(() => {
-    getZipped();
+    getProducts();
   }, []);
 
   useEffect(() => {
-    const data = params.map((e) => e.Products.price * e.item.count).reduce((acc, a) => acc + a, 0);
-    setPrice(data);
+    // const data = params.map((e) => e.Products.price * e.item.count).reduce((acc, a) => acc + a, 0);
+    // setPrice(data);
   }, [params]);
 
   return (
