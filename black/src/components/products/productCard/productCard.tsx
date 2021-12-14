@@ -4,25 +4,52 @@ import StateType from "@/redux/types/stateType";
 import defaultIMg from "../../../assets/images/profile/default-profile.jpg";
 import styles from "./styles.module.scss";
 import roles from "@/types/constants/roles/roles";
+import getUserId from "@/helpers/token/getUserId";
+import postOrderEntity from "@/types/interfaces/order/postOrderEntity";
+import orders from "@/api/httpService/orders/orders";
+import { toast } from "react-toastify";
 
 export interface ProductCardProps {
   label: string;
   shortDescription: string;
   price: string;
+  id: number;
   img?: string;
-  setMode: () => void;
+  setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
 }
 
 function ProductCard(props: ProductCardProps) {
   const role = useSelector<StateType, string>((state) => state.role);
+  const usrId = getUserId();
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    props.setMode("delete");
+    props.setProduct({ id: props.id } as updateProductDto);
+  };
 
   const handleUpdate = () => {
-    props.setMode();
-    const user: updateProductDto = { categoryId: 1, name: "sho", description: "kavo", price: 3, vendorId: 3, id: 0 };
+    props.setMode("update");
+    const user: updateProductDto = {
+      categoryId: 1,
+      name: props.label,
+      description: props.shortDescription,
+      price: 3,
+      vendorId: 3,
+      id: props.id,
+    };
     props.setProduct(user);
+  };
+
+  const handleAdd = async () => {
+    const postDto: postOrderEntity = { userId: Number(usrId), productId: props.id };
+    const res = await orders.postOrder(postDto);
+
+    if (res.status === 201) {
+      toast.success("Added successfully");
+    } else {
+      toast.error("Something went wrong during request");
+    }
   };
   return (
     <Card style={{ width: "18rem" }} className={styles.card_container} color="black">
@@ -43,7 +70,7 @@ function ProductCard(props: ProductCardProps) {
               </Button>
             </div>
           )}
-          <Button className={styles.btn} variant="primary">
+          <Button className={styles.btn} onClick={handleAdd} variant="primary">
             Add to orders
           </Button>
         </div>

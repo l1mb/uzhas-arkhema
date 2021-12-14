@@ -1,7 +1,6 @@
 interface postOrderEntity {
   productId: number;
-  applicationUserId: number;
-  count: number;
+  userId: number;
 }
 
 export default postOrderEntity;

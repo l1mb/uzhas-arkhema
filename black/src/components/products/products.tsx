@@ -9,14 +9,16 @@ import ProductCard from "./productCard/productCard";
 import styles from "./style.module.scss";
 import BtEditModal from "../modalComponent/btEditModal/editModal";
 import productsApi from "@/api/httpService/products/productsApi";
+import DeleteModal from "../modalComponent/btEditModal/deleteModal";
 
 interface ProductItem {
+  id: number;
   label: string;
   shortDescription: string;
   price: string;
 }
 interface itemsProps {
-  setMode: () => void;
+  setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
   currentItems: ProductItem[] | null;
 }
@@ -34,6 +36,7 @@ function Items(props: itemsProps) {
             setMode={props.setMode}
             setProduct={props.setProduct}
             shortDescription={item.shortDescription}
+            id={item.id}
           />
         ))}
     </div>
@@ -42,7 +45,7 @@ function Items(props: itemsProps) {
 
 interface paginatedProps {
   itemsPerPage: number;
-  setMode: () => void;
+  setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
 }
 
@@ -50,14 +53,14 @@ function PaginatedItems(props: paginatedProps) {
   const { itemsPerPage } = props;
   // We start with an empty list of items.
   const data: ProductItem[] = [
-    { label: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer aspired", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer aspider", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer aspidero", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer aspidore", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer aspidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer spidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-    { label: "Acer pidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 1, label: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 2, label: "Acer aspired", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 3, label: "Acer aspider", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 4, label: "Acer aspidero", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 5, label: "Acer aspidore", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 6, label: "Acer aspidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 7, label: "Acer spidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+    { id: 8, label: "Acer pidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
   ];
 
   const [currentItems, setCurrentItems] = useState(null);
@@ -115,7 +118,15 @@ function Products() {
       toast.error("Paru");
     }
   };
-  const handleUpdate = () => [console.log("kavo")];
+  const handleUpdate = async (e: updateProductDto) => {
+    console.log(e);
+    const response = await productsApi.putProduct(e);
+    if (response.status === 201) {
+      toast.success("Yay");
+    } else {
+      toast.error("Paru");
+    }
+  };
 
   useEffect(() => {
     // TODO: fetch data
@@ -151,13 +162,12 @@ function Products() {
 
             <div className={styles.pagination}>
               <PaginatedItems
-                setMode={() => {
-                  setMode("update");
+                setMode={(e: string) => {
+                  setMode(e);
                   setOpen(true);
                 }}
                 setProduct={(e: updateProductDto) => {
                   setProduct(e);
-                  console.log(e);
                 }}
                 itemsPerPage={6}
               />
@@ -173,6 +183,16 @@ function Products() {
         update={handleUpdate}
         setOpen={setOpen}
       />
+      {product && (
+        <DeleteModal
+          mode={mode}
+          id={product.id}
+          show={isOpen}
+          setClose={() => {
+            setOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

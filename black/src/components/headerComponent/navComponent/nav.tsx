@@ -6,8 +6,13 @@ import StateType from "@/redux/types/stateType";
 import styles from "./nav.module.scss";
 import { companyName } from "@/types/constants/globals/theme";
 import roles from "@/types/constants/roles/roles";
+import RoutesData from "@/components/routesComponent/types/routes/RoutesData";
 
-function Navigation(props): JSX.Element {
+interface NavProps {
+  signOut: () => void;
+}
+
+function Navigation(props: NavProps): JSX.Element {
   const appState = useSelector<StateType, StateType>((state) => state);
 
   return (
@@ -31,19 +36,24 @@ function Navigation(props): JSX.Element {
           </Nav>
           <Nav>
             {appState.user.authencated ? (
-              <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                {appState.role === roles.admin ? (
-                  <NavDropdown.Item disabled>Welcome back admin</NavDropdown.Item>
-                ) : null}
-                <NavDropdown.Item href="#action/3.1">{appState.user.userName}</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Orders</NavDropdown.Item>
+              <NavDropdown
+                title={`Welcome back ${appState.role === roles.admin ? "admin" : ""}`}
+                id="collasible-nav-dropdown"
+              >
+                <NavDropdown.Item disabled>{appState.user.email}</NavDropdown.Item>
+                <NavDropdown.Item href={RoutesData.cart.route}>Orders</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.3">Sign out</NavDropdown.Item>
+                <NavDropdown.Item onClick={props.signOut}>Sign out</NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <NavLink className={`${styles.navItem} nav-link`} to="/sign-in">
-                Sign in
-              </NavLink>
+              <>
+                <NavLink className={`${styles.navItem} nav-link`} to="/sign-in">
+                  Sign in
+                </NavLink>
+                <NavLink className={`${styles.navItem} nav-link`} to="/sign-up">
+                  Sign up
+                </NavLink>
+              </>
             )}
           </Nav>
         </Navbar.Collapse>

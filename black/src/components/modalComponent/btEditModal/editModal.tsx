@@ -5,7 +5,7 @@ interface ModalProps {
   isOpen: boolean;
   mode: string;
   save: (e: updateProductDto) => void;
-  update: () => void;
+  update: (e: updateProductDto) => void;
   setOpen: (e: boolean) => void;
   product?: updateProductDto;
 }
@@ -49,13 +49,15 @@ function BtEditModal(props: ModalProps) {
   };
 
   useEffect(() => {
-    console.log(name, price, description, vendor, category);
+    submit();
   }, [name, price, description, vendor, category]);
 
   return (
-    <Modal show={props.isOpen} centered>
+    <Modal show={props.isOpen && (props.mode === "create" || props.mode === "update")} centered>
       <Modal.Header>
-        <Modal.Title>{props.product ? `Update item with id:${props.product.id}` : "Create new item"}</Modal.Title>
+        <Modal.Title>
+          {props.mode === "create" ? "Create new item" : `Update item with id:${props?.product.id}`}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -122,14 +124,15 @@ function BtEditModal(props: ModalProps) {
           onClick={() => {
             console.log(props.mode);
             if (props.mode === "create") {
-              submit();
               if (answer) {
                 props.save(answer);
               }
-            } else props.update();
+            } else if (answer) {
+              props.update(answer);
+            }
           }}
         >
-          Save Changes
+          Save
         </Button>
       </Modal.Footer>
     </Modal>

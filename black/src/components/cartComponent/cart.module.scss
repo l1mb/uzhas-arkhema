@@ -15,9 +15,8 @@
 
   .tableContainer {
     background-color: rgba(#000, 0.8);
-    padding: 70px 120px;
     border-radius: 10px;
-    box-shadow: 0 0 10px red;
+    box-shadow: 0 0 3px #3d3333;
     margin: auto;
 
     margin-top: 40px;
@@ -118,4 +117,9 @@
       height: 375px;
     }
   }
+}
+
+.table {
+  height: 370px;
+  overflow-y: auto;
 }
