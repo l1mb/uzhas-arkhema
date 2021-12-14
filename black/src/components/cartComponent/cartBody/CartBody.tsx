@@ -310,10 +310,14 @@ export default function EnhancedTable() {
 
   return (
     <Box sx={{ width: "1150px" }} style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper sx={{ width: "100%", mb: 2, background: "transparent", color: "#fff" }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
+          <Table
+            sx={{ minWidth: 750, background: "transparent", color: "white" }}
+            aria-labelledby="tableTitle"
+            size={dense ? "small" : "medium"}
+          >
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -341,17 +345,24 @@ export default function EnhancedTable() {
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      style={{ color: "white" }}
                     >
                       <TableCell padding="checkbox" style={{ width: "150px" }}>
                         <Checkbox
-                          color="primary"
+                          color="#fff"
                           checked={isItemSelected}
                           inputProps={{
                             "aria-labelledby": labelId,
                           }}
                         />
                       </TableCell>
-                      <TableCell style={{ width: "150px" }} component="th" id={labelId} scope="row" padding="none">
+                      <TableCell
+                        style={{ width: "150px", color: "#fff" }}
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
                         {row.id}
                       </TableCell>
                       <TableCell style={{ width: "150px" }} component="th" id={labelId} scope="row" padding="none">

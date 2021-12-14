@@ -32,10 +32,10 @@ function Navigation(props): JSX.Element {
           </Nav>
           <Nav>
             {appState.user.authencated ? (
-              <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                {appState.role === roles.admin ? (
-                  <NavDropdown.Item disabled>Welcome back admin</NavDropdown.Item>
-                ) : null}
+              <NavDropdown
+                title={`Welcome back ${appState.role === roles.admin ? "admin" : ""}`}
+                id="collasible-nav-dropdown"
+              >
                 <NavDropdown.Item disabled>{appState.user.email}</NavDropdown.Item>
                 <NavDropdown.Item href={RoutesData.cart.route}>Orders</NavDropdown.Item>
                 <NavDropdown.Divider />
