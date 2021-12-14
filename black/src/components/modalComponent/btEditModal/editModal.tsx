@@ -53,9 +53,11 @@ function BtEditModal(props: ModalProps) {
   }, [name, price, description, vendor, category]);
 
   return (
-    <Modal show={props.isOpen} centered>
+    <Modal show={props.isOpen && (props.mode === "create" || props.mode === "update")} centered>
       <Modal.Header>
-        <Modal.Title>{props.product ? `Update item with id:${props.product.id}` : "Create new item"}</Modal.Title>
+        <Modal.Title>
+          {props.mode === "create" ? "Create new item" : `Update item with id:${props?.product.id}`}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>

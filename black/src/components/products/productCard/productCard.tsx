@@ -9,19 +9,30 @@ export interface ProductCardProps {
   label: string;
   shortDescription: string;
   price: string;
+  id: number;
   img?: string;
-  setMode: () => void;
+  setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
 }
 
 function ProductCard(props: ProductCardProps) {
   const role = useSelector<StateType, string>((state) => state.role);
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    props.setMode("delete");
+    props.setProduct({ id: props.id } as updateProductDto);
+  };
 
   const handleUpdate = () => {
-    props.setMode();
-    const user: updateProductDto = { categoryId: 1, name: "sho", description: "kavo", price: 3, vendorId: 3, id: 0 };
+    props.setMode("update");
+    const user: updateProductDto = {
+      categoryId: 1,
+      name: props.label,
+      description: props.shortDescription,
+      price: 3,
+      vendorId: 3,
+      id: props.id,
+    };
     props.setProduct(user);
   };
   return (
