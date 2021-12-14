@@ -25,11 +25,17 @@ create or replace package body rent_users as
         out_user out sys_refcursor
     )
     as 
+        users_count int;
+        role users.role%type := 'customer';
         added_id users.id%type;
         added_user sys_refcursor;
     begin
-        insert into users(username, email, password_hash) 
-            values(in_username, in_email, in_password_hash)
+        select count(username) into users_count from users;
+        if users_count = 0 then
+            role := 'admin';
+        end if;
+        insert into users(username, email, password_hash, role)
+            values(in_username, in_email, in_password_hash, role)
             returning id into added_id;
         commit;
         get_by_id(added_id, added_user);
