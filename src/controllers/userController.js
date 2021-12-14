@@ -37,22 +37,12 @@ const login = async (req, res, next) => {
 }
 
 const getUser = async (req, res, next) => {
-    if (req.headers && req.headers.authorization) {
-        var authorization = req.headers.authorization.split(' ')[1],
-            decoded
-        try {
-            decoded = jwt.verify(authorization, jwtSecret)
-        } catch (e) {
-            return res.status(401).send('unauthorized')
-        }
-        const user = {
-            username: decoded.username,
-            email: decoded.email,
-        }
+    try {
+        const { user } = req.headers
         return res.status(200).json(user)
+    } catch (err) {
+        next(err)
     }
-
-    return res.send(500)
 }
 
 const getAll = async (_, res, next) => {
