@@ -43,7 +43,7 @@ create or replace package body rent_users as
     procedure get_all(out_users out sys_refcursor)
     as begin
         open out_users for
-            select id, username, email, password_hash
+            select id, username, email, password_hash, role
             from users;
     end;
     --
@@ -53,7 +53,7 @@ create or replace package body rent_users as
     )
     as begin
         open out_user for
-            select id, username, email, password_hash
+            select id, username, email, password_hash, role
             from users where id = in_id;
     end;
     --

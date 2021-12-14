@@ -68,7 +68,6 @@ module.exports.getByUsername = async (username) => {
 
             if (!user) throw new Error('user not found')
 
-            user.role = 'admin'
             return user
         } catch (err) {
             throw err

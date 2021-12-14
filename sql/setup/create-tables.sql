@@ -4,7 +4,9 @@ create table users (
 	username varchar2(50 char) unique not null,
 	email varchar2(50 char) not null,
 	password_hash varchar2(100 char) not null,
-	constraint users_pk primary key (id)
+    role varchar2(10 char) default 'customer',
+	constraint users_pk primary key (id),
+    constraint users_chk check (role = 'admin' or role = 'customer')
 );
 
 drop table products;
