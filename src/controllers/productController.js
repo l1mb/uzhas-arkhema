@@ -47,9 +47,24 @@ const getById = async (req, res, next) => {
     }
 }
 
+const updateById = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const updated = await productRepository.updateById(
+            id,
+            ...Object.values(req.body)
+        )
+
+        return res.status(200).json(updated)
+    } catch (err) {
+        next(err)
+    }
+}
+
 module.exports = {
     add,
     deleteById,
     getAll,
     getById,
+    updateById,
 }

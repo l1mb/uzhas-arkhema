@@ -22,6 +22,15 @@ create or replace package rent_products as
         in_id products.id%type,
         out_product out sys_refcursor
     );
+    procedure update_by_id(
+        in_id products.id%type,
+        in_name products.name%type,
+        in_description products.description%type,
+        in_price products.price%type,
+        in_category_id products.category_id%type,
+        in_vendor_id products.vendor_id%type,
+        out_product out sys_refcursor
+    );
 end;
 /
 
@@ -70,7 +79,7 @@ create or replace package body rent_products as
     as
         v_sql varchar2(500 char);
     begin
-    v_sql := 'select p.id, p.name, p.description, p.price, v.name as vendor, c.name as category'
+    v_sql := 'select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor'
             ||' from products p'
             ||' join vendors v on p.vendor_id = v.id'
             ||' join categories c on p.category_id = c.id'
@@ -88,11 +97,35 @@ create or replace package body rent_products as
     )
     as begin
         open out_product for
-            select p.id, p.name, p.description, p.price, v.name as vendor, c.name as category
+            select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor
             from products p
             join vendors v on p.vendor_id = v.id
             join categories c on p.category_id = c.id
             where p.id = in_id;
+    end;
+    --
+    procedure update_by_id(
+        in_id products.id%type,
+        in_name products.name%type,
+        in_description products.description%type,
+        in_price products.price%type,
+        in_category_id products.category_id%type,
+        in_vendor_id products.vendor_id%type,
+        out_product out sys_refcursor
+    )
+    as
+        updated_id products.id%type;
+        updated_product sys_refcursor;
+    begin
+        update products
+            set name = in_name, description = in_description,
+                price = in_price, category_id = in_category_id,
+                vendor_id = in_vendor_id 
+        where id = in_id
+        returning id into updated_id;
+        commit;
+        get_by_id(updated_id, updated_product);
+        out_product := updated_product;
     end;
 end;
 /
