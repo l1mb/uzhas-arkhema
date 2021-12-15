@@ -283,7 +283,6 @@ export default function EnhancedTable() {
     async function getOrders() {
       const res = await orders.apiGetOrders();
       if (res) {
-        console.log(res);
         setRows(res);
       }
     }

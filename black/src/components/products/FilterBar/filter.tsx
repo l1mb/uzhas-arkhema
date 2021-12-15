@@ -39,8 +39,6 @@ function FilterBar(props: FilterProps) {
       limit: 6,
       offset: 0,
     });
-
-    // console.log(queryString);
   };
 
   useEffect(() => {

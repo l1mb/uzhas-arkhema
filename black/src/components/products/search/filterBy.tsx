@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import styles from "./styles.module.scss";
 
@@ -17,13 +17,8 @@ function SearchParamType(props: SearchProps) {
     if (prevProps && filterBy) {
       prevProps.filterby = event.target.value;
       props.setParams({ ...prevProps });
-
     }
   };
-
-  useEffect(() => {
-    console.log(`filter ${filterBy}`);
-  }, []);
 
   return (
     <div className={styles.bar}>

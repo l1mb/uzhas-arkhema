@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
-import endpoints from "@/api/endpoints";
-import httpService from "@/api/httpService/httpService";
+import productsApi from "@/api/httpService/products/productsApi";
 
 interface ModalProps {
   isOpen: boolean;
@@ -20,23 +19,36 @@ function BtEditModal(props: ModalProps) {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
 
   useEffect(() => {
-    console.log(product);
     async function fetchData() {
-      const vend = await httpService.get<{ id: number; name: string }[]>(endpoints.vendors);
-      const cate = await httpService.get<{ id: number; name: string }[]>(endpoints.categories);
+      const vend = await productsApi.apiGetVendors();
+      const cate = await productsApi.apiGetCategory();
 
-      setVendors(vend);
-      setCategories(cate);
+      if (vend) {
+        setVendors(vend);
+      }
+      if (cate) {
+        setCategories(cate);
+      }
     }
 
     fetchData();
   }, []);
 
-  const [name, setName] = useState<string>(product ? product.name : "");
-  const [description, setDescription] = useState<string>(product ? product.description : "");
-  const [price, setPrice] = useState<number>(product ? product.price : 0);
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
   const [vendor, setVendor] = useState<{ id: number; name: string }>();
   const [category, setCategory] = useState<{ id: number; name: string }>();
+
+  useEffect(() => {
+    if (product) {
+      setName(product.name);
+      setDescription(product.description);
+      setPrice(product.price);
+      setVendor(vendors.find((elem) => elem.id === product.vendorId));
+      setCategory(categories.find((elem) => elem.id === product.categoryId));
+    }
+  }, [product]);
 
   const handleNameChange = (e: string) => {
     setName(e);
@@ -71,7 +83,7 @@ function BtEditModal(props: ModalProps) {
   }, [name, price, description, vendor, category]);
 
   return (
-    <Modal show={props.isOpen && (props.mode === "create" || props.mode === "update")} centered>
+    <Modal key={product} show={props.isOpen && (props.mode === "create" || props.mode === "update")} centered>
       <Modal.Header>
         <Modal.Title>
           {props.mode === "create" ? "Create new item" : `Update item with id:${props?.product.id}`}
