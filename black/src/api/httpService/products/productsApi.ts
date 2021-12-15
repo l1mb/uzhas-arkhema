@@ -36,7 +36,6 @@ const apiGetVendors = async (): Promise<{ id: number; name: string }[] | null> =
   if (tdata.status === 200) {
     return tdata.json();
   }
-  console.log("otsosi clown");
   return null;
 };
 const apiGetCategory = async (): Promise<{ id: number; name: string }[] | null> => {
@@ -45,7 +44,6 @@ const apiGetCategory = async (): Promise<{ id: number; name: string }[] | null> 
   if (tdata.status === 200) {
     return tdata.json();
   }
-  console.log("otsosi clown");
   return null;
 };
 

@@ -14,7 +14,6 @@ const apiGetOrders = async (orderId?: number): Promise<OrderProduct[] | null> =>
   if (tdata.status === 200) {
     return tdata.json();
   }
-  console.log("otsosi clown");
   return null;
 };
 

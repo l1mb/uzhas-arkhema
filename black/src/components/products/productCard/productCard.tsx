@@ -33,7 +33,7 @@ function ProductCard(props: ProductCardProps) {
   const handleUpdate = () => {
     props.setMode("update");
     const user: updateProductDto = product;
-    props.setProduct(user);
+    props.setProduct({ ...user });
   };
 
   const handleAdd = () => {

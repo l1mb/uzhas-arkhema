@@ -83,8 +83,6 @@ function PaginatedItems(props: paginatedProps) {
   useEffect(() => {
     const t = props.params;
     if (t) {
-      console.log(t);
-      console.log(itemOffset);
       t.limit = itemsPerPage;
       t.offset = itemOffset;
       // console.log(`t:${JSON.stringify(t)}`);
@@ -145,7 +143,6 @@ function Products() {
     }
   };
   const handleUpdate = async (e: updateProductDto) => {
-    console.log(e);
     const response = await productsApi.putProduct(e);
     if (response.status === 201) {
       toast.success("Yay");

@@ -13,7 +13,6 @@ const getUserId = (): string => {
   } catch (e) {
     toast.error(`${e}`);
   }
-  // console.log(`role ${role}`);
   return role;
 };
 
