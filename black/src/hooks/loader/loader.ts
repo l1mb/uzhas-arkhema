@@ -39,7 +39,6 @@ const useProductFetcher = (): hookParams => {
   }, []);
 
   useEffect(() => {
-    console.log(`params ${params}`);
     fetchParameteredProducts();
   }, [params]);
 

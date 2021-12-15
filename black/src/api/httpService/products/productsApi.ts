@@ -30,4 +30,23 @@ const putProduct = async (prop: updateProductDto): Promise<Response> => {
   return data;
 };
 
-export default { deleteProduct, postProduct, putProduct };
+const apiGetVendors = async (): Promise<{ id: number; name: string }[] | null> => {
+  const tdata = await fetch(`${endpoints.vendors}`, getOptions("GET", true));
+
+  if (tdata.status === 200) {
+    return tdata.json();
+  }
+  console.log("otsosi clown");
+  return null;
+};
+const apiGetCategory = async (): Promise<{ id: number; name: string }[] | null> => {
+  const tdata = await fetch(`${endpoints.categories}`, getOptions("GET", true));
+
+  if (tdata.status === 200) {
+    return tdata.json();
+  }
+  console.log("otsosi clown");
+  return null;
+};
+
+export default { deleteProduct, postProduct, putProduct, apiGetVendors, apiGetCategory };

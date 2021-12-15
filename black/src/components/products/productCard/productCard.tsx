@@ -32,7 +32,6 @@ function ProductCard(props: ProductCardProps) {
 
   const handleUpdate = () => {
     props.setMode("update");
-    console.log(product);
     const user: updateProductDto = product;
     props.setProduct(user);
   };

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
-import endpoints from "@/api/endpoints";
-import httpService from "@/api/httpService/httpService";
+import productsApi from "@/api/httpService/products/productsApi";
 
 interface ModalProps {
   isOpen: boolean;
@@ -20,13 +19,19 @@ function BtEditModal(props: ModalProps) {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
 
   useEffect(() => {
-    console.log(product);
     async function fetchData() {
-      const vend = await httpService.get<{ id: number; name: string }[]>(endpoints.vendors);
-      const cate = await httpService.get<{ id: number; name: string }[]>(endpoints.categories);
+      const vend = await productsApi.apiGetVendors();
+      const cate = await productsApi.apiGetCategory();
 
-      setVendors(vend);
-      setCategories(cate);
+      console.log(`otsosi ${vend}`);
+      console.log(cate);
+
+      if (vend) {
+        setVendors(vend);
+      }
+      if (cate) {
+        setCategories(cate);
+      }
     }
 
     fetchData();

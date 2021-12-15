@@ -14,7 +14,7 @@ const approveOrders = `${orders}/approve`;
 const declineOrders = `${orders}/decline`;
 const cancelOrders = `${orders}/cancel`;
 const vendors = `${host}/vendors`;
-const categories = "/categories";
+const categories = `${host}/categories`;
 
 export default {
   getProductSearchEndpoint,
