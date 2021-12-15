@@ -7,6 +7,7 @@ const userRouter = require('./routes/userRoute')
 const productRouter = require('./routes/productRoute')
 const vendorRouter = require('./routes/vendorRoute')
 const categoryRouter = require('./routes/categoryRoute')
+const orderRouter = require('./routes/orderRoute')
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -16,6 +17,7 @@ app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/vendors', vendorRouter)
 app.use('/api/categories', categoryRouter)
+app.use('/api/orders', orderRouter)
 
 app.use((req, res, next) => {
     res.status(err.status || 404).json({

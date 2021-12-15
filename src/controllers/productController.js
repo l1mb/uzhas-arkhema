@@ -41,9 +41,9 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) => {
     try {
         const { id } = req.params
-        const products = await productRepository.getById(id)
+        const product = await productRepository.getById(id)
 
-        return res.status(200).json(products)
+        return res.status(200).json(product)
     } catch (err) {
         next(err)
     }
