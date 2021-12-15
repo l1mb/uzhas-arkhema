@@ -23,10 +23,12 @@ const deleteById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
     try {
-        const { offset, limit, orderby, mode } = req.query
+        const { offset, limit, filterby, query, orderby, mode } = req.query
         const products = await productRepository.getAll(
             offset,
             limit,
+            filterby,
+            query,
             orderby,
             mode
         )

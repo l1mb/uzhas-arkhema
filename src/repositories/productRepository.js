@@ -54,6 +54,8 @@ module.exports.add = async (
 module.exports.getAll = async (
     offset = 0,
     limit = -1,
+    filter_by = 'product',
+    filter_query = '',
     order_by = 'id',
     order_mode = 'asc'
 ) => {
@@ -63,12 +65,22 @@ module.exports.getAll = async (
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
+            column_names = {
+                product: 'p.name',
+                vendor: 'v.name',
+                category: 'c.name',
+            }
+            if (filter_by in column_names) filter_by = column_names[filter_by]
+            else filter_by = 'p.name'
+
             const result = await connection.execute(
-                `begin rent_products.get_all(:offset, :limit, :order_by,
-                    :order_mode, :products); end;`,
+                `begin rent_products.get_all(:offset, :limit, :filter_by,
+                    :filter_query, :order_by, :order_mode, :products); end;`,
                 {
                     offset,
                     limit,
+                    filter_by,
+                    filter_query,
                     order_by,
                     order_mode,
                     products: {
