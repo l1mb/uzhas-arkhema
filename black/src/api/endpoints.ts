@@ -13,7 +13,7 @@ const orders = `${host}/orders`;
 const approveOrders = `${orders}/approve`;
 const declineOrders = `${orders}/decline`;
 const cancelOrders = `${orders}/cancel`;
-const vendors = "/vendors";
+const vendors = `${host}/vendors`;
 const categories = "/categories";
 
 export default {
