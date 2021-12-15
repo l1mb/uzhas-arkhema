@@ -9,6 +9,7 @@ import styles from "./mainStyles.module.scss";
 import store from "./redux/store/store";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "mdbreact/dist/css/mdb.css";
 
 interface AppProps {
   nothing: boolean;
