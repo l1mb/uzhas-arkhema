@@ -1,7 +1,7 @@
 interface IBasicProduct {
   id: number;
   name: string;
-  price: string;
+  price: number;
   shortDescription: string;
   company: string;
   category?: string;

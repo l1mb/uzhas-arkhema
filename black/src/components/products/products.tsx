@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dropdown, Dropdown } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -17,14 +17,14 @@ import StateType from "@/redux/types/stateType";
 import SearchBar from "@/elements/home/searchBarElement/searchBar";
 
 const mockData: IBasicProduct[] = [
-  { id: 1, company: "kok", name: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 2, company: "kok", name: "Acer aspired", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 3, company: "kok", name: "Acer aspider", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 4, company: "kok", name: "Acer aspidero", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 5, company: "kok", name: "Acer aspidore", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 6, company: "kok", name: "Acer aspidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 7, company: "kok", name: "Acer spidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
-  { id: 8, company: "kok", name: "Acer pidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
+  { id: 1, company: "kok", name: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 2, company: "kok", name: "Acer aspired", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 3, company: "kok", name: "Acer aspider", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 4, company: "kok", name: "Acer aspidero", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 5, company: "kok", name: "Acer aspidore", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 6, company: "kok", name: "Acer aspidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 7, company: "kok", name: "Acer spidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 8, company: "kok", name: "Acer pidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
 ];
 
 interface ProductItem {
@@ -36,7 +36,7 @@ interface ProductItem {
 interface itemsProps {
   setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
-  currentItems: ProductItem[] | null;
+  currentItems: updateProductDto[] | null;
 }
 
 function Items(props: itemsProps) {
@@ -46,12 +46,13 @@ function Items(props: itemsProps) {
       {currentItems &&
         currentItems.map((item) => (
           <ProductCard
+            product={item}
             key={item.name}
             label={item.name}
             price={item.price}
             setMode={props.setMode}
             setProduct={props.setProduct}
-            shortDescription={item.shortDescription}
+            shortDescription={item.description}
             id={item.id}
           />
         ))}
