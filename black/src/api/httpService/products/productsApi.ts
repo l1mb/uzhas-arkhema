@@ -9,24 +9,14 @@ const deleteProduct = async (prop: number): Promise<Response> => {
 
 const postProduct = async (prop: updateProductDto): Promise<Response> => {
   const token = getToken();
-  const data = await fetch(`${endpoints.products}`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(prop),
-  });
+  const data = await fetch(`${endpoints.products}`, getOptions("POST", true, prop));
 
   return data;
 };
 
 const putProduct = async (prop: updateProductDto): Promise<Response> => {
   const token = getToken();
-  const data = await fetch(`${endpoints.products}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(prop),
-  });
+  const data = await fetch(`${endpoints.products}`, getOptions("PUT", true, prop));
   return data;
 };
 
