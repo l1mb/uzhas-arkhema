@@ -13,8 +13,8 @@ function SearchParamType(props: SearchProps) {
   const handleChange = (event) => {
     const prevProps = props.params;
     if (prevProps && filterBy) {
-      prevProps.filterby = filterBy;
-      props.setParams(JSON.parse(JSON.stringify(prevProps)));
+      prevProps.filterby = event.target.value;
+      props.setParams({ ...prevProps });
     }
     setFilterBy(event.target.value);
   };
