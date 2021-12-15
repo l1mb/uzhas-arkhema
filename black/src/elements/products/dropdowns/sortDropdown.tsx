@@ -12,7 +12,7 @@ interface menuProps {
 function SortDropdown(props: menuProps) {
   const changed = (e: string) => {
     const value = props.options.find((val) => val.label === e);
-    console.log(value);
+    // console.log(value);
     if (value) {
       props.changeHandler(value);
     }

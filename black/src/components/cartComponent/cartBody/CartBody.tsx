@@ -20,14 +20,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import AccessibleForwardIcon from "@mui/icons-material/AccessibleForward";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { toast } from "react-toastify";
 import OrderProduct from "@/types/interfaces/order/orderProduct";
 import OrdersData from "@/types/data/ordersData";
 import styles from "../cart.module.scss";
 import roles from "@/types/constants/roles/roles";
 import StateType from "@/redux/types/stateType";
 import orders from "@/api/httpService/orders/orders";
-import { toast } from "react-toastify";
 
 function createOrderProduct(
   id: number,
@@ -222,10 +221,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       toast.success("Sho");
     }
   };
-
-  useEffect(() => {
-    console.log(selected);
-  }, [numSelected]);
 
   return (
     <Toolbar

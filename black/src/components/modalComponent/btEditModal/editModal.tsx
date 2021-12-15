@@ -95,7 +95,12 @@ function BtEditModal(props: ModalProps) {
               onChange={(e) => handleVendorChange(e.currentTarget.value)}
             >
               <option>Pick vendor from list below</option>
-              {vendors && vendors.map((elem) => <option value={elem.id}>{elem.label}</option>)}
+              {vendors &&
+                vendors.map((elem) => (
+                  <option key={elem.id} value={elem.id}>
+                    {elem.label}
+                  </option>
+                ))}
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCustomer">
@@ -105,7 +110,12 @@ function BtEditModal(props: ModalProps) {
               onChange={(e) => handleCategoryChange(e.currentTarget.value)}
             >
               <option>Pick category from list below</option>
-              {categories && categories.map((elem) => <option value={elem.id}>{elem.label}</option>)}
+              {categories &&
+                categories.map((elem) => (
+                  <option key={elem.id} value={elem.id}>
+                    {elem.label}
+                  </option>
+                ))}
             </Form.Select>
           </Form.Group>
         </Form>
@@ -122,7 +132,6 @@ function BtEditModal(props: ModalProps) {
         <Button
           variant="primary"
           onClick={() => {
-            console.log(props.mode);
             if (props.mode === "create") {
               if (answer) {
                 props.save(answer);

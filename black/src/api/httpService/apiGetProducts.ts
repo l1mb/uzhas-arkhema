@@ -33,14 +33,12 @@ const apiNonGroupedProductsList = async (
   return data;
 };
 
-const apiSortedProductsList = async (params: QueryParams): Promise<IGroupedProduct[]> => {
-  const query = buildString(params.criteria, params.type, params.age, params.genre, params.category);
+const apiSortedProductsList = async (params: QueryParams): Promise<IBasicProduct[]> => {
+  const query = buildString(params.criteria, params.type, params.limit, params.offset, params.category);
 
   const data = await httpService.get<IBasicProduct[]>(`${endpoints.getProductListEndpoint + query}`);
 
-  const aggregated = aggregateProductsDto(data);
-
-  return aggregated;
+  return data;
 };
 
 const apiGetSearchProducts = async (name: string): Promise<IGroupedProduct[]> => {
@@ -49,4 +47,15 @@ const apiGetSearchProducts = async (name: string): Promise<IGroupedProduct[]> =>
   return aggregated;
 };
 
-export default { apiProductsList, apiSortedProductsList, apiGetSearchProducts, apiNonGroupedProductsList };
+const apiGetPagedItems = async (limit: number, offset: number) => {
+  const data = await httpService.get<IBasicProduct[]>(`${endpoints.products}?offset=${limit}&limit=${offset}`);
+  return data;
+};
+
+export default {
+  apiProductsList,
+  apiSortedProductsList,
+  apiGetSearchProducts,
+  apiNonGroupedProductsList,
+  apiGetPagedItems,
+};

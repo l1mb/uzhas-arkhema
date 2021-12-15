@@ -32,7 +32,7 @@ const signInDispatch =
       const userInfoPromise = await userService.getInfo();
       const prikol = await userInfoPromise.json();
 
-      console.log(prikol);
+      // console.log(prikol);
       const updatedUser: { username: string; email: string } = prikol;
       updatedUser.authencated = true;
 

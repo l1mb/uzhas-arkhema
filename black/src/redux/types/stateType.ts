@@ -1,11 +1,11 @@
-import IGroupedProduct from "@/api/types/Products/IGroupedProduct";
+import IBasicProduct from "@/api/types/products/IBasicProduct";
 import userDto from "@/api/types/user/userDto";
 
 interface StateType {
   user: userDto;
   orders: { count: number };
   role: string;
-  Products: IGroupedProduct[];
+  Products: IBasicProduct[];
 }
 
 export default StateType;
