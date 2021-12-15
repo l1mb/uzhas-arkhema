@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import styles from "./styles.module.scss";
 
@@ -11,13 +11,19 @@ function SearchParamType(props: SearchProps) {
   const [filterBy, setFilterBy] = useState<string>("vendor");
 
   const handleChange = (event) => {
+    setFilterBy(event.target.value);
+
     const prevProps = props.params;
     if (prevProps && filterBy) {
       prevProps.filterby = event.target.value;
       props.setParams({ ...prevProps });
+
     }
-    setFilterBy(event.target.value);
   };
+
+  useEffect(() => {
+    console.log(`filter ${filterBy}`);
+  }, []);
 
   return (
     <div className={styles.bar}>
@@ -28,7 +34,6 @@ function SearchParamType(props: SearchProps) {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={filterBy}
           onChange={handleChange}
           label="Filter by"
           sx={{ color: "white" }}

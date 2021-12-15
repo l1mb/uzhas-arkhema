@@ -45,7 +45,14 @@ function BtEditModal(props: ModalProps) {
   };
 
   const submit = () => {
-    setAnswer({ name, description, price, vendorId: vendor ? vendor.id : 0, categoryId: category ? category.id : 0 });
+    setAnswer({
+      name,
+      description,
+      price,
+      vendorId: vendor ? vendor.id : 0,
+      categoryId: category ? category.id : 0,
+      id: props.product?.id,
+    });
   };
 
   useEffect(() => {

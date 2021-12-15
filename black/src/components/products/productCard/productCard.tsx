@@ -1,19 +1,19 @@
 import { Card, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useState } from "react";
 import StateType from "@/redux/types/stateType";
 import defaultIMg from "../../../assets/images/profile/default-profile.jpg";
 import styles from "./styles.module.scss";
 import roles from "@/types/constants/roles/roles";
 import getUserId from "@/helpers/token/getUserId";
-import postOrderEntity from "@/types/interfaces/order/postOrderEntity";
-import orders from "@/api/httpService/orders/orders";
+import CreateOrderModal from "@/components/modalComponent/btEditModal/createOrderModal";
 
 export interface ProductCardProps {
+  product: updateProductDto;
   label: string;
   shortDescription: string;
-  price: string;
-  id: number;
+  price: number;
+  id?: number;
   img?: string;
   setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
@@ -22,6 +22,7 @@ export interface ProductCardProps {
 function ProductCard(props: ProductCardProps) {
   const role = useSelector<StateType, string>((state) => state.role);
   const usrId = getUserId();
+  const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
     props.setMode("delete");
@@ -30,6 +31,10 @@ function ProductCard(props: ProductCardProps) {
 
   const handleUpdate = () => {
     props.setMode("update");
+
+    console.log(props.id);
+    console.log(props.product.id);
+
     const user: updateProductDto = {
       categoryId: 1,
       name: props.label,
@@ -41,15 +46,8 @@ function ProductCard(props: ProductCardProps) {
     props.setProduct(user);
   };
 
-  const handleAdd = async () => {
-    const postDto: postOrderEntity = { userId: Number(usrId), productId: props.id };
-    const res = await orders.postOrder(postDto);
-
-    if (res.status === 201) {
-      toast.success("Added successfully");
-    } else {
-      toast.error("Something went wrong during request");
-    }
+  const handleAdd = () => {
+    setOpen(true);
   };
   return (
     <Card style={{ width: "18rem" }} className={styles.card_container} color="black">
@@ -75,6 +73,7 @@ function ProductCard(props: ProductCardProps) {
           </Button>
         </div>
       </Card.Body>
+      <CreateOrderModal setOpen={setOpen} show={open} product={props.product} />
     </Card>
   );
 }
