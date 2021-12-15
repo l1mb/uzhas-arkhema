@@ -1,12 +1,12 @@
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
+import IBasicProduct from "@/api/types/products/IBasicProduct";
 import { SET_PRODUCTS } from "../actions/actions";
 
 interface ProductsAction {
   type: string;
-  payload: IGroupedProduct[];
+  payload: IBasicProduct[];
 }
 
-const ProductsReducer = (state: IGroupedProduct[] = [], action: ProductsAction): IGroupedProduct[] => {
+const ProductsReducer = (state: IBasicProduct[] = [], action: ProductsAction): IBasicProduct[] => {
   switch (action.type) {
     case SET_PRODUCTS: {
       if (action.payload) {

@@ -1,20 +1,10 @@
-import Platforms from "./enums/platfrom";
-
 interface IBasicProduct {
   id: number;
   name: string;
-  developers: string;
-  publishers: string;
-  genre: number;
-  rating: number;
-  logo: string;
-  background: string;
-  price: number;
-  count: number;
-  dateCreated: Date;
-  platform: Platforms;
-  totalRating: number;
-  publicationDate: Date;
+  price: string;
+  shortDescription: string;
+  company: string;
+  category?: string;
 }
 
 export default IBasicProduct;

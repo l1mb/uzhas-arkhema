@@ -11,6 +11,8 @@ const user = `${host}/users/current`;
 const userPassword = `${host}/${user}/password`;
 const orders = `${host}/orders`;
 const approveOrders = `${orders}/approve`;
+const declineOrders = `${orders}/decline`;
+const cancelOrders = `${orders}/cancel`;
 export default {
   getProductSearchEndpoint,
   getProductListEndpoint,
@@ -23,4 +25,6 @@ export default {
   getProductByPlatform,
   getProductsById,
   approveOrders,
+  declineOrders,
+  cancelOrders,
 };

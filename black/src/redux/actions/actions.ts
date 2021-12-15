@@ -1,4 +1,4 @@
-import IGroupedProduct from "@/api/types/Products/IGroupedProduct";
+import IBasicProduct from "@/api/types/products/IBasicProduct";
 import userDto from "@/api/types/user/userDto";
 import OrderState from "../types/orders";
 
@@ -33,10 +33,10 @@ const setRole = (
 });
 
 const setProducts = (
-  Products: IGroupedProduct[]
+  Products: IBasicProduct[]
 ): {
   type: string;
-  payload: IGroupedProduct[];
+  payload: IBasicProduct[];
 } => ({
   type: SET_PRODUCTS,
   payload: Products,
