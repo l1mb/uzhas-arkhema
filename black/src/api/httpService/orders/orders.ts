@@ -68,14 +68,14 @@ const postOrder = async (prop: postOrderEntity): Promise<Response> => {
   return data;
 };
 
-const deleteOrders = async (prop: BackendOrderUpdateEntity[]): Promise<Response> => {
+const deleteOrders = async (prop: { keys: number[] }): Promise<Response> => {
   const data = await fetch(`${endpoints.orders}`, getOptions("DELETE", true, prop));
 
   return data;
 };
 
-const completeOrders = async (): Promise<Response> => {
-  const data = await fetch(`${endpoints.ordersComplete}`, getOptions("POST", true));
+const approveOrders = async (prop: { keys: number[] }): Promise<Response> => {
+  const data = await fetch(`${endpoints.ordersComplete}`, getOptions("POST", true, prop));
   return data;
 };
 
@@ -90,7 +90,7 @@ export default {
   getZippedOrders,
   postOrder,
   deleteOrders,
-  completeOrders,
+  approveOrders,
   updateOrder,
   getCompletedOrders,
 };

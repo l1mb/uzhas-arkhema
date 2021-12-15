@@ -3,15 +3,14 @@ const getProductSearchEndpoint = `${host}/products/search`;
 const getProductListEndpoint = `${host}/products/list`;
 const getProductByPlatform = `${host}/products/byPlatform`;
 const getProductsById = `${host}/products/id`;
-const products = `${host}/products/`;
+const products = `${host}/products`;
 
 const postSignUp = `${host}/users/sign-up`;
 const postSignIn = `${host}/users/login`;
 const user = `${host}/users/current`;
 const userPassword = `${host}/${user}/password`;
 const orders = `${host}/orders`;
-const ordersComplete = `${host}/${orders}/buy`;
-const ordersCompleted = `${host}/${orders}/completed`;
+const approveOrders = `${orders}/approve`;
 export default {
   getProductSearchEndpoint,
   getProductListEndpoint,
@@ -21,8 +20,7 @@ export default {
   user,
   userPassword,
   orders,
-  ordersComplete,
   getProductByPlatform,
   getProductsById,
-  ordersCompleted,
+  approveOrders,
 };
