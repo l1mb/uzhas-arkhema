@@ -7,7 +7,6 @@ create table orders (
     order_date date default sysdate,
     rent_start_date date not null,
     rent_end_date date not null,
-    cost number(10, 4) not null,
     status varchar2(50) default 'not approved',
     constraint orders_pk primary key (id),
     constraint orders_chk check (status in ('not approved', 'approved', 'rejected', 'completed'))

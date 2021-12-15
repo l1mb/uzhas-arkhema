@@ -6,8 +6,7 @@ module.exports.add = async (
     product_id,
     phone,
     rent_start_date,
-    rent_end_date,
-    cost
+    rent_end_date
 ) => {
     try {
         let connection
@@ -16,14 +15,13 @@ module.exports.add = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_orders.add(:user_id, :product_id, :phone, :rent_start_date, :rent_end_date, :cost, :added); end;`,
+                `begin rent_orders.add(:user_id, :product_id, :phone, :rent_start_date, :rent_end_date, :added); end;`,
                 {
                     user_id,
                     product_id,
                     phone,
                     rent_start_date,
                     rent_end_date,
-                    cost,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
