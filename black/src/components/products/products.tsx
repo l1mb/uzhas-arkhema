@@ -133,7 +133,7 @@ function Products() {
   const { loading, setParams, params } = useProductFetcher();
   const [isOpen, setOpen] = useState(false);
   const [mode, setMode] = useState("create");
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState<updateProductDto>();
 
   const data = useSelector<StateType, IBasicProduct[]>((state) => state.Products);
   const handleSave = async (e: updateProductDto) => {
@@ -206,6 +206,7 @@ function Products() {
         </div>
       </div>
       <BtEditModal
+        key={product}
         isOpen={isOpen}
         mode={mode}
         save={handleSave}

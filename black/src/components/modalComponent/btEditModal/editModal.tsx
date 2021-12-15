@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
+import endpoints from "@/api/endpoints";
+import httpService from "@/api/httpService/httpService";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,20 +14,29 @@ interface ModalProps {
 
 function BtEditModal(props: ModalProps) {
   const [answer, setAnswer] = useState<updateProductDto>();
+  const { product } = props;
 
-  const vendors: { id: number; label: string }[] = [
-    { id: 1, label: "Black" },
-    { id: 2, label: "White" },
-  ];
-  const categories: { id: number; label: string }[] = [
-    { id: 1, label: "Black" },
-    { id: 2, label: "White" },
-  ];
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [vendor, setVendor] = useState<{ id: number; label: string }>();
-  const [category, setCategory] = useState<{ id: number; label: string }>();
+  const [vendors, setVendors] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    console.log(product);
+    async function fetchData() {
+      const vend = await httpService.get<{ id: number; name: string }[]>(endpoints.vendors);
+      const cate = await httpService.get<{ id: number; name: string }[]>(endpoints.categories);
+
+      setVendors(vend);
+      setCategories(cate);
+    }
+
+    fetchData();
+  }, []);
+
+  const [name, setName] = useState<string>(product ? product.name : "");
+  const [description, setDescription] = useState<string>(product ? product.description : "");
+  const [price, setPrice] = useState<number>(product ? product.price : 0);
+  const [vendor, setVendor] = useState<{ id: number; name: string }>();
+  const [category, setCategory] = useState<{ id: number; name: string }>();
 
   const handleNameChange = (e: string) => {
     setName(e);
@@ -105,7 +116,7 @@ function BtEditModal(props: ModalProps) {
               {vendors &&
                 vendors.map((elem) => (
                   <option key={elem.id} value={elem.id}>
-                    {elem.label}
+                    {elem.name}
                   </option>
                 ))}
             </Form.Select>
@@ -120,7 +131,7 @@ function BtEditModal(props: ModalProps) {
               {categories &&
                 categories.map((elem) => (
                   <option key={elem.id} value={elem.id}>
-                    {elem.label}
+                    {elem.name}
                   </option>
                 ))}
             </Form.Select>
