@@ -1,6 +1,6 @@
 const host = "/api";
 const getProductSearchEndpoint = `${host}/products/search`;
-const getProductListEndpoint = `${host}/products/list`;
+const getProductListEndpoint = `${host}/products`;
 const getProductByPlatform = `${host}/products/byPlatform`;
 const getProductsById = `${host}/products/id`;
 const products = `${host}/products`;
