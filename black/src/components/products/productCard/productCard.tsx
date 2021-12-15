@@ -20,6 +20,7 @@ export interface ProductCardProps {
 }
 
 function ProductCard(props: ProductCardProps) {
+  const { product } = props;
   const role = useSelector<StateType, string>((state) => state.role);
   const usrId = getUserId();
   const [open, setOpen] = useState(false);
@@ -31,18 +32,8 @@ function ProductCard(props: ProductCardProps) {
 
   const handleUpdate = () => {
     props.setMode("update");
-
-    console.log(props.id);
-    console.log(props.product.id);
-
-    const user: updateProductDto = {
-      categoryId: 1,
-      name: props.label,
-      description: props.shortDescription,
-      price: 3,
-      vendorId: 3,
-      id: props.id,
-    };
+    console.log(product);
+    const user: updateProductDto = product;
     props.setProduct(user);
   };
 
