@@ -14,6 +14,7 @@ import DeleteModal from "../modalComponent/btEditModal/deleteModal";
 import IBasicProduct from "@/api/types/products/IBasicProduct";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import StateType from "@/redux/types/stateType";
+import SearchBar from "@/elements/home/searchBarElement/searchBar";
 
 const mockData: IBasicProduct[] = [
   { id: 1, company: "kok", name: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
@@ -160,6 +161,7 @@ function Products() {
       <div className={styles.page_wrapper}>
         <div className={styles.content}>
           <h3 className={styles.header}>Прокат ноутбуков в Минске</h3>
+          <SearchBar params={params} setParams={setParams} />
           <div className={styles.categories}>
             {catData.map((elem) => (
               <Categories

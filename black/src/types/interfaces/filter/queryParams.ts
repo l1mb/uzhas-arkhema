@@ -7,6 +7,8 @@ interface QueryParams {
   limit?: number | undefined;
   offset?: number | undefined;
   category: string | undefined;
+  query: string | undefined;
+  filterby: string | undefined;
 }
 
 export default QueryParams;

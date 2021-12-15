@@ -34,7 +34,15 @@ const apiNonGroupedProductsList = async (
 };
 
 const apiSortedProductsList = async (params: QueryParams): Promise<IBasicProduct[]> => {
-  const query = buildString(params.criteria, params.type, params.limit, params.offset, params.category);
+  const query = buildString(
+    params.criteria,
+    params.type,
+    params.limit,
+    params.offset,
+    params.category,
+    params.query,
+    params.filterby
+  );
 
   const data = await httpService.get<IBasicProduct[]>(`${endpoints.getProductListEndpoint + query}`);
 

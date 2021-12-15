@@ -11,7 +11,9 @@ const buildString = (
   type: string | OrderType | undefined,
   limit: number | undefined,
   offset: number | undefined,
-  category: string | undefined
+  category: string | undefined,
+  query: string | undefined,
+  filterby: string | undefined
 ): string => {
   let initQuery = "?";
 
@@ -20,6 +22,10 @@ const buildString = (
   initQuery += limit ? handleFirstItem(initQuery, `limit=${limit}`) : "";
   initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
   initQuery += category ? handleFirstItem(initQuery, `category=${category}`) : "";
+
+  initQuery += query ? handleFirstItem(initQuery, `query=${query}`) : "";
+
+  initQuery += filterby ? handleFirstItem(initQuery, `filterby=${filterby}`) : "";
   return initQuery;
 };
 

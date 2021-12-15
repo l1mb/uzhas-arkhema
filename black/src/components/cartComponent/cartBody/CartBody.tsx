@@ -210,6 +210,35 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       toast.success("Sho");
     }
   };
+  const getButtons = () => {
+    if (numSelected === 0) {
+      return null;
+    }
+    if (role === roles.admin) {
+      return (
+        <>
+          <Tooltip title="Approve">
+            <IconButton onClick={handleApprove}>
+              <AccessibleForwardIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Decline">
+            <IconButton onClick={handleDecline}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </>
+      );
+    }
+
+    return (
+      <Tooltip title="Cancell">
+        <IconButton onClick={handleCancell}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    );
+  };
 
   return (
     <Toolbar
@@ -230,28 +259,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           Nutrition
         </Typography>
       )}
-      {numSelected > 0 ? (
-        <>
-          {role === roles.admin && (
-            <Tooltip title="Approve">
-              <IconButton onClick={handleApprove}>
-                <AccessibleForwardIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          <Tooltip title="Decline">
-            <IconButton onClick={handleDecline}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </>
-      ) : (
-        <Tooltip title="Cancell">
-          <IconButton onClick={handleCancell}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      {getButtons()}
     </Toolbar>
   );
 }
@@ -270,10 +278,6 @@ export default function EnhancedTable() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
-  // useEffect(() => {
-  //   console.log(selected);
-  // }, [selected]);
 
   useEffect(() => {
     async function getOrders() {
