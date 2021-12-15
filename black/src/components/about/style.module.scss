@@ -1,11 +1,11 @@
 .extraDiv {
-  height: 100vh;
+  height: 77vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   .page_wrapper {
     width: 100%;
-    height: calc(100% - 174px);
+    height: 100%;
     background-image: url("../../assets/images/pc-stands-alone.jpg");
     object-fit: contain;
 

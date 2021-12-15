@@ -20,11 +20,14 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import AccessibleForwardIcon from "@mui/icons-material/AccessibleForward";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import OrderProduct from "@/types/interfaces/order/orderProduct";
 import OrdersData from "@/types/data/ordersData";
 import styles from "../cart.module.scss";
 import roles from "@/types/constants/roles/roles";
 import StateType from "@/redux/types/stateType";
+import orders from "@/api/httpService/orders/orders";
+import { toast } from "react-toastify";
 
 function createOrderProduct(
   id: number,
@@ -44,6 +47,7 @@ function createOrderProduct(
   };
 }
 
+// fetch data here
 const rows = OrdersData;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -194,11 +198,34 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  selected: number[];
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, selected } = props;
   const role = useSelector<StateType, string>((state) => state.role);
+
+  const handleApprove = async () => {
+    if (rows.map((r) => r.status).filter((elem) => elem === "waitingForApprove").length > 0) {
+      toast.error("Sho?");
+    } else {
+      const result = await orders.approveOrders({ keys: selected });
+      if (result.status === 204) {
+        toast.success("Sho");
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    const result = await orders.deleteOrders({ keys: selected });
+    if (result.status === 204) {
+      toast.success("Sho");
+    }
+  };
+
+  useEffect(() => {
+    console.log(selected);
+  }, [numSelected]);
 
   return (
     <Toolbar
@@ -223,17 +250,13 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         <>
           {role === roles.admin && (
             <Tooltip title="Approve">
-              <IconButton
-                onClick={() => {
-                  console.log("sho");
-                }}
-              >
+              <IconButton onClick={handleApprove}>
                 <AccessibleForwardIcon />
               </IconButton>
             </Tooltip>
           )}
           <Tooltip title="Delete">
-            <IconButton>
+            <IconButton onClick={handleDelete}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -262,6 +285,10 @@ export default function EnhancedTable() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  // useEffect(() => {
+  //   console.log(selected);
+  // }, [selected]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -311,7 +338,7 @@ export default function EnhancedTable() {
   return (
     <Box sx={{ width: "1150px" }} style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
       <Paper sx={{ width: "100%" }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} selected={selected} />
         <TableContainer style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
             <EnhancedTableHead
@@ -329,13 +356,13 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
