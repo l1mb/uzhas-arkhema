@@ -1,12 +1,16 @@
 create or replace package rent_users as
-    procedure AddUser(
+    procedure add(
         in_username users.username%type,
         in_email users.email%type,
         in_password_hash users.password_hash%type,
         out_user out sys_refcursor
     );
-    procedure GetAllUsers(out_users out sys_refcursor);
-    procedure GetUserByUsername(
+    procedure get_all(out_users out sys_refcursor);
+    procedure get_by_id(
+        in_id users.id%type,
+        out_user out sys_refcursor
+    );
+    procedure get_by_username(
         in_username users.username%type,
         out_user out sys_refcursor
     );
@@ -14,40 +18,58 @@ end;
 /
 
 create or replace package body rent_users as
-    procedure AddUser(
+    procedure add(
         in_username users.username%type,
         in_email users.email%type,
         in_password_hash users.password_hash%type,
         out_user out sys_refcursor
     )
     as 
-        added sys_refcursor;
+        users_count int;
+        role users.role%type := 'customer';
+        added_id users.id%type;
+        added_user sys_refcursor;
     begin
-        insert into users(username, email, password_hash) 
-            values(in_username, in_email, in_password_hash);
+        select count(username) into users_count from users;
+        if users_count = 0 then
+            role := 'admin';
+        end if;
+        insert into users(username, email, password_hash, role)
+            values(in_username, in_email, in_password_hash, role)
+            returning id into added_id;
         commit;
-        GetUserByUsername(in_username, added);
-        out_user := added;
+        get_by_id(added_id, added_user);
+        out_user := added_user;
     exception
         when others then
             rollback;
             raise;
     end;
     --
-    procedure GetAllUsers(out_users out sys_refcursor)
+    procedure get_all(out_users out sys_refcursor)
     as begin
         open out_users for
-            select id, username, email, password_hash
+            select id, username, email, password_hash, role
             from users;
     end;
     --
-    procedure GetUserByUsername(
+    procedure get_by_id(
+        in_id users.id%type,
+        out_user out sys_refcursor
+    )
+    as begin
+        open out_user for
+            select id, username, email, password_hash, role
+            from users where id = in_id;
+    end;
+    --
+    procedure get_by_username(
         in_username users.username%type,
         out_user out sys_refcursor
     )
     as begin
         open out_user for
-            select id, username, email, password_hash
+            select id, username, email, password_hash, role
             from users where username = in_username;
     end;
 end;
