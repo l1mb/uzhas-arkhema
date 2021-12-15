@@ -8,12 +8,13 @@ import zipOrders from "@/helpers/basic/zipOrders";
 import orderTypes from "@/types/constants/orders/orderTypes";
 import getOptions from "../tokenedOptions";
 
-const apiGetOrders = async (orderId?: number): Promise<BackendOutOrderEntity[] | null> => {
+const apiGetOrders = async (orderId?: number): Promise<OrderProduct[] | null> => {
   const tdata = await fetch(`${endpoints.orders}`, getOptions("GET", true, orderId));
 
   if (tdata.status === 200) {
     return tdata.json();
   }
+  console.log("otsosi clown");
   return null;
 };
 
@@ -75,7 +76,16 @@ const deleteOrders = async (prop: { keys: number[] }): Promise<Response> => {
 };
 
 const approveOrders = async (prop: { keys: number[] }): Promise<Response> => {
-  const data = await fetch(`${endpoints.ordersComplete}`, getOptions("POST", true, prop));
+  const data = await fetch(`${endpoints.approveOrders}`, getOptions("POST", true, prop));
+  return data;
+};
+
+const cancelOrders = async (prop: { keys: number[] }): Promise<Response> => {
+  const data = await fetch(`${endpoints.cancelOrders}`, getOptions("POST", true, prop));
+  return data;
+};
+const declineOrders = async (prop: { keys: number[] }): Promise<Response> => {
+  const data = await fetch(`${endpoints.declineOrders}`, getOptions("POST", true, prop));
   return data;
 };
 
@@ -93,4 +103,6 @@ export default {
   approveOrders,
   updateOrder,
   getCompletedOrders,
+  cancelOrders,
+  declineOrders,
 };

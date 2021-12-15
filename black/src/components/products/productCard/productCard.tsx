@@ -1,5 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import StateType from "@/redux/types/stateType";
 import defaultIMg from "../../../assets/images/profile/default-profile.jpg";
 import styles from "./styles.module.scss";
@@ -7,7 +8,6 @@ import roles from "@/types/constants/roles/roles";
 import getUserId from "@/helpers/token/getUserId";
 import postOrderEntity from "@/types/interfaces/order/postOrderEntity";
 import orders from "@/api/httpService/orders/orders";
-import { toast } from "react-toastify";
 
 export interface ProductCardProps {
   label: string;

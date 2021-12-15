@@ -16,38 +16,19 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import AccessibleForwardIcon from "@mui/icons-material/AccessibleForward";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 import OrderProduct from "@/types/interfaces/order/orderProduct";
-import OrdersData from "@/types/data/ordersData";
 import styles from "../cart.module.scss";
 import roles from "@/types/constants/roles/roles";
 import StateType from "@/redux/types/stateType";
 import orders from "@/api/httpService/orders/orders";
-
-function createOrderProduct(
-  id: number,
-  name: string,
-  status: string,
-  vendor: string,
-  registered: string,
-  price: string
-): OrderProduct {
-  return {
-    id,
-    name,
-    status,
-    vendor,
-    registered,
-    price,
-  };
-}
+import OrdersData from "@/types/data/ordersData";
 
 // fetch data here
-const rows = OrdersData;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -198,6 +179,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
   selected: number[];
+  rows: OrderProduct[];
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
@@ -205,7 +187,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const role = useSelector<StateType, string>((state) => state.role);
 
   const handleApprove = async () => {
-    if (rows.map((r) => r.status).filter((elem) => elem === "waitingForApprove").length > 0) {
+    if (props.rows.map((r) => r.status).filter((elem) => elem === "waitingForApprove").length > 0) {
       toast.error("Sho?");
     } else {
       const result = await orders.approveOrders({ keys: selected });
@@ -215,8 +197,15 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     }
   };
 
-  const handleDelete = async () => {
-    const result = await orders.deleteOrders({ keys: selected });
+  const handleCancell = async () => {
+    const result = await orders.cancelOrders({ keys: selected });
+    if (result.status === 204) {
+      toast.success("Sho");
+    }
+  };
+
+  const handleDecline = async () => {
+    const result = await orders.declineOrders({ keys: selected });
     if (result.status === 204) {
       toast.success("Sho");
     }
@@ -250,16 +239,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip title="Delete">
-            <IconButton onClick={handleDelete}>
+          <Tooltip title="Decline">
+            <IconButton onClick={handleDecline}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
         </>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
+        <Tooltip title="Cancell">
+          <IconButton onClick={handleCancell}>
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -274,6 +263,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState<OrderProduct[]>(OrdersData);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof OrderProduct) => {
     const isAsc = orderBy === property && order === "asc";
@@ -285,9 +275,20 @@ export default function EnhancedTable() {
   //   console.log(selected);
   // }, [selected]);
 
+  useEffect(() => {
+    async function getOrders() {
+      const res = await orders.apiGetOrders();
+      if (res) {
+        console.log(res);
+        setRows(res);
+      }
+    }
+    getOrders();
+  }, []);
+
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -333,7 +334,7 @@ export default function EnhancedTable() {
   return (
     <Box sx={{ width: "1150px" }} style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
       <Paper sx={{ width: "100%" }}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected} />
+        <EnhancedTableToolbar numSelected={selected.length} selected={selected} rows={rows} />
         <TableContainer style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
             <EnhancedTableHead
