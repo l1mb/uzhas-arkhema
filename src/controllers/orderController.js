@@ -1,4 +1,5 @@
 const orderRepository = require('../repositories/orderRepository')
+const { status } = require('../config/orderStatuses')
 
 const add = async (req, res, next) => {
     try {
@@ -30,8 +31,34 @@ const getById = async (req, res, next) => {
     }
 }
 
+const approve = async (req, res, next) => {
+    try {
+        const { keys } = req.body
+        for await (const id of keys)
+            orderRepository.changeStatus(id, status.approved)
+
+        return res.status(204).send()
+    } catch (err) {
+        next(err)
+    }
+}
+
+const reject = async (req, res, next) => {
+    try {
+        const { keys } = req.body
+        for await (const id of keys)
+            orderRepository.changeStatus(id, status.rejected)
+
+        return res.status(204).send()
+    } catch (err) {
+        next(err)
+    }
+}
+
 module.exports = {
     add,
     getAll,
     getById,
+    approve,
+    reject,
 }
