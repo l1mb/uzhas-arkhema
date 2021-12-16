@@ -4,13 +4,13 @@ import Spinner from "@/elements/home/spinnerElement/spinner";
 import ProductCard from "@/elements/home/productCardElement/productCard";
 import useProductFetcher from "@/hooks/loader/loader";
 import StateType from "@/redux/types/stateType";
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
 import styles from "./product.module.scss";
+import IBasicProduct from "@/api/types/products/IBasicProduct";
 
 function Products(): JSX.Element {
   const { loading } = useProductFetcher();
 
-  const products = useSelector<StateType, IGroupedProduct[]>((state) => state.Products);
+  const products = useSelector<StateType, IBasicProduct[]>((state) => state.Products);
   const headerLabel = "Products";
 
   if (loading) {

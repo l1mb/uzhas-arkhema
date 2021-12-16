@@ -4,6 +4,5 @@ export interface updateProductDto {
   description: string;
   price: number;
   vendorId: number;
-
   categoryId: number;
 }

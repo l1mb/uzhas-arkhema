@@ -1,9 +1,13 @@
-import LabelledLink from "@/components/routesComponent/types/routes/labelledLink";
-import StyledProps from "@/types/interfaces/props/styledProps";
 import { NavLink } from "react-router-dom";
+import LabelledLink from "@/components/routesComponent/types/routes/labelledLink";
 import styles from "./dropdown.module.scss";
 
-const DropMenu: React.FC<{ props: StyledProps<LabelledLink[]> }> = ({ props }) => {
+interface DropMenuProps {
+  data: LabelledLink[];
+  className: string;
+}
+
+function DropMenu(props: DropMenuProps): JSX.Element {
   const options = props.data;
 
   return (
@@ -17,6 +21,6 @@ const DropMenu: React.FC<{ props: StyledProps<LabelledLink[]> }> = ({ props }) =
       ))}
     </div>
   );
-};
+}
 
 export default DropMenu;

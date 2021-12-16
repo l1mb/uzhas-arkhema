@@ -1,36 +1,41 @@
-import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+import styles from "./footer.module.scss";
+import eaIcon from "../../assets/images/footerIcons/ea.png";
+import valveIcon from "../../assets/images/footerIcons/valve.png";
+import riotIcon from "../../assets/images/footerIcons/riot.png";
+import rockIcon from "../../assets/images/footerIcons/rockstar.png";
+import ubicIcon from "../../assets/images/footerIcons/ubic.png";
 
-function Footer() {
-  return (
-    <MDBFooter color="unique-color-dark" className="font-small pt-4 ">
-      <MDBContainer fluid className="text-center text-md-left">
-        <MDBRow>
-          <MDBCol md="6">
-            <h5 className="title">Computer rentals</h5>
-            <p>Here you can pick whatever you need to work, rest, sho</p>
-          </MDBCol>
-          <MDBCol md="6">
-            <ul>
-              <li className="list-unstyled">
-                <a href="https://vk.com/tihamey">Vk</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="https://github.com/hassty/uzhas-arkhema/">github</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="https://wiki.archlinux.org/">arch</a>
-              </li>
-            </ul>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-      <div className="footer-copyright text-center py-3">
-        <MDBContainer fluid>
-          &copy; {new Date().getFullYear()} Copyright: <a href="https://vk.com/tihamey">TihCorp</a>
-        </MDBContainer>
+const Footer = (): JSX.Element => (
+  <footer className={styles.footer}>
+    <span>Incredible convenient</span>
+    <div className={styles.icons}>
+      <div className={styles.footerLogo}>
+        <a href="https://www.ea.com/">
+          <img src={eaIcon} alt="EA" />
+        </a>
       </div>
-    </MDBFooter>
-  );
-}
+      <div className={styles.footerLogo}>
+        <a href="https://www.valvesoftware.com/en/">
+          <img src={valveIcon} alt="Valve" />
+        </a>
+      </div>
+      <div className={styles.footerLogo}>
+        <a href="https://www.riotProducts.com/en">
+          <img src={riotIcon} alt="RiotProducts" />
+        </a>
+      </div>
+      <div className={styles.footerLogo}>
+        <a href="https://www.rockstarProducts.com/">
+          <img src={rockIcon} alt="RockStar" />
+        </a>
+      </div>
+      <div className={styles.footerLogo}>
+        <a href="https://www.ubisoft.com/">
+          <img src={ubicIcon} alt="Ubisoft" />
+        </a>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;

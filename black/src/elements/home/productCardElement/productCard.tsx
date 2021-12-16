@@ -1,9 +1,7 @@
 import React, { ChangeEvent, Suspense, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
 import CategoriesData from "@/components/routesComponent/types/categories/categoriesData";
-import Platforms from "@/api/types/products/enums/platfrom";
 import StateType from "@/redux/types/stateType";
 import orders from "@/api/httpService/orders/orders";
 import setCountDispatch from "@/redux/actions/orders/setCount";
@@ -56,7 +54,7 @@ const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ produc
 
     const order: Response = await orders.postOrder({
       productId,
-      applicationUserId: userId,
+      userId,
       count: parseInt(count, 10),
     });
 
@@ -93,13 +91,6 @@ const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ produc
             </button>
           ) : (
             <div className={styles.inputs}>
-              <select defaultValue={Platforms.PC} onChange={handleSelect}>
-                {product.ids.map((m) => (
-                  <option key={m.id} value={m.platform}>
-                    {m.platform}
-                  </option>
-                ))}
-              </select>
               <input type="number" value={count} onChange={handleInput} />
             </div>
           )}

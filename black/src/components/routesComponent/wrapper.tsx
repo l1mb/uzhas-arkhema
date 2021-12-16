@@ -10,10 +10,11 @@ import roles from "@/types/constants/roles/roles";
 import defaultUser from "@/types/constants/user/defaultUser";
 import PrivateRoute from "./protectedRouteComponent/protectedRoute";
 import RoutesData from "./types/routes/RoutesData";
-import Home from "../home/home";
+
 import About from "../about/about";
 import Products from "../products/products";
 import getRole from "@/helpers/token/getRole";
+import Home from "../homeComponent/homeComponent/home";
 
 const SignIn = React.lazy(() => import("../authComponents/signIn"));
 const SignUp = React.lazy(() => import("../authComponents/signUp"));
@@ -56,9 +57,11 @@ function Wrapper() {
         <Route exact path={RoutesData.about.route}>
           <About />
         </Route>
-        <Route exact path={RoutesData.computers.route}>
-          <Products />
-        </Route>
+        {RoutesData.products.map((u) => (
+          <Route key={u.label} path={u.route}>
+            <Products />
+          </Route>
+        ))}
         <PrivateRoute user={appUser} path={RoutesData.cart.route}>
           <Cart />
         </PrivateRoute>

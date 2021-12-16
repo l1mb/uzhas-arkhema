@@ -1,8 +1,8 @@
 import { useState } from "react";
 import _ from "lodash";
+import { useSelector } from "react-redux";
 import Products from "@/api/httpService/apiGetProducts";
 import StateType from "@/redux/types/stateType";
-import { useSelector } from "react-redux";
 import roles from "@/types/constants/roles/roles";
 import styles from "./searchBar.module.scss";
 import Dropdown from "./searchDropdown";
@@ -12,7 +12,7 @@ interface SearchProps {
   show?: boolean;
 }
 
-const SearchBar: React.FC<SearchProps> = (props): JSX.Element => {
+function SearchBar(props: SearchProps): JSX.Element {
   const [results, setResults] = useState<string[]>([]);
 
   const role = useSelector<StateType, string>((state) => state.role);
@@ -57,5 +57,5 @@ const SearchBar: React.FC<SearchProps> = (props): JSX.Element => {
       )}
     </div>
   );
-};
+}
 export default SearchBar;

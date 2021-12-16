@@ -93,7 +93,7 @@ function Cart() {
           ) : (
             <SorryImage label="Your cart is empty" image={emptyCart} className={styles.sorryImage}>
               <h2>Your cart is empty</h2>
-              <NavLink to={RoutesData.computers.route}>Add some products into your cart</NavLink>
+              <NavLink to={RoutesData.products[0].route}>Add some products into your cart</NavLink>
             </SorryImage>
           )}
         </Suspense>

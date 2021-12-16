@@ -1,8 +1,6 @@
 interface postOrderEntity {
   userId: number;
   productId: number;
-  phone: string;
-  rentStartDate: string;
-  rentEndDate: string;
+  count: number;
 }
 export default postOrderEntity;
