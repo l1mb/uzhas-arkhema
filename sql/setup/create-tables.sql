@@ -26,7 +26,7 @@ create table users (
 drop table products_table;
 create table products_table (
 	id number generated always as identity,
-	name varchar2(50 char) not null,
+	name varchar2(50 char) unique not null,
 	description varchar2(200 char),
 	price number(10, 4) not null,
 	category_id number not null,
@@ -34,6 +34,12 @@ create table products_table (
     date_deleted date,
 	constraint products_table_pk primary key (id)
 );
+
+drop view products;
+create view products as
+    select id, name, description, price, category_id, vendor_id
+    from products_table
+    where date_deleted is null;
 
 drop table categories;
 create table categories (
