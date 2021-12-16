@@ -1,7 +1,11 @@
 import { Modal, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import productsApi from "@/api/httpService/products/productsApi";
+import setProductsDispatch from "@/redux/actions/products/setProduct";
+import ProductActions from "@/redux/actions/products/productActionTypes";
 
 interface DeleteModalProps {
+  params: QueryParams | undefined;
   id: number;
   show: boolean;
   mode: string;
@@ -9,10 +13,11 @@ interface DeleteModalProps {
 }
 
 function DeleteModal(props: DeleteModalProps) {
+  const dispatch = useDispatch();
   const handleSure = () => {
-    props.setClose();
     productsApi.deleteProduct(props.id);
-    dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, params));
+    dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, props.params));
+    props.setClose();
   };
 
   const handleDecline = () => {
