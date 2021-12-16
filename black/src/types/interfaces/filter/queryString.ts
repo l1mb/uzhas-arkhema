@@ -18,7 +18,7 @@ const buildString = (
   let initQuery = "?";
 
   initQuery += criteria ? `orderby=${criteria.toLowerCase()}` : "";
-  initQuery += type ? handleFirstItem(initQuery, `mod=desc`) : "";
+  initQuery += type ? handleFirstItem(initQuery, `mode=desc`) : "";
   initQuery += limit ? handleFirstItem(initQuery, `limit=${limit}`) : "";
   initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
   initQuery += category ? handleFirstItem(initQuery, `category=${category}`) : "";
