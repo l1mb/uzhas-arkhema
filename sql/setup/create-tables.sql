@@ -23,16 +23,23 @@ create table users (
     constraint users_chk check (role = 'admin' or role = 'customer')
 );
 
-drop table products;
-create table products (
+drop table products_table;
+create table products_table (
 	id number generated always as identity,
-	name varchar2(50 char) not null,
+	name varchar2(50 char) unique not null,
 	description varchar2(200 char),
 	price number(10, 4) not null,
 	category_id number not null,
 	vendor_id number not null,
-	constraint products_pk primary key (id)
+    date_deleted date,
+	constraint products_table_pk primary key (id)
 );
+
+drop view products;
+create view products as
+    select id, name, description, price, category_id, vendor_id
+    from products_table
+    where date_deleted is null;
 
 drop table categories;
 create table categories (
@@ -49,7 +56,8 @@ create table vendors (
 	constraint vendors_pk primary key (id)
 );
 
-alter table products add constraint products_categories_fk foreign key (category_id) references categories(id);
-alter table products add constraint products_vendors_fk foreign key (vendor_id) references vendors(id);
+alter table products_table add constraint products_table_categories_fk foreign key (category_id) references categories(id);
+alter table products_table add constraint products_table_vendors_fk foreign key (vendor_id) references vendors(id);
 alter table orders add constraint orders_users_fk foreign key (user_id) references users(id);
-alter table orders add constraint orders_products_fk foreign key (product_id) references products(id);
+alter table orders add constraint orders_products_table_fk foreign key (product_id) references products_table(id)
+    on delete cascade;
