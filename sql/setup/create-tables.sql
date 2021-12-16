@@ -59,4 +59,5 @@ create table vendors (
 alter table products_table add constraint products_table_categories_fk foreign key (category_id) references categories(id);
 alter table products_table add constraint products_table_vendors_fk foreign key (vendor_id) references vendors(id);
 alter table orders add constraint orders_users_fk foreign key (user_id) references users(id);
-alter table orders add constraint orders_products_table_fk foreign key (product_id) references products_table(id);
+alter table orders add constraint orders_products_table_fk foreign key (product_id) references products_table(id)
+    on delete cascade;

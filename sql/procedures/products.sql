@@ -67,8 +67,9 @@ create or replace package body rent_products as
     )
     as begin
         get_by_id(in_id, out_product);
-        update products_table set date_deleted = sysdate
-        where id = in_id;
+        delete products_table where id = in_id;
+        -- update products_table set date_deleted = sysdate
+        -- where id = in_id;
         commit;
     end;
     --
