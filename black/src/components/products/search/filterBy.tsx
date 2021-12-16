@@ -32,6 +32,7 @@ function SearchParamType(props: SearchProps) {
           onChange={handleChange}
           label="Filter by"
           sx={{ color: "white" }}
+          value={filterBy}
         >
           <MenuItem value="vendor">Vendor</MenuItem>
           <MenuItem value="category">Category</MenuItem>
