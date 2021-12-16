@@ -1,4 +1,4 @@
-interface updateProductDto {
+export interface updateProductDto {
   id?: number;
   name: string;
   description: string;

@@ -11,26 +11,61 @@ import styles from "./style.module.scss";
 import BtEditModal from "../modalComponent/btEditModal/editModal";
 import productsApi from "@/api/httpService/products/productsApi";
 import DeleteModal from "../modalComponent/btEditModal/deleteModal";
-import IBasicProduct from "@/api/types/products/IBasicProduct";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import StateType from "@/redux/types/stateType";
 import SearchBar from "@/elements/home/searchBarElement/searchBar";
+import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
 
-const mockData: IBasicProduct[] = [
-  { id: 1, company: "kok", name: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 2, company: "kok", name: "Acer aspired", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 3, company: "kok", name: "Acer aspider", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 4, company: "kok", name: "Acer aspidero", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 5, company: "kok", name: "Acer aspidore", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 6, company: "kok", name: "Acer aspidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 7, company: "kok", name: "Acer spidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
-  { id: 8, company: "kok", name: "Acer pidor", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+const mockData: updateProductDto[] = [
+  { id: 1, categoryId: 1, vendorId: 3, name: "Acer aspire", description: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  {
+    id: 2,
+    categoryId: 1,
+    vendorId: 3,
+    name: "Acer aspired",
+    description: "nu zaebis noutbuk, nu ohuenniy",
+    price: 750,
+  },
+  {
+    id: 3,
+    categoryId: 1,
+    vendorId: 3,
+    name: "Acer aspider",
+    description: "nu zaebis noutbuk, nu ohuenniy",
+    price: 750,
+  },
+  {
+    id: 4,
+    categoryId: 1,
+    vendorId: 3,
+    name: "Acer aspidero",
+    description: "nu zaebis noutbuk, nu ohuenniy",
+    price: 750,
+  },
+  {
+    id: 5,
+    categoryId: 1,
+    vendorId: 3,
+    name: "Acer aspidore",
+    description: "nu zaebis noutbuk, nu ohuenniy",
+    price: 750,
+  },
+  {
+    id: 6,
+    categoryId: 1,
+    vendorId: 3,
+    name: "Acer aspidor",
+    description: "nu zaebis noutbuk, nu ohuenniy",
+    price: 750,
+  },
+  { id: 7, categoryId: 1, vendorId: 3, name: "Acer spidor", description: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
+  { id: 8, categoryId: 1, vendorId: 3, name: "Acer pidor", description: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
 ];
 
 interface ProductItem {
   id: number;
   name: string;
-  shortDescription: string;
+  description: string;
   price: string;
 }
 interface itemsProps {
@@ -52,7 +87,6 @@ function Items(props: itemsProps) {
             price={item.price}
             setMode={props.setMode}
             setProduct={props.setProduct}
-            shortDescription={item.description}
             id={item.id}
           />
         ))}
@@ -66,13 +100,13 @@ interface paginatedProps {
   setProduct: (e: updateProductDto) => void;
   params: QueryParams | undefined;
   setParams: (e: QueryParams) => void;
-  data: IBasicProduct[];
+  data: updateProductDto[];
 }
 
 function PaginatedItems(props: paginatedProps) {
   const { itemsPerPage } = props;
   // We start with an empty list of items.
-  const [data, setData] = useState<IBasicProduct[]>(mockData);
+  const [data, setData] = useState<updateProductDto[]>(mockData);
 
   const [currentItems, setCurrentItems] = useState(data);
   const [pageCount, setPageCount] = useState(0);
@@ -81,15 +115,17 @@ function PaginatedItems(props: paginatedProps) {
   const [itemOffset, setItemOffset] = useState(0);
 
   useEffect(() => {
+    setData(props.data);
+  }, [props.data]);
+  useEffect(() => {
     const t = props.params;
     if (t) {
       t.limit = itemsPerPage;
       t.offset = itemOffset;
-      // console.log(`t:${JSON.stringify(t)}`);
       props.setParams(JSON.parse(JSON.stringify(t)));
     }
     if (props.data) {
-      setData(data);
+      setData(props.data);
     }
   }, [itemOffset]);
 
@@ -98,7 +134,9 @@ function PaginatedItems(props: paginatedProps) {
     const t = props.params;
     const endOffset = itemOffset + itemsPerPage;
     // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setPageCount(Math.ceil(data.length / itemsPerPage));
+    if (data) {
+      setPageCount(Math.ceil(data.length / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage, props.data]);
 
   // Invoke when user click to request another page.
@@ -133,7 +171,7 @@ function Products() {
   const [mode, setMode] = useState("create");
   const [product, setProduct] = useState<updateProductDto>();
 
-  const data = useSelector<StateType, IBasicProduct[]>((state) => state.Products);
+  const data = useSelector<StateType, updateProductDto[]>((state) => state.Products);
   const handleSave = async (e: updateProductDto) => {
     const response = await productsApi.postProduct(e);
     if (response.status === 201) {

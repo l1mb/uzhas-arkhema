@@ -7,11 +7,11 @@ import styles from "./styles.module.scss";
 import roles from "@/types/constants/roles/roles";
 import getUserId from "@/helpers/token/getUserId";
 import CreateOrderModal from "@/components/modalComponent/btEditModal/createOrderModal";
+import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
 
 export interface ProductCardProps {
   product: updateProductDto;
   label: string;
-  shortDescription: string;
   price: number;
   id?: number;
   img?: string;
@@ -46,7 +46,7 @@ function ProductCard(props: ProductCardProps) {
       <Card.Body>
         <Card.Title>{props.label}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{props.price}</Card.Subtitle>
-        <Card.Text>{props.shortDescription}</Card.Text>
+        <Card.Text>{props.product.description}</Card.Text>
         <div>
           {role === roles.admin && (
             <div>
