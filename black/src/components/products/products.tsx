@@ -170,7 +170,7 @@ function Products() {
     const response = await productsApi.putProduct(e);
     if (response.status === 201) {
       toast.success("Yay");
-      dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, params)));
+      dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, params));
     } else {
       toast.error("Paru");
     }
