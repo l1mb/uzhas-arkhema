@@ -1,8 +1,8 @@
-import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "@mui/material/Pagination";
+import { Stack } from "@mui/material";
 import useProductFetcher from "@/hooks/loader/loader";
 import FilterBar from "./FilterBar/filter";
 import ProductCard from "./productCard/productCard";
@@ -138,13 +138,16 @@ function PaginatedItems(props: paginatedProps) {
     <>
       <Items currentItems={data} setMode={props.setMode} setProduct={props.setProduct} key={data} />
 
-
       <Stack spacing={2}>
-      <Pagination count={props.pagesCount} showFirstButton={false}
-        showLastButton={false} siblingCount={1} onChange={handlePageClick}
-        className={styles.pagination_btn}/>
+        <Pagination
+          count={props.pagesCount}
+          showFirstButton={false}
+          showLastButton={false}
+          siblingCount={1}
+          onChange={handlePageClick}
+          className={styles.pagination_btn}
+        />
       </Stack>
-
     </>
   );
 }
@@ -154,7 +157,7 @@ function Products() {
   const [mode, setMode] = useState("create");
   const [product, setProduct] = useState<updateProductDto>();
   const [pagesCount, setPagesCount] = useState<number>(1);
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const data = useSelector<StateType, updateProductDto[]>((state) => state.Products);
   const handleSave = async (e: updateProductDto) => {
@@ -165,6 +168,8 @@ function Products() {
     } else {
       toast.error("Paru");
     }
+    setOpen(false);
+    setProduct({} as updateProductDto);
   };
   const handleUpdate = async (e: updateProductDto) => {
     const response = await productsApi.putProduct(e);
@@ -174,6 +179,8 @@ function Products() {
     } else {
       toast.error("Paru");
     }
+    setOpen(false);
+    setProduct({} as updateProductDto);
   };
 
   useEffect(() => {
@@ -237,6 +244,7 @@ function Products() {
       {product && (
         <DeleteModal
           mode={mode}
+          params={params}
           id={product.id}
           show={isOpen}
           setClose={() => {

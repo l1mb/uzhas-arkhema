@@ -12,6 +12,7 @@ function DeleteModal(props: DeleteModalProps) {
   const handleSure = () => {
     props.setClose();
     productsApi.deleteProduct(props.id);
+    dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, params));
   };
 
   const handleDecline = () => {
