@@ -38,6 +38,15 @@ const getAll = async (req, res, next) => {
     }
 }
 
+const getProductsCount = async (req, res, next) => {
+    try {
+        const products = await productRepository.getAll()
+        return res.status(200).json({ count: products.length })
+    } catch (err) {
+        next(err)
+    }
+}
+
 const getById = async (req, res, next) => {
     try {
         const { id } = req.params
@@ -73,4 +82,5 @@ module.exports = {
     getAll,
     getById,
     updateById,
+    getProductsCount,
 }
