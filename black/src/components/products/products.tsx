@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -128,7 +129,7 @@ function PaginatedItems(props: paginatedProps) {
     const t = props.params;
     if (t) {
       t.limit = itemsPerPage;
-      t.offset = itemsPerPage * page;
+      t.offset = itemsPerPage * page - 6;
       props.setParams({ ...t });
     }
   };
@@ -137,12 +138,13 @@ function PaginatedItems(props: paginatedProps) {
     <>
       <Items currentItems={data} setMode={props.setMode} setProduct={props.setProduct} key={data} />
 
-      <Pagination
-        count={props.pagesCount}
-        onChange={handlePageClick}
-        siblingCount={1}
-        className={styles.pagination_btn}
-      />
+
+      <Stack spacing={2}>
+      <Pagination count={props.pagesCount} showFirstButton={false}
+        showLastButton={false} siblingCount={1} onChange={handlePageClick}
+        className={styles.pagination_btn}/>
+      </Stack>
+
     </>
   );
 }

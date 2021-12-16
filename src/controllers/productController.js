@@ -38,6 +38,15 @@ const getAll = async (req, res, next) => {
     }
 }
 
+const getProductsCount = async (req, res, next) => {
+    try {
+        const products = await productRepository.getAll()
+        return res.status(200).json({ count: products.length })
+    } catch (err) {
+        next(err)
+    }
+}
+
 const getById = async (req, res, next) => {
     try {
         const { id } = req.params
@@ -51,13 +60,17 @@ const getById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
     try {
-        const { id } = req.params
+        const { id, name, description, price, categoryId, vendorId } = req.body
         const updated = await productRepository.updateById(
             id,
-            ...Object.values(req.body)
+            name,
+            description,
+            price,
+            categoryId,
+            vendorId
         )
 
-        return res.status(200).json(updated)
+        return res.status(201).json(updated)
     } catch (err) {
         next(err)
     }
@@ -69,4 +82,5 @@ module.exports = {
     getAll,
     getById,
     updateById,
+    getProductsCount,
 }

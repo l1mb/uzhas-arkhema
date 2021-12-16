@@ -59,7 +59,7 @@ function BtEditModal(props: ModalProps) {
     setDescription(e);
   };
   const handlePriceChange = (e: string) => {
-    setPrice(e);
+    setPrice(Number(e));
   };
   const handleVendorChange = (e: number) => {
     setVendor(vendors.find((elem) => elem.id === Number(e)));

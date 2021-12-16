@@ -1,4 +1,5 @@
 .card_container {
+  margin: 10px 5px;
   flex-direction: column;
   border-radius: 6px;
   color: white;
@@ -6,7 +7,6 @@
 }
 
 .btn {
-  height: 26px;
   width: 100%;
   background-color: #2d81e0 !important;
 }

@@ -2,7 +2,7 @@ const host = "/api";
 const getProductSearchEndpoint = `${host}/products/search`;
 const getProductListEndpoint = `${host}/products`;
 const getProductByPlatform = `${host}/products/byPlatform`;
-const getProductsById = `${host}/products/id`;
+const getProductsById = `${host}/products`;
 const products = `${host}/products`;
 
 const postSignUp = `${host}/users/sign-up`;
@@ -11,7 +11,7 @@ const user = `${host}/users/current`;
 const userPassword = `${host}/${user}/password`;
 const orders = `${host}/orders`;
 const approveOrders = `${orders}/approve`;
-const declineOrders = `${orders}/decline`;
+const declineOrders = `${orders}/reject`;
 const cancelOrders = `${orders}/cancel`;
 const vendors = `${host}/vendors`;
 const categories = `${host}/categories`;

@@ -14,6 +14,10 @@ create or replace package rent_orders as
         in_id orders.id%type,
         out_order out sys_refcursor
     );
+    procedure set_status(
+        in_id orders.id%type,
+        in_status orders.status%type
+    );
 end;
 /
 
@@ -70,6 +74,16 @@ create or replace package body rent_orders as
             join products p on o.product_id = p.id
             join vendors v on p.vendor_id = v.id
             where o.id = in_id;
+    end;
+    --
+    procedure set_status(
+        in_id orders.id%type,
+        in_status orders.status%type
+    )
+    as begin
+        update orders set status = in_status
+        where id = in_id;
+        commit;
     end;
 end;
 /
