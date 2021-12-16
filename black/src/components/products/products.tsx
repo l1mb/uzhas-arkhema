@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -128,7 +129,7 @@ function PaginatedItems(props: paginatedProps) {
     const t = props.params;
     if (t) {
       t.limit = itemsPerPage;
-      t.offset = itemsPerPage * page;
+      t.offset = itemsPerPage * page - 6;
       props.setParams({ ...t });
     }
   };
@@ -137,12 +138,16 @@ function PaginatedItems(props: paginatedProps) {
     <>
       <Items currentItems={data} setMode={props.setMode} setProduct={props.setProduct} key={data} />
 
-      <Pagination count={props.pagesCount} onChange={handlePageClick} variant="outlined" color="primary" />
+      <Stack spacing={2}>
+      <Pagination count={props.pagesCount} showFirstButton={false}
+        showLastButton={false} siblingCount={1} onChange={handlePageClick}
+        variant="outlined" color="primary" />
+      </Stack>
     </>
   );
 }
 function Products() {
-  const catData = ["all", "dlya bichey", "chisto multiki", "poigrat'"];
+  const catData = ["pa prikolu", "bez prikola"];
   const [categorie, setCategorie] = useState(catData[0].toUpperCase());
   const { loading, setParams, params } = useProductFetcher();
   const [isOpen, setOpen] = useState(false);
