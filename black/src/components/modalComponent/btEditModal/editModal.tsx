@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 import productsApi from "@/api/httpService/products/productsApi";
+import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
 
 interface ModalProps {
   isOpen: boolean;
@@ -134,7 +135,7 @@ function BtEditModal(props: ModalProps) {
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCustomer">
-            <Form.Label>Vendor</Form.Label>
+            <Form.Label>Category</Form.Label>
             <Form.Select
               aria-label="Default select example"
               onChange={(e) => handleCategoryChange(e.currentTarget.value)}
