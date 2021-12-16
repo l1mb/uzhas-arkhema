@@ -1,13 +1,13 @@
 import OrderType from "@/api/types/Products/enums/orderType";
 
 interface QueryParams {
-  criteria: string | undefined;
+  orderby: string | undefined;
   type: OrderType | undefined;
   limit?: number | undefined;
   offset?: number | undefined;
-  category: string | undefined;
-  query: string | undefined;
-  filterby: string | undefined;
+  mnfrId: number | undefined;
+  shape: string | undefined;
+  pickUp: number | undefined;
 }
 
 export default QueryParams;

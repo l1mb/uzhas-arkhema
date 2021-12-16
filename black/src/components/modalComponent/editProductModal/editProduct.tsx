@@ -11,7 +11,7 @@ import editData from "@/types/constants/adminModals/editGame";
 import modalType from "./modalType";
 import styles from "./editProduct.module.scss";
 import IBasicProduct from "@/api/types/products/IBasicProduct";
-import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
+import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 
 interface EditProps {
   editableProduct?: IBasicProduct;

@@ -7,23 +7,22 @@ const handleFirstItem = (src: string, addedValue: string) => {
 };
 
 const buildString = (
-  criteria: string | OrderBy | undefined,
-  type: string | OrderType | undefined,
-  limit: number | undefined,
-  offset: number | undefined,
-  query: string | undefined,
-  filterby: string | undefined
+  orderby?: string | OrderBy,
+  type?: string | OrderType,
+  limit?: number,
+  offset?: number,
+  shape?: string,
+  mnfrId?: number,
+  pickUpId?: number
 ): string => {
   let initQuery = "?";
 
-  initQuery += criteria ? `orderby=${criteria.toLowerCase()}` : "";
+  initQuery += orderby ? `orderby=${orderby.toLowerCase()}` : "";
   initQuery += type ? handleFirstItem(initQuery, `mode=desc`) : "";
   initQuery += limit ? handleFirstItem(initQuery, `limit=${limit}`) : "";
   initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
-
-  initQuery += query ? handleFirstItem(initQuery, `query=${query}`) : "";
-
-  initQuery += filterby ? handleFirstItem(initQuery, `filterby=${filterby}`) : "";
+  initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
+  initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
   return initQuery;
 };
 

@@ -2,7 +2,9 @@ export interface updateProductDto {
   id?: number;
   name: string;
   description: string;
+  logo: string;
   price: number;
-  vendorId: number;
-  categoryId: number;
+  mnfrId: number;
+  shape: string;
+  pickUpId: number;
 }

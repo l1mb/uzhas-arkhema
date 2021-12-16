@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 import roles from "@/types/constants/roles/roles";
 import getUserId from "@/helpers/token/getUserId";
 import CreateOrderModal from "@/components/modalComponent/btEditModal/createOrderModal";
-import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
+import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 
 export interface ProductCardProps {
   product: updateProductDto;

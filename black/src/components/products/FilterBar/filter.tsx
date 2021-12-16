@@ -1,80 +1,99 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button } from "react-bootstrap";
 import ProductsData from "@/api/types/products/productData";
 import QueryItem from "@/api/types/products/queryParams";
-import Label from "@/elements/home/labelElement/label";
 import SortDropdown from "@/elements/products/dropdowns/sortDropdown";
 
 import OrderType from "@/api/types/products/enums/orderType";
 import QueryParams from "@/types/interfaces/filter/queryParams";
-import buildString from "@/types/interfaces/filter/queryString";
 import filterData from "@/types/constants/components/products/filter/filterData";
 import styles from "./filter.module.scss";
 import StateType from "@/redux/types/stateType";
-import roles from "@/types/constants/roles/roles";
+import RadioButtons from "@/elements/products/RadioButtons/radiobuttons";
+import productsApi from "@/api/httpService/products/productsApi";
+import Label from "@/elements/home/labelElement/label";
 
 interface FilterProps {
   setQuery: (e: QueryParams) => void;
-  setOpen: (e: boolean) => void;
-  categorie: string;
-  setMode: () => void;
 }
 
 function FilterBar(props: FilterProps) {
-  const [criteria, setCriteria] = useState<{ label: string; value: string }>();
-  const [type, setType] = useState<QueryItem>();
+  const [orderby, setorderby] = useState<{ label: string; value: string }>(ProductsData.OrderByOptions[0]);
+  const [type, setType] = useState<QueryItem>(ProductsData.OrderTypeOptions[0]);
+  const [pickUp, setPickUp] = useState<{ id: number; name: string }>();
+  const [mnfr, setMnfr] = useState<{ id: number; name: string }>();
+  // GET THIS FROM QUERY PARAMS;
+  const [shape, setShape] = useState<string>();
   const [queryString, setQuery] = useState("");
   const { search } = useLocation();
+
+  const [pickUpData, setPickUpData] = useState<{ id: number; name: string }[]>();
+  const [mnfrData, setMnfrData] = useState<{ id: number; name: string }[]>();
 
   const role = useSelector<StateType, string>((state) => state.role);
 
   const pushParameters = () => {
     props.setQuery({
-      criteria: criteria?.value,
+      orderby: orderby?.value,
       type: type?.value as OrderType,
-      category: props.categorie,
       limit: 6,
       offset: 0,
+      mnfrId: mnfr?.id,
+      pickUp: pickUp?.id,
+      shape,
     });
   };
 
   useEffect(() => {
-    setQuery(buildString(criteria?.label, type?.label, props.categorie, 6, 0));
-    pushParameters();
-  }, [queryString, criteria, type, search, props.categorie]);
+    async function fetchData() {
+      const p = await productsApi.apiGetPickUps();
+      const m = await productsApi.apiGetMnfrs();
+
+      setPickUpData(p);
+      setMnfrData(m);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.filterContainer}>
+      <Label content={shape} classname={styles.firstname} />
       <div>
-        {role === roles.admin && (
-          <div className={styles.createButton}>
-            <Label content="Admin is here" classname={styles.labels} />
-            <Button
-              variant="light"
-              onClick={() => {
-                props.setOpen(true);
-                props.setMode();
-              }}
-            >
-              Create new product
-            </Button>
-          </div>
-        )}
-
-        <Label content={filterData.label.orderBy} classname={styles.labels} />
+        <Label content={filterData.label.orderBy} classname={styles.names} />
         <SortDropdown
           label={filterData.label.orderBy}
           options={ProductsData.OrderByOptions}
-          changeHandler={(e: QueryItem) => setCriteria(e)}
+          value={orderby}
+          changeHandler={(e: QueryItem) => setorderby(e)}
         />
         <SortDropdown
+          value={type}
           label={filterData.label.orderType}
           options={ProductsData.OrderTypeOptions}
           changeHandler={(e: QueryItem) => setType(e)}
         />
       </div>
+      {pickUpData && (
+        <div>
+          <Label content={filterData.label.genres} classname={styles.names} />
+          <RadioButtons
+            options={pickUpData}
+            checkedValue={pickUp?.name}
+            changeHandler={(e: { id: number; name: string }) => setPickUp(e)}
+          />
+        </div>
+      )}
+      {mnfrData && (
+        <div>
+          <Label content={filterData.label.age} classname={styles.names} />
+          <RadioButtons
+            options={mnfrData}
+            checkedValue={mnfr?.name}
+            changeHandler={(e: { id: number; name: string }) => setMnfr(e)}
+          />
+        </div>
+      )}
     </div>
   );
 }

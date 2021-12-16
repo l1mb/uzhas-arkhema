@@ -1,4 +1,5 @@
 import endpoints from "@/api/endpoints";
+import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 import getToken from "@/helpers/token/getToken";
 import getOptions from "../tokenedOptions";
 
@@ -20,7 +21,7 @@ const putProduct = async (prop: updateProductDto): Promise<Response> => {
   return data;
 };
 
-const apiGetVendors = async (): Promise<{ id: number; name: string }[] | null> => {
+const apiGetMnfrs = async (): Promise<{ id: number; name: string }[] | null> => {
   const tdata = await fetch(`${endpoints.vendors}`, getOptions("GET", true));
 
   if (tdata.status === 200) {
@@ -28,7 +29,7 @@ const apiGetVendors = async (): Promise<{ id: number; name: string }[] | null> =
   }
   return null;
 };
-const apiGetCategory = async (): Promise<{ id: number; name: string }[] | null> => {
+const apiGetPickUps = async (): Promise<{ id: number; name: string }[] | null> => {
   const tdata = await fetch(`${endpoints.categories}`, getOptions("GET", true));
 
   if (tdata.status === 200) {
@@ -46,4 +47,4 @@ const apiGetCount = async (): Promise<{ count: number } | null> => {
   return null;
 };
 
-export default { deleteProduct, postProduct, putProduct, apiGetVendors, apiGetCategory, apiGetCount };
+export default { deleteProduct, postProduct, putProduct, apiGetMnfrs, apiGetPickUps, apiGetCount };
