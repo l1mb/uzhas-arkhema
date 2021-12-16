@@ -47,4 +47,13 @@ const apiGetCategory = async (): Promise<{ id: number; name: string }[] | null> 
   return null;
 };
 
-export default { deleteProduct, postProduct, putProduct, apiGetVendors, apiGetCategory };
+const apiGetCount = async (): Promise<{ id: number; name: string }[] | null> => {
+  const tdata = await fetch(`${endpoints.pages}`, getOptions("GET", true));
+
+  if (tdata.status === 200) {
+    return tdata.json();
+  }
+  return null;
+};
+
+export default { deleteProduct, postProduct, putProduct, apiGetVendors, apiGetCategory, apiGetCount };

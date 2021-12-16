@@ -15,6 +15,7 @@ const declineOrders = `${orders}/decline`;
 const cancelOrders = `${orders}/cancel`;
 const vendors = `${host}/vendors`;
 const categories = `${host}/categories`;
+const pages = `${products}/pages`;
 
 export default {
   getProductSearchEndpoint,
@@ -32,4 +33,5 @@ export default {
   cancelOrders,
   vendors,
   categories,
+  pages,
 };

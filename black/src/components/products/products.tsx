@@ -95,6 +95,7 @@ function Items(props: itemsProps) {
 }
 
 interface paginatedProps {
+  pagesCount: number;
   itemsPerPage: number;
   setMode: (e: string) => void;
   setProduct: (e: updateProductDto) => void;
@@ -130,17 +131,12 @@ function PaginatedItems(props: paginatedProps) {
   }, [itemOffset]);
 
   useEffect(() => {
-    // Fetch items from another resources.
-    const t = props.params;
-    const endOffset = itemOffset + itemsPerPage;
-    // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    if (data) {
-      setPageCount(Math.ceil(data.length / itemsPerPage));
-    }
+    console.log("Nice to see you. Have a good day");
   }, [itemOffset, itemsPerPage, props.data]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
+    // watch here
     const newOffset = (event.selected * itemsPerPage) % data.length;
     // console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
     setItemOffset(newOffset);
@@ -156,7 +152,7 @@ function PaginatedItems(props: paginatedProps) {
         nextLabel="next >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
-        pageCount={pageCount}
+        pageCount={props.pagesCount}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
       />
@@ -170,6 +166,7 @@ function Products() {
   const [isOpen, setOpen] = useState(false);
   const [mode, setMode] = useState("create");
   const [product, setProduct] = useState<updateProductDto>();
+  const [pagesCount, setPagesCount] = useState<number>(1);
 
   const data = useSelector<StateType, updateProductDto[]>((state) => state.Products);
   const handleSave = async (e: updateProductDto) => {
@@ -190,8 +187,14 @@ function Products() {
   };
 
   useEffect(() => {
-    // TODO: fetch data
-  }, [categorie]);
+    async function getCount() {
+      const res = await productsApi.apiGetCount();
+
+      setPagesCount(res);
+    }
+
+    getCount();
+  }, []);
   return (
     <div className={styles.extraDiv}>
       <div className={styles.page_wrapper}>
@@ -224,6 +227,7 @@ function Products() {
 
             <div className={styles.pagination}>
               <PaginatedItems
+                pagesCount={pagesCount}
                 setMode={(e: string) => {
                   setMode(e);
                   setOpen(true);
