@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Pagination from "@mui/material/Pagination";
 import useProductFetcher from "@/hooks/loader/loader";
 import FilterBar from "./FilterBar/filter";
@@ -13,6 +13,8 @@ import QueryParams from "@/types/interfaces/filter/queryParams";
 import StateType from "@/redux/types/stateType";
 import SearchBar from "@/elements/home/searchBarElement/searchBar";
 import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
+import setProductsDispatch from "@/redux/actions/products/setProduct";
+import ProductActions from "@/redux/actions/products/productActionTypes";
 
 const mockData: updateProductDto[] = [
   { id: 1, categoryId: 1, vendorId: 3, name: "Acer aspire", description: "nu zaebis noutbuk, nu ohuenniy", price: 750 },
@@ -150,12 +152,14 @@ function Products() {
   const [mode, setMode] = useState("create");
   const [product, setProduct] = useState<updateProductDto>();
   const [pagesCount, setPagesCount] = useState<number>(1);
+   const dispatch = useDispatch();
 
   const data = useSelector<StateType, updateProductDto[]>((state) => state.Products);
   const handleSave = async (e: updateProductDto) => {
     const response = await productsApi.postProduct(e);
     if (response.status === 201) {
       toast.success("Yay");
+      dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, params));
     } else {
       toast.error("Paru");
     }
@@ -164,6 +168,7 @@ function Products() {
     const response = await productsApi.putProduct(e);
     if (response.status === 201) {
       toast.success("Yay");
+      dispatch(setProductsDispatch(ProductActions.QUERIFIED_LIST, params)));
     } else {
       toast.error("Paru");
     }
