@@ -15,13 +15,13 @@
       border: none;
       color: white;
       border-radius: 5px 5px 0 0;
-      border-bottom: solid 2px red;
+      border-bottom: solid 2px #6666ff;
       margin: 20px 0;
       transition: background 0.3s ease;
     }
 
     button:active {
-      background: rgba($color: #f00, $alpha: 0.6);
+      background: rgba($color: #6666ff, $alpha: 0.6);
     }
   }
 
