@@ -128,3 +128,33 @@ module.exports.getById = async (id) => {
         throw err
     }
 }
+
+module.exports.changeStatus = async (id, new_status) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            await connection.execute(
+                `begin rent_orders.set_status(:id, :new_status); end;`,
+                {
+                    id,
+                    new_status,
+                }
+            )
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
