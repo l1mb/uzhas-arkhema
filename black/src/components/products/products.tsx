@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import Pagination from "@mui/material/Pagination";
 import useProductFetcher from "@/hooks/loader/loader";
 import Categories from "./categories/categories";
 import FilterBar from "./FilterBar/filter";
@@ -118,44 +118,26 @@ function PaginatedItems(props: paginatedProps) {
   useEffect(() => {
     setData(props.data);
   }, [props.data]);
-  useEffect(() => {
-    const t = props.params;
-    if (t) {
-      t.limit = itemsPerPage;
-      t.offset = itemOffset;
-      props.setParams(JSON.parse(JSON.stringify(t)));
-    }
-    if (props.data) {
-      setData(props.data);
-    }
-  }, [itemOffset]);
 
   useEffect(() => {
     console.log("Nice to see you. Have a good day");
   }, [itemOffset, itemsPerPage, props.data]);
 
   // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    // watch here
-    const newOffset = (event.selected * itemsPerPage) % data.length;
-    // console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
-    setItemOffset(newOffset);
+  const handlePageClick = (event, page) => {
+    const t = props.params;
+    if (t) {
+      t.limit = itemsPerPage;
+      t.offset = itemsPerPage * page;
+      props.setParams({ ...t });
+    }
   };
 
   return (
     <>
       <Items currentItems={data} setMode={props.setMode} setProduct={props.setProduct} key={data} />
 
-      <ReactPaginate
-        className={styles.pag_buttons}
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={props.pagesCount}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-      />
+      <Pagination count={props.pagesCount} onChange={handlePageClick} variant="outlined" color="primary" />
     </>
   );
 }
@@ -189,8 +171,11 @@ function Products() {
   useEffect(() => {
     async function getCount() {
       const res = await productsApi.apiGetCount();
-
-      setPagesCount(res);
+      if (res) {
+        setPagesCount(res);
+      } else {
+        console.log("ne robit");
+      }
     }
 
     getCount();

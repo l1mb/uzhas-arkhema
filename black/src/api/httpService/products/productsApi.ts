@@ -47,7 +47,7 @@ const apiGetCategory = async (): Promise<{ id: number; name: string }[] | null> 
   return null;
 };
 
-const apiGetCount = async (): Promise<{ id: number; name: string }[] | null> => {
+const apiGetCount = async (): Promise<{ id: number; name: string } | null> => {
   const tdata = await fetch(`${endpoints.pages}`, getOptions("GET", true));
 
   if (tdata.status === 200) {
