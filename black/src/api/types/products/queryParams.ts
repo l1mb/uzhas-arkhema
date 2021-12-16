@@ -5,7 +5,7 @@ import OrderType from "./enums/orderType";
 
 interface QueryItem {
   label: string;
-  value: AgeRating | OrderType | OrderBy | Genre;
+  value: AgeRating | OrderType | OrderBy | Genre | string;
 }
 
 export default QueryItem;
