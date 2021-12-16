@@ -51,11 +51,17 @@ const getById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
     try {
+        const { id, name, description, price, categoryId, vendorId } = req.body
         const updated = await productRepository.updateById(
-            ...Object.values(req.body)
+            id,
+            name,
+            description,
+            price,
+            categoryId,
+            vendorId
         )
 
-        return res.status(200).json(updated)
+        return res.status(201).json(updated)
     } catch (err) {
         next(err)
     }
