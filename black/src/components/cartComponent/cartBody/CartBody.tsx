@@ -193,6 +193,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       const result = await orders.approveOrders({ keys: selected });
       if (result.status === 204) {
         toast.success("Sho");
+        const res = await orders.apiGetOrders();
+        if (res) {
+          setRows(res);
+        }
       }
     }
   };
@@ -201,6 +205,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const result = await orders.cancelOrders({ keys: selected });
     if (result.status === 204) {
       toast.success("Sho");
+      const res = await orders.apiGetOrders();
+      if (res) {
+        setRows(res);
+      }
     }
   };
 
@@ -208,6 +216,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const result = await orders.declineOrders({ keys: selected });
     if (result.status === 204) {
       toast.success("Sho");
+      const res = await orders.apiGetOrders();
+      if (res) {
+        setRows(res);
+      }
     }
   };
   const getButtons = () => {
