@@ -1,31 +1,22 @@
-import OrderBy from "./enums/orderBy";
 import OrderType from "./enums/orderType";
 import QueryItem from "./queryParams";
 
-const OrderByOptions: Array<QueryItem> = [
+const OrderByOptions: Array<{ label: string; value: string }> = [
   {
     label: "Name",
-    value: OrderBy.Name,
+    value: "name",
   },
   {
-    label: "Genre",
-    value: OrderBy.Genre,
+    label: "Vendor",
+    value: "vendor",
   },
   {
-    label: "Count",
-    value: OrderBy.Count,
+    label: "Category",
+    value: "category",
   },
   {
     label: "Price",
-    value: OrderBy.Price,
-  },
-  {
-    label: "Publication Date",
-    value: OrderBy.PublicationDate,
-  },
-  {
-    label: "Total Rating",
-    value: OrderBy.TotalRating,
+    value: "price",
   },
 ];
 const OrderTypeOptions: Array<QueryItem> = [

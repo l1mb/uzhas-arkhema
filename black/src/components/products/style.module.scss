@@ -14,6 +14,14 @@
   background-size: cover;
 }
 
+.pagination_btn {
+  button {
+    color: white;
+  }
+  li {
+    color: white;
+  }
+}
 .content {
   display: flex;
 

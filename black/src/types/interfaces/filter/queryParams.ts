@@ -1,8 +1,7 @@
-import OrderBy from "@/api/types/Products/enums/orderBy";
 import OrderType from "@/api/types/Products/enums/orderType";
 
 interface QueryParams {
-  criteria: OrderBy | undefined;
+  criteria: string | undefined;
   type: OrderType | undefined;
   limit?: number | undefined;
   offset?: number | undefined;

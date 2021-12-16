@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import Pagination from "@mui/material/Pagination";
 import useProductFetcher from "@/hooks/loader/loader";
-import Categories from "./categories/categories";
 import FilterBar from "./FilterBar/filter";
 import ProductCard from "./productCard/productCard";
 import styles from "./style.module.scss";
@@ -137,13 +135,16 @@ function PaginatedItems(props: paginatedProps) {
     <>
       <Items currentItems={data} setMode={props.setMode} setProduct={props.setProduct} key={data} />
 
-      <Pagination count={props.pagesCount} onChange={handlePageClick} variant="outlined" color="primary" />
+      <Pagination
+        count={props.pagesCount}
+        onChange={handlePageClick}
+        siblingCount={1}
+        className={styles.pagination_btn}
+      />
     </>
   );
 }
 function Products() {
-  const catData = ["all", "dlya bichey", "chisto multiki", "poigrat'"];
-  const [categorie, setCategorie] = useState(catData[0].toUpperCase());
   const { loading, setParams, params } = useProductFetcher();
   const [isOpen, setOpen] = useState(false);
   const [mode, setMode] = useState("create");
@@ -186,17 +187,6 @@ function Products() {
         <div className={styles.content}>
           <h3 className={styles.header}>Прокат ноутбуков в Минске</h3>
           <SearchBar params={params} setParams={setParams} />
-          <div className={styles.categories}>
-            {catData.map((elem) => (
-              <Categories
-                key={elem}
-                label={elem.toUpperCase()}
-                setValue={(e: string) => setCategorie(e)}
-                selected={categorie}
-              />
-            ))}
-            <Dropdown.Divider />
-          </div>
 
           <div className={styles.contentRow}>
             <div className={styles.filter}>
@@ -206,7 +196,6 @@ function Products() {
                 }}
                 setOpen={setOpen}
                 setQuery={setParams}
-                categorie={categorie}
               />
             </div>
 

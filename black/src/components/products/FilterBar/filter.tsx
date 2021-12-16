@@ -7,7 +7,6 @@ import QueryItem from "@/api/types/products/queryParams";
 import Label from "@/elements/home/labelElement/label";
 import SortDropdown from "@/elements/products/dropdowns/sortDropdown";
 
-import OrderBy from "@/api/types/products/enums/orderBy";
 import OrderType from "@/api/types/products/enums/orderType";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import buildString from "@/types/interfaces/filter/queryString";
@@ -24,7 +23,7 @@ interface FilterProps {
 }
 
 function FilterBar(props: FilterProps) {
-  const [criteria, setCriteria] = useState<QueryItem>();
+  const [criteria, setCriteria] = useState<{ label: string; value: string }>();
   const [type, setType] = useState<QueryItem>();
   const [queryString, setQuery] = useState("");
   const { search } = useLocation();
@@ -33,7 +32,7 @@ function FilterBar(props: FilterProps) {
 
   const pushParameters = () => {
     props.setQuery({
-      criteria: criteria?.value as OrderBy,
+      criteria: criteria?.value,
       type: type?.value as OrderType,
       category: props.categorie,
       limit: 6,
