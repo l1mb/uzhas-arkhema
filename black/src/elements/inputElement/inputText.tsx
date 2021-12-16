@@ -1,9 +1,9 @@
+import React, { useState } from "react";
 import EmailValidation from "@/types/classes/validation/emailValidation";
 import PhoneValidation from "@/types/classes/validation/noValidation";
 import PasswordValidation from "@/types/classes/validation/passwordValidation";
 import UsernameValidation from "@/types/classes/validation/usernameValidation";
 import ErrorState from "@/types/interfaces/validation/errorState";
-import React, { useState } from "react";
 import styles from "./inputText.module.scss";
 
 interface prop {
