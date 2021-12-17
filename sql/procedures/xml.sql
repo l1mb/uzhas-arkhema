@@ -12,18 +12,15 @@ create or replace package body rent_utils as
         rc sys_refcursor;
         doc dbms_xmldom.domdocument;
     begin
-        open rc for select * from rent.products;
+        open rc for select * from rent.products_t;
         doc := dbms_xmldom.newdomdocument(xmltype(rc));
         dbms_xmldom.writetofile(doc, 'RENT_XML/products.xml');
     end;
     --
     procedure xml_import
     as begin
-        execute immediate 'drop table products_imported';
-        execute immediate 'create table products_imported as select * from products where 1=0';
-        insert into products_imported (id, name, description, price, category_id, vendor_id)
-        select ExtractValue(value(product_xml), '//ID') as id,
-               ExtractValue(value(product_xml), '//NAME') as name,
+        insert into products_t (name, description, price, category_id, vendor_id)
+        select ExtractValue(value(product_xml), '//NAME') as name,
                ExtractValue(value(product_xml), '//DESCRIPTION') as description,
                ExtractValue(value(product_xml), '//PRICE') as price,
                ExtractValue(value(product_xml), '//CATEGORY_ID') as category_id,
@@ -40,7 +37,6 @@ begin
 end;
 /
 
-set serveroutput on;
 begin
     rent_utils.xml_import;
 end;
