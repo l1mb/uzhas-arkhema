@@ -2,7 +2,7 @@ import userDto from "@/api/types/user/userDto";
 
 const defaultUser: userDto = {
   id: 0,
-  userName: "",
+  username: "",
   email: "",
   authenticated: false,
 };

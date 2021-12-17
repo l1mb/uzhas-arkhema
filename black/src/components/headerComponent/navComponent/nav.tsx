@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { useSelector } from "react-redux";
-import { Container, Nav, Navbar, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import StateType from "@/redux/types/stateType";
 import styles from "./nav.module.scss";
@@ -37,7 +37,7 @@ function Navigation(props: NavProps): JSX.Element {
           <Nav>
             {appState.user.authenticated ? (
               <NavDropdown
-                title={`Welcome back ${appState.role === roles.admin ? "admin" : appState.userName}`}
+                title={`Welcome back ${appState.role === roles.admin ? "admin" : ""}`}
                 id="collasible-nav-dropdown"
               >
                 <NavDropdown.Item disabled>{appState.user.email}</NavDropdown.Item>

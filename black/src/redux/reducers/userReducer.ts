@@ -15,7 +15,7 @@ const userReducer = (state: userDto | null = defaultUser, action: userAction): u
           ...state,
           id: action.payload.id,
           email: action.payload.email,
-          userName: action.payload.userName,
+          username: action.payload.username,
           authenticated: action.payload.authenticated,
         };
       }
