@@ -1,25 +1,27 @@
 create or replace directory rent_xml as 'rent_dir';
 
 create or replace package rent_utils as
-    procedure xml_export;
-    procedure xml_import;
+    procedure export_table(in_table_name varchar2);
+    procedure import_products;
 end;
 /
 
 create or replace package body rent_utils as
-    procedure xml_export
+    procedure export_table(in_table_name varchar2)
     as 
         rc sys_refcursor;
         doc dbms_xmldom.domdocument;
+        v_sql varchar2(500 char);
     begin
-        open rc for select * from rent.products_t;
+        v_sql := 'select * from rent.'|| in_table_name ||'_t';
+        open rc for v_sql;
         doc := dbms_xmldom.newdomdocument(xmltype(rc));
-        dbms_xmldom.writetofile(doc, 'RENT_XML/products.xml');
+        dbms_xmldom.writetofile(doc, 'RENT_XML/' || in_table_name || '.xml');
     end;
     --
-    procedure xml_import
+    procedure import_products
     as begin
-        insert into products_t (name, description, price, category_id, vendor_id)
+        insert into rent.products_t (name, description, price, category_id, vendor_id)
         select ExtractValue(value(product_xml), '//NAME') as name,
                ExtractValue(value(product_xml), '//DESCRIPTION') as description,
                ExtractValue(value(product_xml), '//PRICE') as price,
@@ -31,14 +33,9 @@ create or replace package body rent_utils as
     end;
 end;
 /
+show errors
 
 begin
-    rent_utils.xml_export;
+    rent_utils.export_table('products');
 end;
 /
-
-begin
-    rent_utils.xml_import;
-end;
-/
-select * from products_imported;
