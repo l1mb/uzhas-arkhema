@@ -26,7 +26,7 @@ create table users_t (
 drop table products_t;
 create table products_t (
 	id number generated always as identity,
-	name varchar2(50 char) unique not null,
+	name varchar2(50 char) not null,
 	description varchar2(200 char),
 	price number(10, 4) not null,
 	category_id number not null,
@@ -80,4 +80,4 @@ create view products_v as
     from products_t p
     join vendors_t v on p.vendor_id = v.id
     join categories_t c on p.category_id = c.id
-    where date_deleted is null;
+    where date_deleted is not null;

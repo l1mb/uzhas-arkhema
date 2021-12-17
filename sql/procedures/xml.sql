@@ -5,6 +5,7 @@ create or replace package rent_utils as
     procedure import_users;
     procedure import_vendors;
     procedure import_categories;
+    procedure import_products;
 end;
 /
 
@@ -44,22 +45,39 @@ create or replace package body rent_utils as
     --
     procedure import_categories
     as begin
-        insert into categories_t(name, description)
-        select ExtractValue(value(category_xml), '//NAME') as name,
-               ExtractValue(value(category_xml), '//DESCRIPTION') as description
+        insert into categories_t(name)
+        select ExtractValue(value(category_xml), '//NAME') as name
         from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/categories.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) category_xml;
         commit;
     end;
+    --
+    procedure import_products
+    as begin
+        insert into products_t (name, description, price, category_id, vendor_id, date_deleted)
+        select ExtractValue(value(product_xml), '//NAME') as name,
+               ExtractValue(value(product_xml), '//DESCRIPTION') as description,
+               ExtractValue(value(product_xml), '//PRICE') as price,
+               ExtractValue(value(product_xml), '//CATEGORY_ID') as category_id,
+               ExtractValue(value(product_xml), '//VENDOR_ID') as vendor_id,
+               ExtractValue(value(product_xml), '//DATE_DELETED') as date_deleted
+        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/products.xml'),
+            nls_charset_id('utf-8')),'/ROWSET/ROW'))) product_xml;
+        commit;
+    end;
 end;
 /
+show errors;
 
 -- begin
 --     rent_utils.export_table('users');
 -- end;
 -- /
 
--- begin
---     rent_utils.import_users;
--- end;
--- /
+begin
+    rent_utils.import_categories;
+    rent_utils.import_vendors;
+    rent_utils.import_users;
+    rent_utils.import_products;
+end;
+/
