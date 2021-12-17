@@ -84,10 +84,8 @@ create or replace package body rent_products as
     as
         v_sql varchar2(500 char);
     begin
-    v_sql := 'select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor'
-            ||' from products_t p'
-            ||' join vendors_t v on p.vendor_id = v.id'
-            ||' join categories_t c on p.category_id = c.id'
+    v_sql := 'select *'
+            ||' from products_v p'
             ||' where '|| in_filter_by || ' like ''%'|| in_filter_query ||'%'''
             ||' order by '|| in_order_by ||' '|| in_order_mode
             ||' offset '|| in_offset ||' rows';
