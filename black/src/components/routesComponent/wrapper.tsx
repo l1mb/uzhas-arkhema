@@ -27,7 +27,7 @@ function Wrapper() {
 
   const signedOut = () => {
     dispatch(actions.setUser(defaultUser));
-    dispatch(actions.setRole(roles.stranger));
+    dispatch(actions.setRole(roles.guest));
     localStorage.clear();
     history.push(RoutesData.home.route);
   };
