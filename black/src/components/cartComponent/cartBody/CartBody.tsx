@@ -180,10 +180,11 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   selected: number[];
   rows: OrderProduct[];
+  setRows: (e: OrderProduct[]) => void;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected } = props;
+  const { numSelected, selected, setRows } = props;
   const role = useSelector<StateType, string>((state) => state.role);
 
   const handleApprove = async () => {
@@ -193,6 +194,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       const result = await orders.approveOrders({ keys: selected });
       if (result.status === 204) {
         toast.success("Sho");
+        const res = await orders.apiGetOrders();
+        if (res) {
+          setRows(res);
+        }
       }
     }
   };
@@ -201,6 +206,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const result = await orders.cancelOrders({ keys: selected });
     if (result.status === 204) {
       toast.success("Sho");
+      const res = await orders.apiGetOrders();
+      if (res) {
+        setRows(res);
+      }
     }
   };
 
@@ -208,6 +217,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const result = await orders.declineOrders({ keys: selected });
     if (result.status === 204) {
       toast.success("Sho");
+      const res = await orders.apiGetOrders();
+      if (res) {
+        setRows(res);
+      }
     }
   };
   const getButtons = () => {
@@ -337,7 +350,7 @@ export default function EnhancedTable() {
   return (
     <Box sx={{ width: "1150px" }} style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
       <Paper sx={{ width: "100%" }}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected} rows={rows} />
+        <EnhancedTableToolbar numSelected={selected.length} selected={selected} rows={rows} setRows={setRows} />
         <TableContainer style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
             <EnhancedTableHead
