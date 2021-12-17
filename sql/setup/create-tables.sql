@@ -39,7 +39,6 @@ drop table categories_t;
 create table categories_t (
 	id number generated always as identity,
 	name varchar2(50 char) not null,
-	description varchar2(200 char),
 	constraint categories_pk primary key (id)
 );
 

@@ -1,7 +1,7 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
-module.exports.add = async (name, description) => {
+module.exports.add = async (name) => {
     try {
         let connection
         try {
@@ -9,10 +9,9 @@ module.exports.add = async (name, description) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_categories.add(:name, :description, :added); end;`,
+                `begin rent_categories.add(:name, :added); end;`,
                 {
                     name,
-                    description,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
