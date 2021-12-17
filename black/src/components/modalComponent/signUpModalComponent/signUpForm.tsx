@@ -28,22 +28,12 @@ function SignUpForm(props: AuthFormProps): JSX.Element {
         <h3>Sign Up</h3>
 
         <div className="form-group">
-          <label>First name</label>
+          <label>Username</label>
           <input
             type="text"
             className="form-control"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Last name</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.currentTarget.value)}
+            placeholder="username"
+            onChange={(e) => setUsername(e.currentTarget.value)}
           />
         </div>
 
@@ -52,8 +42,8 @@ function SignUpForm(props: AuthFormProps): JSX.Element {
           <input
             type="email"
             className="form-control"
-            placeholder="Enter phonk number"
-            onChange={(e) => setPhone(e.currentTarget.value)}
+            placeholder="email"
+            onChange={(e) => setEmail(e.currentTarget.value)}
           />
         </div>
 
@@ -62,8 +52,17 @@ function SignUpForm(props: AuthFormProps): JSX.Element {
           <input
             type="password"
             className="form-control"
-            placeholder="Enter username"
-            onChange={(e) => setUsername(e.currentTarget.value)}
+            placeholder="password"
+            onChange={(e) => setPassword(e.currentTarget.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Confirm password</label>
+          <input
+            type="password"
+            className="form-control"
+            placeholder="password"
           />
         </div>
 

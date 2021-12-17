@@ -4,7 +4,7 @@ const defaultUser: userDto = {
   id: 0,
   userName: "",
   email: "",
-  authencated: false,
+  authenticated: false,
 };
 
 export default defaultUser;

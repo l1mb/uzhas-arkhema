@@ -35,9 +35,9 @@ function Navigation(props: NavProps): JSX.Element {
             </NavLink>
           </Nav>
           <Nav>
-            {appState.user.authencated ? (
+            {appState.user.authenticated ? (
               <NavDropdown
-                title={`Welcome back ${appState.role === roles.admin ? "admin" : ""}`}
+                title={`Welcome back ${appState.role === roles.admin ? "admin" : appState.userName}`}
                 id="collasible-nav-dropdown"
               >
                 <NavDropdown.Item disabled>{appState.user.email}</NavDropdown.Item>
@@ -78,7 +78,7 @@ function Navigation(props: NavProps): JSX.Element {
             {props.data.about.label}
           </NavLink>
         </li>
-        {!appState.user.authencated ? (
+        {!appState.user.authenticated ? (
           <li>
             <NavLink activeClassName={styles.active} to={props.data.signIn.route}>
               {props.data.signIn.label}
@@ -86,7 +86,7 @@ function Navigation(props: NavProps): JSX.Element {
           </li>
         ) : null}
 
-        {!appState.user.authencated ? (
+        {!appState.user.authenticated ? (
           <li>
             <NavLink activeClassName={styles.active} to={props.data.signUp.route}>
               {props.data.signUp.label}
