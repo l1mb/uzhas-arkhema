@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { useSelector } from "react-redux";
-import { Container, Nav, Navbar, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import StateType from "@/redux/types/stateType";
 import styles from "./nav.module.scss";
@@ -35,7 +35,7 @@ function Navigation(props: NavProps): JSX.Element {
             </NavLink>
           </Nav>
           <Nav>
-            {appState.user.authencated ? (
+            {appState.user.authenticated ? (
               <NavDropdown
                 title={`Welcome back ${appState.role === roles.admin ? "admin" : ""}`}
                 id="collasible-nav-dropdown"
@@ -78,7 +78,7 @@ function Navigation(props: NavProps): JSX.Element {
             {props.data.about.label}
           </NavLink>
         </li>
-        {!appState.user.authencated ? (
+        {!appState.user.authenticated ? (
           <li>
             <NavLink activeClassName={styles.active} to={props.data.signIn.route}>
               {props.data.signIn.label}
@@ -86,7 +86,7 @@ function Navigation(props: NavProps): JSX.Element {
           </li>
         ) : null}
 
-        {!appState.user.authencated ? (
+        {!appState.user.authenticated ? (
           <li>
             <NavLink activeClassName={styles.active} to={props.data.signUp.route}>
               {props.data.signUp.label}

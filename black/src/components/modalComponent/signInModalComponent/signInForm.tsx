@@ -31,7 +31,7 @@ function SignInForm(props): JSX.Element {
           <input
             type="text"
             className="form-control"
-            placeholder="Enter email"
+            placeholder="username"
             onChange={(e) => setusername(e.currentTarget.value)}
           />
         </div>
@@ -41,7 +41,7 @@ function SignInForm(props): JSX.Element {
           <input
             type="password"
             className="form-control"
-            placeholder="Enter password"
+            placeholder="password"
             onChange={(e) => setPassword(e.currentTarget.value)}
           />
         </div>

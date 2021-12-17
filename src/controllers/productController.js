@@ -2,7 +2,14 @@ const productRepository = require('../repositories/productRepository')
 
 const add = async (req, res, next) => {
     try {
-        const added = await productRepository.add(...Object.values(req.body))
+        const { name, description, price, categoryId, vendorId } = req.body
+        const added = await productRepository.add(
+            name,
+            description,
+            price,
+            categoryId,
+            vendorId
+        )
 
         res.status(201).json(added)
     } catch (err) {

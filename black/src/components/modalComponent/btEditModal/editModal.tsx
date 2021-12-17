@@ -120,7 +120,7 @@ function BtEditModal(props: ModalProps) {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCustomer">
-            <Form.Label>Category</Form.Label>
+            <Form.Label>Vendor</Form.Label>
             <Form.Select
               aria-label="Default select example"
               onChange={(e) => handleVendorChange(e.currentTarget.value)}
