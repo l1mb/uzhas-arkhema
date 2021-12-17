@@ -24,6 +24,7 @@ create or replace package rent_products as
         in_id products_t.id%type,
         out_product out sys_refcursor
     );
+    procedure get_count(out_count out number);
     procedure update_by_id(
         in_id products_t.id%type,
         in_name products_t.name%type,
@@ -86,7 +87,8 @@ create or replace package body rent_products as
     begin
     v_sql := 'select *'
             ||' from products_v p'
-            ||' where '|| in_filter_by || ' like ''%'|| in_filter_query ||'%'''
+            ||' where '|| in_filter_by || ' like ''%'
+            || in_filter_query ||'%'' collate binary_ci'
             ||' order by '|| in_order_by ||' '|| in_order_mode
             ||' offset '|| in_offset ||' rows';
     if in_limit != -1 then
@@ -103,6 +105,11 @@ create or replace package body rent_products as
         open out_product for
             select * from products_v
             where id = in_id;
+    end;
+    --
+    procedure get_count(out_count out number)
+    as begin
+        select count(id) into out_count from products_v;
     end;
     --
     procedure update_by_id(

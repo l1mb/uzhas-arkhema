@@ -54,7 +54,7 @@ module.exports.add = async (
 module.exports.getAll = async (
     offset = 0,
     limit = -1,
-    filter_by = 'product',
+    filter_by = 'name',
     filter_query = '',
     order_by = 'id',
     order_mode = 'asc'
@@ -64,14 +64,6 @@ module.exports.getAll = async (
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-
-            column_names = {
-                product: 'p.name',
-                vendor: 'v.name',
-                category: 'c.name',
-            }
-            if (filter_by in column_names) filter_by = column_names[filter_by]
-            else filter_by = 'p.name'
 
             const result = await connection.execute(
                 `begin rent_products.get_all(:offset, :limit, :filter_by,
@@ -231,6 +223,40 @@ module.exports.updateById = async (
             if (!product) throw new Error('product not found')
 
             return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports.getCount = async () => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin rent_products.get_count(:count); end;`,
+                {
+                    count: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.DB_TYPE_NUMBER,
+                    },
+                }
+            )
+
+            return result.outBinds.count
         } catch (err) {
             throw err
         } finally {
