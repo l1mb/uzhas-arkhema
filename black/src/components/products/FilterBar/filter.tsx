@@ -46,6 +46,10 @@ function FilterBar(props: FilterProps) {
   };
 
   useEffect(() => {
+    pushParameters();
+  }, [orderby, type, shape]);
+
+  useEffect(() => {
     async function fetchData() {
       const p = await productsApi.apiGetPickUps();
       const m = await productsApi.apiGetMnfrs();

@@ -43,7 +43,7 @@ function Products() {
   const [pagesCount, setPagesCount] = useState<number>(1);
   const dispatch = useDispatch();
 
-  const data = useSelector<StateType, readProductDto[]>((state) => state.Products);
+  const data = useSelector<StateType, readProductDto[]>((state) => state.products);
 
   useEffect(() => {
     async function getCount() {
