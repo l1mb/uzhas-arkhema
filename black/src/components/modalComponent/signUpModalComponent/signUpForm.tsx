@@ -1,77 +1,78 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { FormEvent, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import InputText from "@/elements/inputElement/inputText";
 import AuthFormProps from "@/types/interfaces/props/formProps/authFormProps";
+import inputState from "@/elements/inputElement/state/InputState";
+import defaultInputState from "@/elements/inputElement/state/defaultstate";
 import styles from "./signUpForm.module.scss";
-import RoutesData from "@/components/routesComponent/types/routes/RoutesData";
 
-function SignUpForm(props: AuthFormProps): JSX.Element {
-  const [emailProp, setEmail] = useState<string>("");
-  const [passwordProp, setPassword] = useState<string>("");
-  const [phoneProp, setPhone] = useState<string>("");
-  const [usernameProp, setUsername] = useState<string>("");
+function SignUpForm(props): JSX.Element {
+  const [emailProp, setEmail] = useState<inputState>(defaultInputState);
+  const [passwordProp, setPassword] = useState<inputState>(defaultInputState);
+  const [phoneProp, setPhone] = useState<inputState>(defaultInputState);
+  const [usernameProp, setUsername] = useState<inputState>(defaultInputState);
+
+  const [isInvalid, setInvalid] = useState(true);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     const newUser = {
-      email: emailProp,
-      password: passwordProp,
-      phone: phoneProp,
-      username: usernameProp,
+      email: emailProp.value,
+      password: passwordProp.value,
+      phone: phoneProp.value,
+      username: usernameProp.value,
     };
     props.onSubmit(newUser);
   };
 
+  useEffect(() => {
+    setInvalid(emailProp.error != null || passwordProp.error != null);
+  }, [emailProp.error, passwordProp.error]);
+
   return (
-    <div className={`${styles.formWrapper} container`}>
+    <div className={styles.formWrapper}>
+      <h2>Sign up</h2>
       <form onSubmit={onSubmit} className={styles.form}>
-        <h3>Sign Up</h3>
+        <InputText
+          setValue={(e) => {
+            setUsername(e);
+          }}
+          inputType="text"
+          propName="username"
+          label="UserName"
+        />
+        <InputText
+          setValue={(e) => {
+            setPhone(e);
+          }}
+          inputType="text"
+          propName="phone"
+          label="Phone number"
+        />
+        <InputText
+          setValue={(e) => {
+            setEmail(e);
+          }}
+          inputType="text"
+          propName="email"
+          label="Email"
+        />
+        <InputText
+          setValue={(e) => {
+            setPassword(e);
+          }}
+          inputType="text"
+          propName="password"
+          label="Password"
+        />
 
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="username"
-            onChange={(e) => setUsername(e.currentTarget.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="email"
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="password"
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Confirm password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="password"
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary btn-block">
-          Sign Up
+        <button type="submit" disabled={isInvalid}>
+          Submit
+          <span />
+          <span />
+          <span />
+          <span />
         </button>
-        <p className="forgot-password text-right">
-          Already registered <NavLink to={RoutesData.signIn.route}>sign in</NavLink>
-        </p>
       </form>
     </div>
   );
