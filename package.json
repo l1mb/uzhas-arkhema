@@ -1,6 +1,6 @@
 {
-    "name": "computer-rent",
-    "version": "1.0.0",
+    "name": "cender-shop",
+    "version": "1.0.1",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -8,7 +8,7 @@
         "static": "export UV_THREADPOOL_SIZE=4 && node src/app.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "sergey sergeev",
     "license": "ISC",
     "dependencies": {
         "accesscontrol": "^2.2.1",

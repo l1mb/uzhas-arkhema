@@ -8,7 +8,7 @@ module.exports.add = async (
     description,
     price,
     category_id,
-    vendor_id
+    manufacturer_id
 ) => {
     try {
         let connection
@@ -18,13 +18,13 @@ module.exports.add = async (
 
             const result = await connection.execute(
                 `begin rent_products.add(:name, :description, :price,
-                    :category_id, :vendor_id, :added); end;`,
+                    :category_id, :manufacturer_id, :added); end;`,
                 {
                     name,
                     description,
                     price,
                     category_id,
-                    vendor_id,
+                    manufacturer_id,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -200,7 +200,7 @@ module.exports.updateById = async (
     description,
     price,
     category_id,
-    vendor_id
+    manufacturer_id
 ) => {
     try {
         let connection
@@ -210,14 +210,14 @@ module.exports.updateById = async (
 
             const result = await connection.execute(
                 `begin rent_products.update_by_id(:id, :name, :description,
-                    :price, :category_id, :vendor_id, :updated); end;`,
+                    :price, :category_id, :manufacturer_id, :updated); end;`,
                 {
                     id,
                     name,
                     description,
                     price,
                     category_id,
-                    vendor_id,
+                    manufacturer_id,
                     updated: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
