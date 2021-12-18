@@ -122,3 +122,42 @@ module.exports.getAll = async () => {
         throw err
     }
 }
+
+module.exports.getOrders = async (id) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin rent_users.get_orders(:id); end;`,
+                {
+                    id,
+                    orders: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.orders
+            const orders = await resultSet.getRows()
+            await resultSet.close()
+
+            return orders.map((x) => keysToCamel(x))
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}

@@ -34,10 +34,10 @@ function SignIn(props: componentProps) {
   };
 
   useEffect(() => {
-    if (user.authencated) {
+    if (user.authenticated) {
       history.push(from.pathname);
     }
-  }, [user.authencated]);
+  }, [user.authenticated]);
 
   const openModal = (e: boolean) => setOpen(e);
 

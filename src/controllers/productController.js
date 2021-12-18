@@ -2,7 +2,14 @@ const productRepository = require('../repositories/productRepository')
 
 const add = async (req, res, next) => {
     try {
-        const added = await productRepository.add(...Object.values(req.body))
+        const { name, description, price, categoryId, vendorId } = req.body
+        const added = await productRepository.add(
+            name,
+            description,
+            price,
+            categoryId,
+            vendorId
+        )
 
         res.status(201).json(added)
     } catch (err) {
@@ -40,8 +47,8 @@ const getAll = async (req, res, next) => {
 
 const getProductsCount = async (req, res, next) => {
     try {
-        const products = await productRepository.getAll()
-        return res.status(200).json({ count: products.length })
+        const count = await productRepository.getCount()
+        return res.status(200).json({ count })
     } catch (err) {
         next(err)
     }

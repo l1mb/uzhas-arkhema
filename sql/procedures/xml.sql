@@ -1,48 +1,83 @@
 create or replace directory rent_xml as 'rent_dir';
 
 create or replace package rent_utils as
-    procedure xml_export;
-    procedure xml_import;
+    procedure export_table(in_table_name varchar2);
+    procedure import_users;
+    procedure import_vendors;
+    procedure import_categories;
+    procedure import_products;
 end;
 /
 
 create or replace package body rent_utils as
-    procedure xml_export
+    procedure export_table(in_table_name varchar2)
     as 
         rc sys_refcursor;
         doc dbms_xmldom.domdocument;
+        v_sql varchar2(500 char);
     begin
-        open rc for select * from rent.products;
+        v_sql := 'select * from rent.'|| in_table_name ||'_t';
+        open rc for v_sql;
         doc := dbms_xmldom.newdomdocument(xmltype(rc));
-        dbms_xmldom.writetofile(doc, 'RENT_XML/products.xml');
+        dbms_xmldom.writetofile(doc, 'RENT_XML/' || in_table_name || '.xml');
     end;
     --
-    procedure xml_import
+    procedure import_users
     as begin
-        execute immediate 'drop table products_imported';
-        execute immediate 'create table products_imported as select * from products where 1=0';
-        insert into products_imported (id, name, description, price, category_id, vendor_id)
-        select ExtractValue(value(product_xml), '//ID') as id,
-               ExtractValue(value(product_xml), '//NAME') as name,
+        insert into users_t (username, email, password_hash, role)
+        select ExtractValue(value(user_xml), '//USERNAME') as username,
+               ExtractValue(value(user_xml), '//EMAIL') as email,
+               ExtractValue(value(user_xml), '//PASSWORD_HASH') as password_hash,
+               ExtractValue(value(user_xml), '//ROLE') as role
+        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/users.xml'),
+            nls_charset_id('utf-8')),'/ROWSET/ROW'))) user_xml;
+        commit;
+    end;
+    --
+    procedure import_vendors
+    as begin
+        insert into vendors_t (name)
+        select ExtractValue(value(vendor_xml), '//NAME') as name
+        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/vendors.xml'),
+            nls_charset_id('utf-8')),'/ROWSET/ROW'))) vendor_xml;
+        commit;
+    end;
+    --
+    procedure import_categories
+    as begin
+        insert into categories_t(name)
+        select ExtractValue(value(category_xml), '//NAME') as name
+        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/categories.xml'),
+            nls_charset_id('utf-8')),'/ROWSET/ROW'))) category_xml;
+        commit;
+    end;
+    --
+    procedure import_products
+    as begin
+        insert into products_t (name, description, price, category_id, vendor_id, date_deleted)
+        select ExtractValue(value(product_xml), '//NAME') as name,
                ExtractValue(value(product_xml), '//DESCRIPTION') as description,
                ExtractValue(value(product_xml), '//PRICE') as price,
                ExtractValue(value(product_xml), '//CATEGORY_ID') as category_id,
-               ExtractValue(value(product_xml), '//VENDOR_ID') as vendor_id
-        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', 'products.xml'),
+               ExtractValue(value(product_xml), '//VENDOR_ID') as vendor_id,
+               ExtractValue(value(product_xml), '//DATE_DELETED') as date_deleted
+        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/products.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) product_xml;
         commit;
     end;
 end;
 /
+show errors;
+
+-- begin
+--     rent_utils.export_table('users');
+-- end;
+-- /
 
 begin
-    rent_utils.xml_export;
+    rent_utils.import_categories;
+    rent_utils.import_vendors;
+    rent_utils.import_users;
+    rent_utils.import_products;
 end;
 /
-
-set serveroutput on;
-begin
-    rent_utils.xml_import;
-end;
-/
-select * from products_imported;

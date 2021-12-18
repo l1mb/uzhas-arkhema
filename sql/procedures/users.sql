@@ -1,41 +1,45 @@
 create or replace package rent_users as
     procedure add(
-        in_username users.username%type,
-        in_email users.email%type,
-        in_password_hash users.password_hash%type,
+        in_username users_t.username%type,
+        in_email users_t.email%type,
+        in_password_hash users_t.password_hash%type,
         out_user out sys_refcursor
     );
     procedure get_all(out_users out sys_refcursor);
     procedure get_by_id(
-        in_id users.id%type,
+        in_id users_t.id%type,
         out_user out sys_refcursor
     );
     procedure get_by_username(
-        in_username users.username%type,
+        in_username users_t.username%type,
         out_user out sys_refcursor
+    );
+    procedure get_orders(
+        in_id users_t.id%type,
+        out_orders out sys_refcursor
     );
 end;
 /
 
 create or replace package body rent_users as
     procedure add(
-        in_username users.username%type,
-        in_email users.email%type,
-        in_password_hash users.password_hash%type,
+        in_username users_t.username%type,
+        in_email users_t.email%type,
+        in_password_hash users_t.password_hash%type,
         out_user out sys_refcursor
     )
     as 
         users_count int;
-        role users.role%type := 'customer';
-        added_id users.id%type;
+        v_role users_t.role%type := 'customer';
+        added_id users_t.id%type;
         added_user sys_refcursor;
     begin
-        select count(username) into users_count from users;
+        select count(username) into users_count from users_t;
         if users_count = 0 then
-            role := 'admin';
+            v_role := 'admin';
         end if;
-        insert into users(username, email, password_hash, role)
-            values(in_username, in_email, in_password_hash, role)
+        insert into users_t(username, email, password_hash, role)
+            values(in_username, in_email, in_password_hash, v_role)
             returning id into added_id;
         commit;
         get_by_id(added_id, added_user);
@@ -49,28 +53,37 @@ create or replace package body rent_users as
     procedure get_all(out_users out sys_refcursor)
     as begin
         open out_users for
-            select id, username, email, password_hash, role
-            from users;
+            select * from users_v;
     end;
     --
     procedure get_by_id(
-        in_id users.id%type,
+        in_id users_t.id%type,
         out_user out sys_refcursor
     )
     as begin
         open out_user for
-            select id, username, email, password_hash, role
-            from users where id = in_id;
+            select * from users_v
+            where id = in_id;
     end;
     --
     procedure get_by_username(
-        in_username users.username%type,
+        in_username users_t.username%type,
         out_user out sys_refcursor
     )
     as begin
         open out_user for
-            select id, username, email, password_hash, role
-            from users where username = in_username;
+            select * from users_v
+            where username = in_username;
+    end;
+    --
+    procedure get_orders(
+        in_id users_t.id%type,
+        out_orders out sys_refcursor
+    )
+    as begin
+        open out_orders for
+            select * from orders_v
+            where user_id = in_id;
     end;
 end;
 /

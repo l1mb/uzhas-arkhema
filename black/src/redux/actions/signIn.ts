@@ -33,7 +33,7 @@ const signInDispatch =
       const prikol = await userInfoPromise.json();
 
       const updatedUser: { username: string; email: string } = prikol;
-      updatedUser.authencated = true;
+      updatedUser.authenticated = true;
 
       dispatch(actions.setRole(getRole()));
       dispatch(actions.setUser(updatedUser));
