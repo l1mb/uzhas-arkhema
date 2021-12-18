@@ -1,19 +1,19 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import apiGetProducts from "@/api/httpService/apiGetProducts";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import actions from "../actions";
 import ProductActions from "./newsActionTypes";
-import IBasicProduct from "@/api/types/products/IBasicProduct";
+import newsApi from "@/api/httpService/news/newsApi";
+import mnfrReadDto from "@/types/interfaces/news/nmfrs";
 
 const setNewsDispatch =
   (actionType: string, params?: QueryParams) =>
   async (
     dispatch: Dispatch<{
       type: string;
-      payload: IBasicProduct[];
+      payload: mnfrReadDto[];
     }>
   ): Promise<void> => {
-    let Products: IBasicProduct[] = [];
+    let mnfrs: mnfrReadDto[] = [];
     switch (actionType) {
       case ProductActions.INIT_LIST:
         // Products = await apiGetProducts.apiProductsList();
@@ -21,12 +21,12 @@ const setNewsDispatch =
         break;
       case ProductActions.QUERIFIED_LIST:
         if (params) {
-          Products = await apiGetProducts.apiSortedProductsList(params);
+          mnfrs = await newsApi.getMnfrs();
         }
         break;
       default:
         break;
     }
-    dispatch(actions.setProducts(Products));
+    dispatch(actions.setMnfrs(mnfrs));
   };
 export default setNewsDispatch;
