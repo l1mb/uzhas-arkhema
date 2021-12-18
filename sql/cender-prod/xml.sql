@@ -1,6 +1,6 @@
-create or replace directory rent_xml as 'rent_dir';
+create or replace directory cender_xml as 'cender_dir';
 
-create or replace package rent_utils as
+create or replace package cender_utils as
     procedure export_table(in_table_name varchar2);
     procedure import_users;
     procedure import_manufacturers;
@@ -9,17 +9,17 @@ create or replace package rent_utils as
 end;
 /
 
-create or replace package body rent_utils as
+create or replace package body cender_utils as
     procedure export_table(in_table_name varchar2)
     as 
         rc sys_refcursor;
         doc dbms_xmldom.domdocument;
         v_sql varchar2(500 char);
     begin
-        v_sql := 'select * from rent.'|| in_table_name ||'_t';
+        v_sql := 'select * from cender.'|| in_table_name ||'_t';
         open rc for v_sql;
         doc := dbms_xmldom.newdomdocument(xmltype(rc));
-        dbms_xmldom.writetofile(doc, 'RENT_XML/' || in_table_name || '.xml');
+        dbms_xmldom.writetofile(doc, 'cender_XML/' || in_table_name || '.xml');
     end;
     --
     procedure import_users
@@ -29,7 +29,7 @@ create or replace package body rent_utils as
                ExtractValue(value(user_xml), '//EMAIL') as email,
                ExtractValue(value(user_xml), '//PASSWORD_HASH') as password_hash,
                ExtractValue(value(user_xml), '//ROLE') as role
-        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/users.xml'),
+        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/users.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) user_xml;
         commit;
     end;
@@ -38,7 +38,7 @@ create or replace package body rent_utils as
     as begin
         insert into manufacturers_t (name)
         select ExtractValue(value(manufacturer_xml), '//NAME') as name
-        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/manufacturers.xml'),
+        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/manufacturers.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) manufacturer_xml;
         commit;
     end;
@@ -47,7 +47,7 @@ create or replace package body rent_utils as
     as begin
         insert into categories_t(name)
         select ExtractValue(value(category_xml), '//NAME') as name
-        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/categories.xml'),
+        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/categories.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) category_xml;
         commit;
     end;
@@ -61,7 +61,7 @@ create or replace package body rent_utils as
                ExtractValue(value(product_xml), '//CATEGORY_ID') as category_id,
                ExtractValue(value(product_xml), '//manufacturer_ID') as manufacturer_id,
                ExtractValue(value(product_xml), '//DATE_DELETED') as date_deleted
-        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/products.xml'),
+        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/products.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) product_xml;
         commit;
     end;
@@ -70,14 +70,14 @@ end;
 show errors;
 
 -- begin
---     rent_utils.export_table('users');
+--     cender_utils.export_table('users');
 -- end;
 -- /
 
 begin
-    rent_utils.import_categories;
-    rent_utils.import_manufacturers;
-    rent_utils.import_users;
-    rent_utils.import_products;
+    cender_utils.import_categories;
+    cender_utils.import_manufacturers;
+    cender_utils.import_users;
+    cender_utils.import_products;
 end;
 /

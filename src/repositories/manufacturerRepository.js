@@ -1,7 +1,7 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
-module.exports.add = async (name) => {
+module.exports.getAll = async () => {
     try {
         let connection
         try {
@@ -9,21 +9,20 @@ module.exports.add = async (name) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_vendors.add(:name, :added); end;`,
+                `begin cender_manufacturers.get_all(:manufacturers); end;`,
                 {
-                    name,
-                    added: {
+                    manufacturers: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
                     },
                 }
             )
 
-            const resultSet = result.outBinds.added
-            const vendor = keysToCamel((await resultSet.getRows(1))[0])
+            const resultSet = result.outBinds.manufacturers
+            const manufacturers = await resultSet.getRows()
             await resultSet.close()
 
-            return vendor
+            return manufacturers.map((x) => keysToCamel(x))
         } catch (err) {
             throw err
         } finally {
@@ -40,7 +39,7 @@ module.exports.add = async (name) => {
     }
 }
 
-module.exports.getAll = async () => {
+module.exports.getById = async (id) => {
     try {
         let connection
         try {
@@ -48,20 +47,23 @@ module.exports.getAll = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_vendors.get_all(:vendors); end;`,
+                `begin cender_manufacturers.get_by_id(:id, :manufacturer); end;`,
                 {
-                    vendors: {
+                    id,
+                    manufacturer: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
                     },
                 }
             )
 
-            const resultSet = result.outBinds.vendors
-            const vendors = await resultSet.getRows()
+            const resultSet = result.outBinds.manufacturer
+            const manufacturer = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
 
-            return vendors.map((x) => keysToCamel(x))
+            if (!manufacturer) throw new Error('manufacturer not found')
+
+            return manufacturer
         } catch (err) {
             throw err
         } finally {

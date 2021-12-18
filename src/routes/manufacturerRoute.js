@@ -4,6 +4,6 @@ const manufacturerController = require('../controllers/manufacturerController')
 const router = express.Router()
 
 router.get('/', manufacturerController.getAll)
-router.post('/', manufacturerController.add)
+router.get('/:id', manufacturerController.getById)
 
 module.exports = router
