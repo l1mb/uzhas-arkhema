@@ -5,8 +5,8 @@ module.exports.add = async (
     user_id,
     product_id,
     phone,
-    rent_start_date,
-    rent_end_date
+    cender_start_date,
+    cender_end_date
 ) => {
     try {
         let connection
@@ -15,13 +15,13 @@ module.exports.add = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_orders.add(:user_id, :product_id, :phone, :rent_start_date, :rent_end_date, :added); end;`,
+                `begin cender_orders.add(:user_id, :product_id, :phone, :cender_start_date, :cender_end_date, :added); end;`,
                 {
                     user_id,
                     product_id,
                     phone,
-                    rent_start_date,
-                    rent_end_date,
+                    cender_start_date,
+                    cender_end_date,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -58,7 +58,7 @@ module.exports.getAll = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_orders.get_all(:orders); end;`,
+                `begin cender_orders.get_all(:orders); end;`,
                 {
                     orders: {
                         dir: oracledb.BIND_OUT,
@@ -96,7 +96,7 @@ module.exports.getById = async (id) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_orders.get_by_id(:id, :order); end;`,
+                `begin cender_orders.get_by_id(:id, :order); end;`,
                 {
                     id,
                     order: {
@@ -137,7 +137,7 @@ module.exports.changeStatus = async (id, new_status) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             await connection.execute(
-                `begin rent_orders.set_status(:id, :new_status); end;`,
+                `begin cender_orders.set_status(:id, :new_status); end;`,
                 {
                     id,
                     new_status,
