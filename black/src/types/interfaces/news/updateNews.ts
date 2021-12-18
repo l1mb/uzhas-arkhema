@@ -1,5 +1,5 @@
 interface updateNews {
-  manufacrurerId: number;
+  id: number;
   news: string;
 }
 

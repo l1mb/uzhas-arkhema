@@ -33,8 +33,6 @@ export default {
   approveOrders,
   declineOrders,
   cancelOrders,
-  vendors,
-  categories,
   pages,
   news,
   mnfrs,
