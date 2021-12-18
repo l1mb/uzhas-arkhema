@@ -13,7 +13,7 @@ const orders = `${host}/orders`;
 const declineOrders = `${orders}/reject`;
 const completeOrders = `${orders}/complete`;
 const pages = `${products}/pages`;
-const mnfrs = `${host}/manufacturers/`;
+const mnfrs = `${host}/manufacturers`;
 const news = `${mnfrs}/news`;
 
 export default {
