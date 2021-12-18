@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import ProductActions from "@/redux/actions/products/productActionTypes";
+import ProductActions from "@/redux/actions/news/newsActionTypes";
 import setProductsDispatch from "@/redux/actions/products/setProduct";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 

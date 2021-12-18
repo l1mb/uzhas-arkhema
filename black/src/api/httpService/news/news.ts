@@ -3,7 +3,6 @@ import IBasicProduct from "@/api/types/products/IBasicProduct";
 import postOrderEntity from "@/types/interfaces/order/postOrderEntity";
 import BackendOrderUpdateEntity from "@/types/interfaces/order/backendOrderUpdateEntity";
 import OrderProduct from "@/types/interfaces/order/orderProducts";
-import zipnews from "@/helpers/basic/zipnews";
 import getOptions from "../tokenedOptions";
 import mnfrReadDto from "@/types/interfaces/news/nmfrs";
 
@@ -45,11 +44,6 @@ const productsWithnews = async (type?: string) => {
     data,
     newproducts,
   };
-};
-
-const getZippednews = async (type?: string): Promise<OrderProduct[]> => {
-  const news = await productsWithnews(type);
-  return zipnews(news.newproducts, news.data);
 };
 
 const postOrder = async (prop: postOrderEntity): Promise<Response> => {

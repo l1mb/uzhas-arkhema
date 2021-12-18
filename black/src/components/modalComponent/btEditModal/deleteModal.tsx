@@ -2,7 +2,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import productsApi from "@/api/httpService/products/productsApi";
 import setProductsDispatch from "@/redux/actions/products/setProduct";
-import ProductActions from "@/redux/actions/products/productActionTypes";
+import ProductActions from "@/redux/actions/news/newsActionTypes";
 
 interface DeleteModalProps {
   params: QueryParams | undefined;

@@ -4,14 +4,15 @@ import apiGetProducts from "@/api/httpService/apiGetProducts";
 import ProductsApi from "@/api/httpService/products/productsApi";
 import IGroupedProduct from "@/api/types/products/IGroupedProduct";
 import actions from "../actions";
-import ProductActions from "../news/newsActionTypes";
+import ProductActions from "./newsActionTypes";
+import news from "@/types/interfaces/news/news";
 
-const detectPromise = (actionType: string, body: FormData | number): Promise<Response> => {
+const detectPromise = (actionType: string, body:  | number): Promise<Response> => {
   switch (actionType) {
     case ProductActions.CREATE:
-      return ProductsApi.postProduct(body as FormData);
+      return ProductsApi.postProduct(body as news);
     case ProductActions.UPDATE:
-      return ProductsApi.putProduct(body as FormData);
+      return ProductsApi.putProduct(body as );
     case ProductActions.DELETE:
       return ProductsApi.deleteProduct(body as number);
 
