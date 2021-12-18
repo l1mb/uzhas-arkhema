@@ -5,7 +5,7 @@ const { port, dbSettings } = require('./config/environment')
 
 const userRouter = require('./routes/userRoute')
 const productRouter = require('./routes/productRoute')
-const vendorRouter = require('./routes/vendorRoute')
+const manufacturerRouter = require('./routes/manufacturerRoute')
 const categoryRouter = require('./routes/categoryRoute')
 const orderRouter = require('./routes/orderRoute')
 
@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
-app.use('/api/vendors', vendorRouter)
+app.use('/api/manufacturers', manufacturerRouter)
 app.use('/api/categories', categoryRouter)
 app.use('/api/orders', orderRouter)
 
