@@ -81,3 +81,5 @@ begin
     rent_utils.import_products;
 end;
 /
+update products_t set date_deleted = null where mod(id, 3) != 0;
+commit;

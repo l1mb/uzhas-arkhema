@@ -83,14 +83,15 @@ create view products_v as
     where date_deleted is null;
 
 
--- create index product_vendors
---     on products_t( 
---           (case when completionstatus = 'complete' and validationstatus = 'pending'
---                 then validationstatus
---                 else null
---             end),
---           (case when completionstatus = 'complete' and validationstatus = 'pending'
---                 then completionstatus
---                 else null
---             end)
---        );
+drop index product_vendors;
+create index product_vendors
+    on products_t(vendor_id);
+
+drop index product_categories;
+create index product_categories
+    on products_t(category_id);
+
+drop index product_price;
+create index product_price
+    on products_t(price);
+
