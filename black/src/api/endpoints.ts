@@ -16,6 +16,8 @@ const cancelOrders = `${orders}/cancel`;
 const vendors = `${host}/vendors`;
 const categories = `${host}/categories`;
 const pages = `${products}/pages`;
+const mnfrs = `${host}/manufacturers/`;
+const news = `${mnfrs}/news`;
 
 export default {
   getProductSearchEndpoint,
@@ -34,4 +36,6 @@ export default {
   vendors,
   categories,
   pages,
+  news,
+  mnfrs,
 };

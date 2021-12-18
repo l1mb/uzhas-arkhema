@@ -11,10 +11,10 @@ import defaultUser from "@/types/constants/user/defaultUser";
 import PrivateRoute from "./protectedRouteComponent/protectedRoute";
 import RoutesData from "./types/routes/RoutesData";
 
-import About from "../about/about";
 import Products from "../products/products";
 import getRole from "@/helpers/token/getRole";
 import Home from "../homeComponent/homeComponent/home";
+import News from "../news/news";
 
 const SignIn = React.lazy(() => import("../authComponents/signIn"));
 const SignUp = React.lazy(() => import("../authComponents/signUp"));
@@ -55,7 +55,7 @@ function Wrapper() {
           <SignIn successRoute={RoutesData.home.route} redirectRoute={RoutesData.home.route} />
         </Route>
         <Route exact path={RoutesData.about.route}>
-          <About />
+          <News />
         </Route>
         {RoutesData.products.map((u) => (
           <Route key={u.label} path={u.route}>
