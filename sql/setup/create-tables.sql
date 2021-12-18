@@ -95,3 +95,11 @@ drop index product_price;
 create index product_price
     on products_t(price);
 
+drop index product_not_deleted;
+create index product_not_deleted
+    on products_t(
+        case when date_deleted is null
+            then 1
+            else null
+        end
+    );
