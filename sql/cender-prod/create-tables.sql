@@ -1,3 +1,15 @@
+drop table orders_t;
+create table orders_t (
+    id number generated always as identity,
+    user_id number not null,
+    product_id number not null,
+    count number,
+    order_date date default sysdate,
+    status varchar2(50) default 'in progress',
+    constraint orders_pk primary key (id),
+    constraint orders_chk check (status in ('in progress', 'completed'))
+);
+
 
 drop table users_t;
 create table users_t (
@@ -10,8 +22,8 @@ create table users_t (
     constraint users_chk check (role = 'admin' or role = 'customer')
 );
 
-DROP TABLE Products;
-CREATE TABLE Products (
+DROP TABLE products_t;
+CREATE TABLE products_t (
     id INT,
     name VARCHAR2(255),
     description VARCHAR2(255),
@@ -20,16 +32,16 @@ CREATE TABLE Products (
     mnfrId INT NOT NULL,
     shape VARCHAR2(255) NOT NULL,
     pickups INT NOT NULL,
-    constraint PRODUCTS_PK PRIMARY KEY (id));
+    constraint products_t_PK PRIMARY KEY (id));
 
-DROP sequence PRODUCTS_ID_SEQ;
-CREATE sequence PRODUCTS_ID_SEQ;
+DROP sequence products_t_ID_SEQ;
+CREATE sequence products_t_ID_SEQ;
 
-CREATE trigger BI_PRODUCTS_ID
-  before insert on Products
+CREATE trigger BI_products_t_ID
+  before insert on products_t
   for each row
 begin
-  select PRODUCTS_ID_SEQ.nextval into :NEW.id from dual;
+  select products_t_ID_SEQ.nextval into :NEW.id from dual;
 end;
 /
 
@@ -89,5 +101,5 @@ end;
 
 ALTER TABLE Manufacturers ADD CONSTRAINT Manufacturers_fk0 FOREIGN KEY (newsId) REFERENCES News(id);
 
-ALTER TABLE Products ADD CONSTRAINT Products_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
-ALTER TABLE Products ADD CONSTRAINT Products_fk1 FOREIGN KEY (pickups) REFERENCES pickups(id);
+ALTER TABLE products_t ADD CONSTRAINT products_t_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
+ALTER TABLE products_t ADD CONSTRAINT products_t_fk1 FOREIGN KEY (pickups) REFERENCES pickups(id);
