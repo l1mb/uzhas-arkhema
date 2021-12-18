@@ -9,7 +9,7 @@ module.exports.add = async (username, email, passwordHash) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_users.add(:username, :email, :passwordHash,
+                `begin cender_users.add(:username, :email, :passwordHash,
                     :added); end;`,
                 {
                     username,
@@ -52,7 +52,7 @@ module.exports.getByUsername = async (username) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_users.get_by_username(:username, :user); end;`,
+                `begin cender_users.get_by_username(:username, :user); end;`,
                 {
                     username,
                     user: {
@@ -93,7 +93,7 @@ module.exports.getAll = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_users.get_all(:users); end;`,
+                `begin cender_users.get_all(:users); end;`,
                 {
                     users: {
                         dir: oracledb.BIND_OUT,
@@ -131,7 +131,7 @@ module.exports.getOrders = async (id) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_users.get_orders(:id); end;`,
+                `begin cender_users.get_orders(:id); end;`,
                 {
                     id,
                     orders: {

@@ -17,7 +17,7 @@ module.exports.add = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.add(:name, :description, :price,
+                `begin cender_products.add(:name, :description, :price,
                     :category_id, :manufacturer_id, :added); end;`,
                 {
                     name,
@@ -69,7 +69,7 @@ module.exports.getAll = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.get_all(:offset, :limit, :filter_by,
+                `begin cender_products.get_all(:offset, :limit, :filter_by,
                     :filter_query, :order_by, :order_mode, :products); end;`,
                 {
                     offset,
@@ -118,7 +118,7 @@ module.exports.getById = async (id) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.get_by_id(:id, :product); end;`,
+                `begin cender_products.get_by_id(:id, :product); end;`,
                 {
                     id,
                     product: {
@@ -160,7 +160,7 @@ module.exports.deleteById = async (id) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.delete_by_id(:id, :deleted); end;`,
+                `begin cender_products.delete_by_id(:id, :deleted); end;`,
                 {
                     id,
                     deleted: {
@@ -209,7 +209,7 @@ module.exports.updateById = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.update_by_id(:id, :name, :description,
+                `begin cender_products.update_by_id(:id, :name, :description,
                     :price, :category_id, :manufacturer_id, :updated); end;`,
                 {
                     id,
@@ -257,7 +257,7 @@ module.exports.getCount = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.get_count(:count); end;`,
+                `begin cender_products.get_count(:count); end;`,
                 {
                     count: {
                         dir: oracledb.BIND_OUT,

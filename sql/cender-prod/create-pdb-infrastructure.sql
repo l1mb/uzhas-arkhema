@@ -1,3 +1,4 @@
+select user from dual;
 drop tablespace cender_ts including contents;
 create tablespace cender_ts
     datafile 'cender_ts.dbf'

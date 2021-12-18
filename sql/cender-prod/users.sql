@@ -1,4 +1,4 @@
-create or replace package rent_users as
+create or replace package cender_users as
     procedure add(
         in_username users_t.username%type,
         in_email users_t.email%type,
@@ -14,14 +14,11 @@ create or replace package rent_users as
         in_username users_t.username%type,
         out_user out sys_refcursor
     );
-    procedure get_orders(
-        in_id users_t.id%type,
-        out_orders out sys_refcursor
-    );
 end;
 /
+show errors;
 
-create or replace package body rent_users as
+create or replace package body cender_users as
     procedure add(
         in_username users_t.username%type,
         in_email users_t.email%type,
@@ -53,7 +50,7 @@ create or replace package body rent_users as
     procedure get_all(out_users out sys_refcursor)
     as begin
         open out_users for
-            select * from users_v;
+            select * from users_t;
     end;
     --
     procedure get_by_id(
@@ -62,7 +59,7 @@ create or replace package body rent_users as
     )
     as begin
         open out_user for
-            select * from users_v
+            select * from users_t
             where id = in_id;
     end;
     --
@@ -72,18 +69,10 @@ create or replace package body rent_users as
     )
     as begin
         open out_user for
-            select * from users_v
+            select * from users_t
             where username = in_username;
     end;
     --
-    procedure get_orders(
-        in_id users_t.id%type,
-        out_orders out sys_refcursor
-    )
-    as begin
-        open out_orders for
-            select * from orders_v
-            where user_id = in_id;
-    end;
 end;
 /
+show errors

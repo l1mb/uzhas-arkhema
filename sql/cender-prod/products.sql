@@ -1,4 +1,4 @@
-create or replace package rent_products as
+create or replace package cender_products as
     procedure add(
         in_name products_t.name%type,
         in_description products_t.description%type,
@@ -36,8 +36,9 @@ create or replace package rent_products as
     );
 end;
 /
+show errors;
 
-create or replace package body rent_products as
+create or replace package body cender_products as
     procedure add(
         in_name products_t.name%type,
         in_description products_t.description%type,

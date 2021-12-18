@@ -1,3 +1,15 @@
+
+drop table users_t;
+create table users_t (
+    id number generated always as identity,
+    username varchar2(50 char) unique not null,
+    email varchar2(50 char) not null,
+    password_hash varchar2(100 char) not null,
+    role varchar2(10 char) default 'customer',
+    constraint users_pk primary key (id),
+    constraint users_chk check (role = 'admin' or role = 'customer')
+);
+
 DROP TABLE Products;
 CREATE TABLE Products (
     id INT,
@@ -7,7 +19,7 @@ CREATE TABLE Products (
     price INT NOT NULL,
     mnfrId INT NOT NULL,
     shape VARCHAR2(255) NOT NULL,
-    pickupId INT NOT NULL,
+    pickups INT NOT NULL,
     constraint PRODUCTS_PK PRIMARY KEY (id));
 
 DROP sequence PRODUCTS_ID_SEQ;
@@ -21,20 +33,20 @@ begin
 end;
 /
 
-DROP TABLE pickupId;
-CREATE TABLE pickupId (
+DROP TABLE pickups;
+CREATE TABLE pickups (
     id INT,
     name VARCHAR2(255),
-    constraint PICKUPID_PK PRIMARY KEY (id));
+    constraint pickups_PK PRIMARY KEY (id));
 
-DROP sequence PICKUPID_ID_SEQ;
-CREATE sequence PICKUPID_ID_SEQ;
+DROP sequence pickups_ID_SEQ;
+CREATE sequence pickups_ID_SEQ;
 
-CREATE trigger BI_PICKUPID_ID
-  before insert on pickupId
+CREATE trigger BI_pickups_ID
+  before insert on pickups
   for each row
 begin
-  select PICKUPID_ID_SEQ.nextval into :NEW.id from dual;
+  select pickups_ID_SEQ.nextval into :NEW.id from dual;
 end;
 /
 
@@ -78,4 +90,4 @@ end;
 ALTER TABLE Manufacturers ADD CONSTRAINT Manufacturers_fk0 FOREIGN KEY (newsId) REFERENCES News(id);
 
 ALTER TABLE Products ADD CONSTRAINT Products_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
-ALTER TABLE Products ADD CONSTRAINT Products_fk1 FOREIGN KEY (pickupId) REFERENCES pickupId(id);
+ALTER TABLE Products ADD CONSTRAINT Products_fk1 FOREIGN KEY (pickups) REFERENCES pickups(id);
