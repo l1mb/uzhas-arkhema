@@ -1,6 +1,8 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
+const priceToPrecision = (price) => parseFloat(price.toFixed(4))
+
 module.exports.add = async (
     name,
     description,
@@ -33,6 +35,7 @@ module.exports.add = async (
             const resultSet = result.outBinds.added
             const product = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
@@ -86,6 +89,10 @@ module.exports.getAll = async (
             const products = await resultSet.getRows()
             await resultSet.close()
 
+            products.forEach(
+                (product) => (product.PRICE = priceToPrecision(product.PRICE))
+            )
+
             return products.map((x) => keysToCamel(x))
         } catch (err) {
             throw err
@@ -126,6 +133,7 @@ module.exports.getById = async (id) => {
             await resultSet.close()
 
             if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
@@ -167,6 +175,7 @@ module.exports.deleteById = async (id) => {
             await resultSet.close()
 
             if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
@@ -221,6 +230,7 @@ module.exports.updateById = async (
             await resultSet.close()
 
             if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
