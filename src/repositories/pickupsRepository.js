@@ -9,7 +9,7 @@ module.exports.add = async (name) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin cender_categories.add(:name, :added); end;`,
+                `begin cender_pickups.add(:name, :added); end;`,
                 {
                     name,
                     added: {
@@ -20,10 +20,10 @@ module.exports.add = async (name) => {
             )
 
             const resultSet = result.outBinds.added
-            const category = keysToCamel((await resultSet.getRows(1))[0])
+            const pickups = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
 
-            return category
+            return pickups
         } catch (err) {
             throw err
         } finally {
@@ -48,20 +48,20 @@ module.exports.getAll = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin cender_categories.get_all(:categories); end;`,
+                `begin cender_pickups.get_all(:pickups); end;`,
                 {
-                    categories: {
+                    pickups: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
                     },
                 }
             )
 
-            const resultSet = result.outBinds.categories
-            const categories = await resultSet.getRows()
+            const resultSet = result.outBinds.pickups
+            const pickups = await resultSet.getRows()
             await resultSet.close()
 
-            return categories.map((x) => keysToCamel(x))
+            return pickups.map((x) => keysToCamel(x))
         } catch (err) {
             throw err
         } finally {

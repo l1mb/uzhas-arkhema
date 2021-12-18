@@ -1,8 +1,8 @@
-const categoryRepository = require('../repositories/categoryRepository')
+const pickupsRepository = require('../repositories/pickupsRepository')
 
 const add = async (req, res, next) => {
     try {
-        const added = await categoryRepository.add(...Object.values(req.body))
+        const added = await pickupsRepository.add(...Object.values(req.body))
 
         res.status(201).json(added)
     } catch (err) {
@@ -12,8 +12,8 @@ const add = async (req, res, next) => {
 
 const getAll = async (_, res, next) => {
     try {
-        const categories = await categoryRepository.getAll()
-        return res.status(200).json(categories)
+        const pickups = await pickupsRepository.getAll()
+        return res.status(200).json(pickups)
     } catch (err) {
         next(err)
     }
