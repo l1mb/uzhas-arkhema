@@ -81,16 +81,3 @@ create view products_v as
     join vendors_t v on p.vendor_id = v.id
     join categories_t c on p.category_id = c.id
     where date_deleted is null;
-
-
--- create index product_vendors
---     on products_t( 
---           (case when completionstatus = 'complete' and validationstatus = 'pending'
---                 then validationstatus
---                 else null
---             end),
---           (case when completionstatus = 'complete' and validationstatus = 'pending'
---                 then completionstatus
---                 else null
---             end)
---        );
