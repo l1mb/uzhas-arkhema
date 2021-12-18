@@ -9,7 +9,7 @@ const cards = CategoriesData.map((elem) => <PlatformCard key={elem.name} data={e
 function Categories(): JSX.Element {
   return (
     <div className={styles.wrapper}>
-      <Label content="Categories" />
+      <Label content="Shapes" />
       <div>{cards}</div>
     </div>
   );

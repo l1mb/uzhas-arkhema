@@ -10,11 +10,11 @@ import ProductInteractions from "@/redux/actions/products/productInterator";
 import editData from "@/types/constants/adminModals/editGame";
 import modalType from "./modalType";
 import styles from "./editProduct.module.scss";
-import IBasicProduct from "@/api/types/products/IBasicProduct";
 import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
 
 interface EditProps {
-  editableProduct?: IBasicProduct;
+  editableProduct?: readProductDto;
   setDeletable?: (e: { name: string; id: number }) => void;
   setOpenCheck?: (e: boolean) => void;
   setOpen: (e: boolean) => void;
@@ -59,7 +59,7 @@ function EditProduct(props: EditProps) {
         name: elem,
       };
       if (editableProduct) {
-        data.default = editableProduct[data.name as keyof IBasicProduct] as string | number;
+        data.default = editableProduct[data.name as keyof readProductDto] as string | number;
       }
       return data;
     });

@@ -215,6 +215,51 @@ module.exports.getAll = async (
     }
 }
 
+<<<<<<< HEAD
+module.exports.getById = async (id) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin cender_products.get_by_id(:id, :product); end;`,
+                {
+                    id,
+                    product: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.product
+            const product = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
+
+            return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+=======
+>>>>>>> 93edd848f41a865b78781f48775b4f3cb00b4b11
 module.exports.deleteById = async (id) => {
     try {
         let connection
@@ -257,6 +302,64 @@ module.exports.deleteById = async (id) => {
     }
 }
 
+<<<<<<< HEAD
+module.exports.updateById = async (
+    id,
+    name,
+    description,
+    price,
+    category_id,
+    manufacturer_id
+) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin cender_products.update_by_id(:id, :name, :description,
+                    :price, :category_id, :manufacturer_id, :updated); end;`,
+                {
+                    id,
+                    name,
+                    description,
+                    price,
+                    category_id,
+                    manufacturer_id,
+                    updated: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.updated
+            const product = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
+
+            return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+=======
+>>>>>>> 93edd848f41a865b78781f48775b4f3cb00b4b11
 module.exports.getCount = async () => {
     try {
         let connection

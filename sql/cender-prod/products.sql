@@ -36,6 +36,7 @@ create or replace package cender_products as
     );
 end;
 /
+show errors;
 
 create or replace package body cender_products as
     procedure add(

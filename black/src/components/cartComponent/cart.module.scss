@@ -1,9 +1,11 @@
 @import "../../components/homeComponent/shared.module.scss";
 
 .cartWrapper {
-  background: url("../../assets/images/staingUpWithGuys.jpg");
-  height: 77vh;
+  background: url("../../assets/images/staingUp.jpg");
+  height: 90vh;
   width: 100vw;
+
+  padding-bottom: 90px;
 
   background-position: center center;
   background-size: cover;
@@ -12,9 +14,10 @@
   justify-content: center;
 
   .tableContainer {
-    background-color: rgba(#000, 0.8);
+    background-color: $half-transparent-black;
+    padding: 70px 120px;
     border-radius: 10px;
-    box-shadow: 0 0 3px #3d3333;
+    box-shadow: 0 0 10px red;
     margin: auto;
 
     margin-top: 40px;
@@ -60,12 +63,12 @@
       box-shadow: 0 0 8px white;
       border-radius: 5px;
       padding: 7px 5px;
-      background-color: rgba(#000, 0.8);
+      background-color: $half-transparent-black;
       transition: box-shadow 0.2s ease;
     }
 
     input[type="button"]:active {
-      box-shadow: 0 0 8px #6666ff;
+      box-shadow: 0 0 8px red;
     }
 
     tfoot {
@@ -107,7 +110,7 @@
 
     a {
       text-decoration: none;
-      color: #6666ff;
+      color: red;
     }
 
     image {
@@ -115,9 +118,4 @@
       height: 375px;
     }
   }
-}
-
-.table {
-  height: 370px;
-  overflow-y: auto;
 }

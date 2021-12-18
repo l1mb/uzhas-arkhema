@@ -1,23 +1,21 @@
 import React, { ChangeEvent, Suspense, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import CategoriesData from "@/components/routesComponent/types/categories/categoriesData";
 import StateType from "@/redux/types/stateType";
-import orders from "@/api/httpService/orders/orders";
+import orders from "@/api/httpService/orders/ordersApi";
 import setCountDispatch from "@/redux/actions/orders/setCount";
 import modalType from "@/components/modalComponent/editProductModal/modalType";
 import roles from "@/types/constants/roles/roles";
 import errors from "@/types/constants/errors/errors";
-import SmallPlatfroms from "./smallProductCardPlatforms/smallPlatformCards";
 import styles from "./productCard.module.scss";
 import Spinner from "../spinnerElement/spinner";
-import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
 
 const EditProduct = React.lazy(() => import("@/components/modalComponent/editProductModal/editProduct"));
 const SureCheck = React.lazy(() => import("@/components/modalComponent/editProductModal/sureCheck/sureCheck"));
 const Modal = React.lazy(() => import("@/components/modalComponent/modalComponent/modal"));
 
-const ProductCard: React.FC<{ product: updateProductDto }> = React.memo(({ product }) => {
+const ProductCard: React.FC<{ product: readProductDto }> = React.memo(({ product }) => {
   const [deletableProduct, setDeletableProduct] = useState<{ name: string; id: number }>();
   const [isOpenCheck, setOpenCheck] = useState(false);
   const [isOpen, setOpen] = useState(false);
@@ -70,17 +68,15 @@ const ProductCard: React.FC<{ product: updateProductDto }> = React.memo(({ produ
           <div className={styles.bottomColumns}>
             <p>{product?.name}</p>
             <p>{product?.price}$</p>
-            <p>Rating: {product?.totalRating}</p>
+            <p>Rating: {product?.manufacturer.label}</p>
           </div>
         </div>
         <div className={styles.flipBack}>
           <div className={styles.backText}>
-            <p>{product?.publishers}</p>
-            <p>{product?.genre}</p>
+            <p>{product?.description}</p>
+            <p>{product?.pickups}</p>
           </div>
-          <SmallPlatfroms
-            imageSource={CategoriesData.filter((u) => product.platforms.map((m) => m.toString()).includes(u.name))}
-          />
+
           {role === roles.admin ? (
             <button type="button" onClick={() => setOpen(true)}>
               Edit
