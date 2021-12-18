@@ -2,9 +2,8 @@ import { Dispatch } from "react";
 import { toast } from "react-toastify";
 import apiGetProducts from "@/api/httpService/apiGetProducts";
 import ProductsApi from "@/api/httpService/products/productsApi";
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
 import actions from "../actions";
-import ProductActions from "../news/newsActionTypes";
+import ProductActions from "../manufacturers/newsActionTypes";
 
 const detectPromise = (actionType: string, body: FormData | number): Promise<Response> => {
   switch (actionType) {

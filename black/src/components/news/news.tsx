@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import mnfrReadDto from "@/types/interfaces/news/nmfrs";
-import news from "@/api/httpService/news/news";
+import news from "@/api/httpService/news/newsApi";
 import SingleMnfr from "./singleMnfr";
 import getMockNews from "@/data/news/getMockNews";
 import Modal from "../modalComponent/modalComponent/modal";

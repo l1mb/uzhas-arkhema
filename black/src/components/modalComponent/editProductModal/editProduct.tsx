@@ -5,7 +5,7 @@ import Label from "@/elements/home/labelElement/label";
 import ImagePicker from "@/elements/home/productCardElement/editImagePicker/imagePicker";
 import EditInputElement from "@/elements/home/productCardElement/editInputs/editInputElement";
 import detectParameterType from "@/helpers/basic/detectParameters";
-import ProductActions from "@/redux/actions/news/newsActionTypes";
+import ProductActions from "@/redux/actions/products/productActionTypes";
 import ProductInteractions from "@/redux/actions/products/productInterator";
 import editData from "@/types/constants/adminModals/editGame";
 import modalType from "./modalType";

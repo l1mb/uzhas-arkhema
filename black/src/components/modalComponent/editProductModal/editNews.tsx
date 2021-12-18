@@ -3,17 +3,19 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Label from "@/elements/home/labelElement/label";
 import EditInputElement from "@/elements/home/productCardElement/editInputs/editInputElement";
-import ProductActions from "@/redux/actions/news/newsActionTypes";
-import ProductInteractions from "@/redux/actions/products/productInterator";
 import modalType from "./modalType";
 import styles from "./editProduct.module.scss";
 import news from "@/types/interfaces/news/news";
+import NewsActions from "@/redux/actions/manufacturers/newsActionTypes";
+import MnfrsInteractions from "@/redux/actions/manufacturers/newsInterator";
 
 interface EditProps {
   editableNews?: news;
+  mnfrId: number;
   setDeletable?: (e: { name: string; id: number }) => void;
   setOpenCheck?: (e: boolean) => void;
   setOpen: (e: boolean) => void;
+  providedModalType: string;
 }
 
 function EditNews(props: EditProps) {
@@ -27,32 +29,35 @@ function EditNews(props: EditProps) {
   };
 
   const handleCreateClick = () => {
-    dispatch(ProductInteractions(ProductActions.CREATE, buildFormData()));
+    dispatch(MnfrsInteractions(NewsActions.CREATE, { manufacrurerId: props.mnfrId, news: новость }));
     props.setOpen(false);
   };
 
   const handleUpdateClick = () => {
-    dispatch(ProductInteractions(ProductActions.UPDATE, buildFormData()));
-
+    dispatch(MnfrsInteractions(NewsActions.UPDATE, { id: props.editableNews.id, news: новость }));
     props.setOpen(false);
   };
 
   return (
     <div className={styles.modalWrapper}>
       <Label
-        content={providedModalType === modalType.UPDATE ? `Edit card with id ${updateDto.id}` : `Create a new product`}
+        content={
+          props.providedModalType === modalType.UPDATE
+            ? `Edit card with id ${props.editableNews.id}`
+            : `Create a new product`
+        }
       />
       <div className={styles.inputs}>
         <EditInputElement
           label="News"
-          setValue={(e) => setValue(e, element.name)}
-          type={element.type}
-          name={element.name}
-          defaultValue={element.default}
+          setValue={(e) => setValue(e)}
+          type="text"
+          name={props.editableNews.news}
+          defaultValue={props.editableNews.name}
         />
       </div>
       <div className={styles.buttons}>
-        {providedModalType === modalType.UPDATE ? (
+        {props.providedModalType === modalType.UPDATE ? (
           <button type="button" onClick={handleUpdateClick}>
             Update
           </button>

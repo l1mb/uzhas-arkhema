@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import Label from "@/elements/home/labelElement/label";
 import ProductInteractions from "@/redux/actions/products/productInterator";
-import ProductActions from "@/redux/actions/news/newsActionTypes";
+import ProductActions from "@/redux/actions/products/productActionTypes";
 import styles from "./sureCheck.module.scss";
 
 interface SureProps {

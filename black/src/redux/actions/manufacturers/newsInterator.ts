@@ -1,8 +1,6 @@
 import { Dispatch } from "react";
 import { toast } from "react-toastify";
-import apiGetnews from "@/api/httpService/apiGetProducts";
 import newsApi from "@/api/httpService/news/newsApi";
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
 import actions from "../actions";
 import ProductActions from "./newsActionTypes";
 import news from "@/types/interfaces/news/news";
@@ -10,7 +8,7 @@ import updateNews from "@/types/interfaces/news/updateNews";
 import mnfrReadDto from "@/types/interfaces/news/nmfrs";
 import postNews from "@/types/interfaces/news/postNews";
 
-const detectPromise = (actionType: string, body: news | updateNews | number): Promise<Response> => {
+const detectPromise = (actionType: string, body: news | postNews | updateNews | number): Promise<Response> => {
   switch (actionType) {
     case ProductActions.UPDATE:
       return newsApi.putNews(body as updateNews);
@@ -23,7 +21,7 @@ const detectPromise = (actionType: string, body: news | updateNews | number): Pr
 };
 
 const MnfrsInteractions =
-  (actionType: string, body: news | updateNews | number) =>
+  (actionType: string, body: news | postNews | updateNews | number) =>
   async (
     dispatch: Dispatch<{
       type: string;
@@ -37,9 +35,9 @@ const MnfrsInteractions =
       success: "Success 👌",
       error: "Reject 🤯",
     });
-    const news = await newsApi.apiGetMnfrs();
+    const data = await newsApi.getMnfrs();
 
-    dispatch(actions.setMnfrs(news));
+    dispatch(actions.setMnfrs(data));
   };
 
 export default MnfrsInteractions;

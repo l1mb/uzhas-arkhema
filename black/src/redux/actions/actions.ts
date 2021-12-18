@@ -54,5 +54,4 @@ const setMnfrs = (
   payload: mnfrs,
 });
 
-
 export default { setUser, setCount, setRole, setProducts, setMnfrs };

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import detectCallbackByType from "@/helpers/basic/detectCallbackByType";
 import React from "react";
+import detectCallbackByType from "@/helpers/basic/detectCallbackByType";
 import styles from "./editElement.module.scss";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   defaultValue?: string | number;
 }
 
-const EditInputElement: React.FC<Props> = (props) => {
+function EditInputElement(props: Props) {
   const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     props.setValue(detectCallbackByType(text, props.type), props.name);
@@ -29,6 +29,6 @@ const EditInputElement: React.FC<Props> = (props) => {
       />
     </div>
   );
-};
+}
 
 export default EditInputElement;
