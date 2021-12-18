@@ -8,27 +8,27 @@ import productsApi from "@/api/httpService/products/productsApi";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import StateType from "@/redux/types/stateType";
 import SearchBar from "@/elements/home/searchBarElement/searchBar";
-import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
 import FilteredProducts from "./ProductBar/FilteredProducts";
 import Label from "@/elements/home/labelElement/label";
 
-const mockData: updateProductDto[] = [];
+const mockData: readProductDto[] = [];
 
 interface itemsProps {
   setMode: (e: string) => void;
-  setProduct: (e: updateProductDto) => void;
-  currentItems: updateProductDto[] | null;
+  setProduct: (e: readProductDto) => void;
+  currentItems: readProductDto[] | null;
 }
 
 interface paginatedProps {
   pagesCount: number;
   params: QueryParams | undefined;
   setParams: (e: QueryParams) => void;
-  data: updateProductDto[];
+  data: readProductDto[];
 }
 
 function PaginatedItems(props: paginatedProps) {
-  const [data, setData] = useState<updateProductDto[]>(mockData);
+  const [data, setData] = useState<readProductDto[]>(mockData);
 
   useEffect(() => {
     setData(props.data);
@@ -39,11 +39,11 @@ function PaginatedItems(props: paginatedProps) {
 function Products() {
   const { setParams, params } = useProductFetcher();
   const [mode, setMode] = useState("create");
-  const [product, setProduct] = useState<updateProductDto>();
+  const [product, setProduct] = useState<readProductDto>();
   const [pagesCount, setPagesCount] = useState<number>(1);
   const dispatch = useDispatch();
 
-  const data = useSelector<StateType, updateProductDto[]>((state) => state.Products);
+  const data = useSelector<StateType, readProductDto[]>((state) => state.Products);
 
   useEffect(() => {
     async function getCount() {

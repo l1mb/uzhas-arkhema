@@ -1,18 +1,19 @@
 import React from "react";
 import ProductCard from "@/elements/home/productCardElement/productCard";
-import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
 
 interface ProductProps {
-  products: updateProductDto[];
+  products?: readProductDto[];
 }
 
 const FilteredProducts: React.FC<ProductProps> = React.memo((props) => (
   <>
-    {props.products.map((u) => (
-      <React.Fragment key={u.id}>
-        <ProductCard key={u.name} product={u} />
-      </React.Fragment>
-    ))}
+    {props.products &&
+      props.products.map((u) => (
+        <React.Fragment key={u.id}>
+          <ProductCard key={u.name} product={u} />
+        </React.Fragment>
+      ))}
   </>
 ));
 export default FilteredProducts;
