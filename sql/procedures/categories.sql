@@ -1,12 +1,11 @@
 create or replace package rent_categories as
     procedure add(
-        in_name categories.name%type,
-        in_description categories.description%type,
+        in_name categories_t.name%type,
         out_category out sys_refcursor
     );
     procedure get_all(out_categories out sys_refcursor);
     procedure get_by_id(
-        in_id categories.id%type,
+        in_id categories_t.id%type,
         out_category out sys_refcursor
     );
 end;
@@ -14,16 +13,15 @@ end;
 
 create or replace package body rent_categories as
     procedure add(
-        in_name categories.name%type,
-        in_description categories.description%type,
+        in_name categories_t.name%type,
         out_category out sys_refcursor
     )
     as
-        added_id categories.id%type;
+        added_id categories_t.id%type;
         added_category sys_refcursor;
     begin
-        insert into categories(name, description)
-            values(in_name, in_description)
+        insert into categories_t(name)
+            values(in_name)
             returning id into added_id;
         commit;
         get_by_id(added_id, added_category);
@@ -37,18 +35,17 @@ create or replace package body rent_categories as
     procedure get_all(out_categories out sys_refcursor)
     as begin
         open out_categories for
-            select id, name, description
-            from categories;
+            select * from categories_t;
     end;
     --
     procedure get_by_id(
-        in_id categories.id%type,
+        in_id categories_t.id%type,
         out_category out sys_refcursor
     )
     as begin
         open out_category for
-            select id, name, description
-            from categories where id = in_id;
+            select * from categories_t
+            where id = in_id;
     end;
 end;
 /

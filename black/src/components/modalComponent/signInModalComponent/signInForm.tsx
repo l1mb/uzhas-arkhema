@@ -1,9 +1,6 @@
-import { FormEvent, useEffect, useState } from "react";
-import InputText from "@/elements/inputElement/inputText";
-import defaultInputState from "@/elements/inputElement/state/defaultstate";
+import { FormEvent, useState } from "react";
 import ErrorState from "@/types/interfaces/validation/errorState";
 import styles from "./signInForm.module.scss";
-import UsernameValidation from "@/types/classes/validation/usernameValidation";
 
 interface inputState {
   value: string;
@@ -11,54 +8,59 @@ interface inputState {
 }
 
 function SignInForm(props): JSX.Element {
-  const [usernameProp, setusername] = useState<inputState>(defaultInputState);
-  const [passwordProp, setPassword] = useState<inputState>(defaultInputState);
+  const [usernameProp, setusername] = useState<string>("");
+  const [passwordProp, setPassword] = useState<string>("");
   const [isFormInvalid, setInvalid] = useState(true);
 
   const onSubmitForm = (e: FormEvent) => {
     e.preventDefault();
     const body = {
-      username: usernameProp.value,
-      password: passwordProp.value,
+      username: usernameProp,
+      password: passwordProp,
     };
     props.onSubmit(body);
   };
 
-  useEffect(() => {
-    setInvalid(usernameProp.error != null || passwordProp.error != null);
-  }, [usernameProp.error, passwordProp.error]);
-
   return (
-    <div className={styles.formWrapper}>
-      <h2>Login</h2>
+    <div className={`${styles.formWrapper} container`}>
       <form action="submit" className={styles.form} onSubmit={onSubmitForm}>
-        <InputText
-          setValue={(e) => {
-            setusername(e);
-          }}
-          inputType="text"
-          propName="username"
-          label="username"
-          validation={new UsernameValidation()}
-        />
-        <InputText
-          setValue={(e) => {
-            setPassword(e);
-          }}
-          inputType="text"
-          propName="password"
-          label="Password"
-          validation={new UsernameValidation()}
-        />
-        <div className={styles.inputItem} />
+        <h3>Sign In</h3>
 
-        <button type="submit" disabled={isFormInvalid}>
-          <span />
-          <span />
-          <span />
-          <span />
+        <div className="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="username"
+            onChange={(e) => setusername(e.currentTarget.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            className="form-control"
+            placeholder="password"
+            onChange={(e) => setPassword(e.currentTarget.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <div className="custom-control custom-checkbox">
+            <input type="checkbox" className="custom-control-input" id="customCheck1" />
+            <label className="custom-control-label" htmlFor="customCheck1">
+              Remember me
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" className="btn btn-primary btn-block">
           Submit
         </button>
+        <p className="forgot-password text-right">
+          Forgot <a href="https://i.pinimg.com/originals/fa/b0/90/fab0907fb49b1e0929a785b280e2a029.jpg">password?</a>
+        </p>
       </form>
     </div>
   );

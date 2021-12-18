@@ -4,20 +4,21 @@
 }
 
 .formWrapper {
-  background: black;
+  background: white;
+  border-radius: 9px;
   width: 480px;
   height: 360px;
-  color: white;
+  color: #212529;
   overflow: auto;
   display: flex;
   justify-content: center;
-  flex-direction: column;
 
-  h2 {
-    margin: 0 0 30px;
-    padding: 0;
-    background: black;
-    text-align: center;
+  form {
+    display: flex;
+    margin: 10px 0;
+    div {
+      margin: 7px 0;
+    }
   }
 
   .inputItem {
@@ -25,7 +26,6 @@
     margin: auto;
     width: 80%;
   }
-
   form button {
     margin: 0 auto;
     display: flex;

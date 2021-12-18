@@ -1,11 +1,11 @@
 const admin = "admin";
 const user = "user";
-const stranger = "stranger";
+const guest = "guest";
 
 const roles = {
   admin,
   user,
-  stranger,
+  guest: guest,
 };
 
 export default roles;

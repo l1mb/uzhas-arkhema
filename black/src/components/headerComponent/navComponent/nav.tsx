@@ -17,6 +17,7 @@ function Navigation(props: HeaderProps): JSX.Element {
   const appState = useSelector<StateType, StateType>((state) => state);
 
   return (
+
     <nav className={styles.navBar}>
       <ol>
         <li>
@@ -34,8 +35,9 @@ function Navigation(props: HeaderProps): JSX.Element {
             {props.data.about.label}
           </NavLink>
         </li>
-        <li>
-          {!appState.user.authencated ? (
+        <li
+        {!appState.user.authenticated ? (
+          <li>
             <NavLink activeClassName={styles.active} to={props.data.signIn.route}>
               {props.data.signIn.label}
             </NavLink>
@@ -46,7 +48,7 @@ function Navigation(props: HeaderProps): JSX.Element {
           )}
         </li>
 
-        {!appState.user.authencated ? (
+        {!appState.user.authenticated ? (
           <li>
             <NavLink activeClassName={styles.active} to={props.data.signUp.route}>
               {props.data.signUp.label}

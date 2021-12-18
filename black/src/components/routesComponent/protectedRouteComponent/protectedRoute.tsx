@@ -11,7 +11,7 @@ const PrivateRoute: React.FC<Props> = ({ children, user }): JSX.Element => (
   <Route
     exact
     render={({ location }) =>
-      user?.authencated ? (
+      user?.authenticated ? (
         children
       ) : (
         <Redirect

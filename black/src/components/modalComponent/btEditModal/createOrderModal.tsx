@@ -56,7 +56,7 @@ function CreateOrderModal(props: createModalProp) {
           <Form.Label>Phone number</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Phonkk numbere"
+            placeholder="Your contact phone"
             value={phone}
             onChange={(e) => handlePhoneChange(e.currentTarget.value)}
           />
