@@ -1,10 +1,10 @@
-create or replace package rent_orders as
+create or replace package cender_orders as
     procedure add(
         in_user_id orders_t.user_id%type,
         in_product_id orders_t.product_id%type,
         in_phone orders_t.phone%type,
-        in_rent_start_date orders_t.rent_start_date%type,
-        in_rent_end_date orders_t.rent_end_date%type,
+        in_cender_start_date orders_t.cender_start_date%type,
+        in_cender_end_date orders_t.cender_end_date%type,
         out_order out sys_refcursor
     );
     procedure get_all(
@@ -21,21 +21,21 @@ create or replace package rent_orders as
 end;
 /
 
-create or replace package body rent_orders as
+create or replace package body cender_orders as
     procedure add(
         in_user_id orders_t.user_id%type,
         in_product_id orders_t.product_id%type,
         in_phone orders_t.phone%type,
-        in_rent_start_date orders_t.rent_start_date%type,
-        in_rent_end_date orders_t.rent_end_date%type,
+        in_cender_start_date orders_t.cender_start_date%type,
+        in_cender_end_date orders_t.cender_end_date%type,
         out_order out sys_refcursor
     )
     as
         added_id orders_t.id%type;
         added_order sys_refcursor;
     begin
-        insert into orders_t(user_id, product_id, phone, rent_start_date, rent_end_date)
-            values(in_user_id, in_product_id, in_phone, in_rent_start_date, in_rent_end_date)
+        insert into orders_t(user_id, product_id, phone, cender_start_date, cender_end_date)
+            values(in_user_id, in_product_id, in_phone, in_cender_start_date, in_cender_end_date)
             returning id into added_id;
         commit;
         get_by_id(added_id, added_order);

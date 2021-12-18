@@ -9,7 +9,7 @@ module.exports.add = async (name) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_vendors.add(:name, :added); end;`,
+                `begin cender_vendors.add(:name, :added); end;`,
                 {
                     name,
                     added: {
@@ -48,7 +48,7 @@ module.exports.getAll = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_vendors.get_all(:vendors); end;`,
+                `begin cender_vendors.get_all(:vendors); end;`,
                 {
                     vendors: {
                         dir: oracledb.BIND_OUT,

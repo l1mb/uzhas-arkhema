@@ -1,4 +1,4 @@
-create or replace package rent_users as
+create or replace package cender_users as
     procedure add(
         in_username users_t.username%type,
         in_email users_t.email%type,
@@ -21,7 +21,7 @@ create or replace package rent_users as
 end;
 /
 
-create or replace package body rent_users as
+create or replace package body cender_users as
     procedure add(
         in_username users_t.username%type,
         in_email users_t.email%type,

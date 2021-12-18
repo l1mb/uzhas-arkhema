@@ -1,4 +1,4 @@
-create or replace package rent_categories as
+create or replace package cender_categories as
     procedure add(
         in_name categories_t.name%type,
         out_category out sys_refcursor
@@ -11,7 +11,7 @@ create or replace package rent_categories as
 end;
 /
 
-create or replace package body rent_categories as
+create or replace package body cender_categories as
     procedure add(
         in_name categories_t.name%type,
         out_category out sys_refcursor

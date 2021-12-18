@@ -1,4 +1,4 @@
-create or replace package rent_manufacturers as
+create or replace package cender_manufacturers as
     procedure add(
         in_name manufacturers_t.name%type,
         out_manufacturer out sys_refcursor
@@ -11,7 +11,7 @@ create or replace package rent_manufacturers as
 end;
 /
 
-create or replace package body rent_manufacturers as
+create or replace package body cender_manufacturers as
     procedure add(
         in_name manufacturers_t.name%type,
         out_manufacturer out sys_refcursor
