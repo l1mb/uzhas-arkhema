@@ -2,32 +2,32 @@ import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
-import emptyCart from "src/assets/images/cart/empty-cart.png";
+import emptyCart from "src\\assets\\images\\cart\\empty-cart.png";
 import orders from "@/api/httpService/orders/orders";
 import OrderProduct from "@/types/interfaces/order/orderProducts";
 import setCountDispatch from "@/redux/actions/orders/setCount";
 import Spinner from "@/elements/home/spinnerElement/spinner";
 import cartMessages from "@/types/constants/messages/cart";
+import Thead from "@/elements/cart/orderTable/thead";
+import orderTheadData from "@/types/constants/components/cart/thead";
 import SorryImage from "@/elements/cart/sorryImage/sorryImage";
+import orderTypes from "@/types/constants/orders/orderTypes";
 import errors from "@/types/constants/errors/errors";
 import styles from "./cart.module.scss";
 import RoutesData from "../routesComponent/types/routes/RoutesData";
-import EnhancedTable from "./cartBody/CartBody";
-import OrdersData from "@/types/data/ordersData";
 
 const CartRow = React.lazy(() => import("@/elements/cart/cartItemElement/cartRow"));
 
-function Cart() {
-  const [params, setParams] = useState<OrderProduct[]>([OrdersData]);
+const Cart: React.FC = () => {
+  const [params, setParams] = useState<OrderProduct[]>([]);
   const [removeId, setId] = useState<number[]>([]);
   const [price, setPrice] = useState(0);
 
   const history = useHistory();
 
-  // this method will be soon
-  const getProducts = async () => {
-    // const data = await orders.getOrders(orderTypes.uncompleted);
-    // setParams(data);
+  const getZipped = async () => {
+    const data = await orders.getZippedOrders(orderTypes.uncompleted);
+    setParams(data);
   };
 
   const dispatch = useDispatch();
@@ -76,12 +76,12 @@ function Cart() {
   };
 
   useEffect(() => {
-    getProducts();
+    getZipped();
   }, []);
 
   useEffect(() => {
-    // const data = params.map((e) => e.Products.price * e.item.count).reduce((acc, a) => acc + a, 0);
-    // setPrice(data);
+    const data = params.map((e) => e.Products.price * e.item.count).reduce((acc, a) => acc + a, 0);
+    setPrice(data);
   }, [params]);
 
   return (
@@ -89,7 +89,44 @@ function Cart() {
       <div className={styles.tableContainer}>
         <Suspense fallback={<Spinner />}>
           {params.length > 0 ? (
-            <EnhancedTable />
+            <table>
+              <Thead data={orderTheadData} />
+              <tbody>
+                {params.length > 0 &&
+                  params.map((u) => (
+                    <CartRow
+                      key={u.item.id}
+                      id={u.item.id}
+                      name={u.Products.name}
+                      platform={u.Products.platform}
+                      orderDate={u.item.createOrderDate}
+                      amount={u.item.count}
+                      price={u.Products.price}
+                      pushId={setId}
+                      changeAmount={changeAmount}
+                    />
+                  ))}
+
+                <tr className={styles.removeButton}>
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td>
+                    <input type="button" value="Remove" onClick={handleRemove} disabled={removeId.length === 0} />
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr className={styles.removeButton}>
+                  <td>{params && <span>Total cost: {price}$</span>}</td>
+                  <td>
+                    <input type="button" value="Buy" onClick={handleBuy} />
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           ) : (
             <SorryImage label="Your cart is empty" image={emptyCart} className={styles.sorryImage}>
               <h2>Your cart is empty</h2>
@@ -100,6 +137,6 @@ function Cart() {
       </div>
     </div>
   );
-}
+};
 
 export default Cart;
