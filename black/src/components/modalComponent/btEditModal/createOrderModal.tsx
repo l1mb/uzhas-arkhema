@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import postOrderEntity from "@/types/interfaces/order/postOrderEntity";
 import getUserId from "@/helpers/token/getUserId";
-import orders from "@/api/httpService/orders/orders";
+import orders from "@/api/httpService/orders/ordersApi";
 import styles from "./styles.module.scss";
 
 interface createModalProp {

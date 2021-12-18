@@ -10,11 +10,8 @@ const postSignIn = `${host}/users/login`;
 const user = `${host}/users/current`;
 const userPassword = `${host}/${user}/password`;
 const orders = `${host}/orders`;
-const approveOrders = `${orders}/approve`;
 const declineOrders = `${orders}/reject`;
-const cancelOrders = `${orders}/cancel`;
-const vendors = `${host}/vendors`;
-const categories = `${host}/categories`;
+const completeOrders = `${orders}/complete`;
 const pages = `${products}/pages`;
 const mnfrs = `${host}/manufacturers/`;
 const news = `${mnfrs}/news`;
@@ -30,9 +27,8 @@ export default {
   orders,
   getProductByPlatform,
   getProductsById,
-  approveOrders,
   declineOrders,
-  cancelOrders,
+  completeOrders,
   pages,
   news,
   mnfrs,

@@ -4,7 +4,6 @@ import mnfrReadDto from "@/types/interfaces/news/nmfrs";
 import updateNews from "@/types/interfaces/news/updateNews";
 import postNews from "@/types/interfaces/news/postNews";
 
-
 const getMnfrs = async (): Promise<mnfrReadDto[]> => {
   const data = await fetch(`${endpoints.products}`, getOptions("GET", false));
 
@@ -28,4 +27,4 @@ const putNews = async (body: updateNews): Promise<Response> => {
   return data;
 };
 
-export default { getMnfrs, putNews, deleteNews , postNews};
+export default { getMnfrs, putNews, deleteNews, postNews };

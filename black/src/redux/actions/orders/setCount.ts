@@ -1,5 +1,5 @@
-import orders from "@/api/httpService/orders/orders";
 import { Dispatch } from "@reduxjs/toolkit";
+import orders from "@/api/httpService/orders/ordersApi";
 import actions from "../actions";
 
 const setCountDispatch =
@@ -10,7 +10,7 @@ const setCountDispatch =
       payload: { count: number };
     }>
   ): Promise<void> => {
-    const response = await orders.apiGetOrders();
+    const response = await orders.getOrders();
     const count = response ? response.length : 0;
 
     dispatch(actions.setCount({ count }));
