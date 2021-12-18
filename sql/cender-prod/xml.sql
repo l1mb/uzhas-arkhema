@@ -3,7 +3,7 @@ create or replace directory rent_xml as 'rent_dir';
 create or replace package rent_utils as
     procedure export_table(in_table_name varchar2);
     procedure import_users;
-    procedure import_vendors;
+    procedure import_manufacturers;
     procedure import_categories;
     procedure import_products;
 end;
@@ -34,12 +34,12 @@ create or replace package body rent_utils as
         commit;
     end;
     --
-    procedure import_vendors
+    procedure import_manufacturers
     as begin
-        insert into vendors_t (name)
-        select ExtractValue(value(vendor_xml), '//NAME') as name
-        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/vendors.xml'),
-            nls_charset_id('utf-8')),'/ROWSET/ROW'))) vendor_xml;
+        insert into manufacturers_t (name)
+        select ExtractValue(value(manufacturer_xml), '//NAME') as name
+        from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/manufacturers.xml'),
+            nls_charset_id('utf-8')),'/ROWSET/ROW'))) manufacturer_xml;
         commit;
     end;
     --
@@ -54,12 +54,12 @@ create or replace package body rent_utils as
     --
     procedure import_products
     as begin
-        insert into products_t (name, description, price, category_id, vendor_id, date_deleted)
+        insert into products_t (name, description, price, category_id, manufacturer_id, date_deleted)
         select ExtractValue(value(product_xml), '//NAME') as name,
                ExtractValue(value(product_xml), '//DESCRIPTION') as description,
                ExtractValue(value(product_xml), '//PRICE') as price,
                ExtractValue(value(product_xml), '//CATEGORY_ID') as category_id,
-               ExtractValue(value(product_xml), '//VENDOR_ID') as vendor_id,
+               ExtractValue(value(product_xml), '//manufacturer_ID') as manufacturer_id,
                ExtractValue(value(product_xml), '//DATE_DELETED') as date_deleted
         from table(xmlsequence(extract(xmltype(bfilename('RENT_XML', '/import/products.xml'),
             nls_charset_id('utf-8')),'/ROWSET/ROW'))) product_xml;
@@ -76,7 +76,7 @@ show errors;
 
 begin
     rent_utils.import_categories;
-    rent_utils.import_vendors;
+    rent_utils.import_manufacturers;
     rent_utils.import_users;
     rent_utils.import_products;
 end;
