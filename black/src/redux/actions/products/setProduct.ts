@@ -2,7 +2,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import apiGetProducts from "@/api/httpService/apiGetProducts";
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import actions from "../actions";
-import ProductActions from "./productActionTypes";
+import ProductActions from "../manufacturers/newsActionTypes";
 import IBasicProduct from "@/api/types/products/IBasicProduct";
 
 const mockData: IBasicProduct[] = [

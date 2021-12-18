@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 import productsApi from "@/api/httpService/products/productsApi";
-import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
+import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 
 interface ModalProps {
   isOpen: boolean;

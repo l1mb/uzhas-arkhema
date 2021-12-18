@@ -6,6 +6,6 @@ export interface IRoutes {
   signIn: LabelledLink;
   about: LabelledLink;
   cart: LabelledLink;
-  computers: LabelledLink;
+  products: LabelledLink[];
   profile: LabelledLink;
 }

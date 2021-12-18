@@ -21,11 +21,11 @@ const OrderByOptions: Array<{ label: string; value: string }> = [
 ];
 const OrderTypeOptions: Array<QueryItem> = [
   {
-    label: "Ascending",
+    label: "Asc",
     value: OrderType.Asc,
   },
   {
-    label: "Descending",
+    label: "Desc",
     value: OrderType.Desc,
   },
 ];

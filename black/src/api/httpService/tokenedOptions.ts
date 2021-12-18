@@ -10,14 +10,17 @@ interface headerOptions {
   body?: string;
 }
 
-const getOptions = <T>(methodType: string, useToken: boolean, body?: T): headerOptions => ({
-  method: methodType,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: useToken ? `Bearer ${getToken()}` : undefined,
-  },
-  body: body ? JSON.stringify(body) : undefined,
-});
+const getOptions = <T>(methodType: string, useToken: boolean, body?: T): headerOptions => {
+  console.log(body);
+  return {
+    method: methodType,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: useToken ? `Bearer ${getToken()}` : undefined,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  };
+};
 
 export default getOptions;

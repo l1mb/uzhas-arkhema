@@ -1,40 +1,60 @@
 import { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, Tooltip } from "@mui/material";
+import _ from "lodash";
+import { useSelector } from "react-redux";
+import Products from "@/api/httpService/apiGetProducts";
+import StateType from "@/redux/types/stateType";
+import roles from "@/types/constants/roles/roles";
 import styles from "./searchBar.module.scss";
-import QueryParams from "@/types/interfaces/filter/queryParams";
-import SearchParamType from "@/components/products/search/filterBy";
+import Dropdown from "./searchDropdown";
 
 interface SearchProps {
-  params: QueryParams | undefined;
-  setParams: (e: QueryParams) => void;
+  setOpen?: (e: boolean) => void;
+  show?: boolean;
 }
 
 function SearchBar(props: SearchProps): JSX.Element {
-  const [value, setValue] = useState<string>("");
+  const [results, setResults] = useState<string[]>([]);
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.currentTarget.value);
+  const role = useSelector<StateType, string>((state) => state.role);
+
+  const fetchProducts = async (text: string) => {
+    const data = await Products.apiGetSearchProducts(text);
+    setResults(data.map((u) => u.name));
   };
 
-  const handleSearch = () => {
-    const prevProps = props.params;
-    if (prevProps && value.length > 0) {
-      prevProps.query = value;
-      props.setParams(JSON.parse(JSON.stringify(prevProps)));
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value.trim();
+    if (text !== "") {
+      fetchProducts(text);
+    } else {
+      setResults([]);
     }
   };
 
+  const debouncedHandler = _.debounce(onInputChange, 300);
+
   return (
     <div className={styles.searchWrapper}>
-      <SearchParamType params={props.params} setParams={props.setParams} />
-      <input type="text" placeholder="Search" className={styles.bar} value={value} onChange={onInputChange} />
+      <input type="text" placeholder="Search" className={styles.bar} onChange={debouncedHandler} />
+      {role === roles.admin && props.show ? (
+        <button
+          type="button"
+          className={styles.createButton}
+          onClick={() => {
+            if (props.setOpen) {
+              props.setOpen(true);
+            }
+          }}
+        >
+          Create
+        </button>
+      ) : null}
 
-      <Tooltip title="Sho" className={styles.searchIcon}>
-        <IconButton onClick={handleSearch}>
-          <SearchIcon sx={{ color: "#f8f9fa" }} />
-        </IconButton>
-      </Tooltip>
+      {results.length > 0 && (
+        <div>
+          <Dropdown names={results} />
+        </div>
+      )}
     </div>
   );
 }

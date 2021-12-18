@@ -5,23 +5,17 @@
   justify-content: space-between;
   width: 100%;
 
-  button {
-    width: 100%;
-    background-color: royalblue !important;
-  }
-  a {
-    color: white;
-  }
-  .menu {
-    width: 100%;
-    background: rgba($color: #3d3d3d, $alpha: 0.9);
-  }
   select {
+    option {
+      background-color: transparent;
+      color: black;
+    }
     width: 100px;
     border: none;
     border-bottom: solid 2px white;
     color: white;
     padding: 3px;
     padding-bottom: 6px;
+    background: transparent;
   }
 }

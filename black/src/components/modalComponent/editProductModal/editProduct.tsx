@@ -1,25 +1,20 @@
 /* eslint-disable react/require-default-props */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import AgeRating from "@/api/types/products/enums/ageRating";
-import Genre from "@/api/types/products/enums/genre";
-import Platforms from "@/api/types/products/enums/platfrom";
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
-import PostProductDto from "@/api/types/products/postGame";
 import Label from "@/elements/home/labelElement/label";
-import EditDropdown from "@/elements/home/productCardElement/editDropdown/editDropdown";
 import ImagePicker from "@/elements/home/productCardElement/editImagePicker/imagePicker";
 import EditInputElement from "@/elements/home/productCardElement/editInputs/editInputElement";
 import detectParameterType from "@/helpers/basic/detectParameters";
-import StringIsNumber from "@/helpers/basic/isString";
 import ProductActions from "@/redux/actions/products/productActionTypes";
 import ProductInteractions from "@/redux/actions/products/productInterator";
 import editData from "@/types/constants/adminModals/editGame";
 import modalType from "./modalType";
 import styles from "./editProduct.module.scss";
+import IBasicProduct from "@/api/types/products/IBasicProduct";
+import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 
 interface EditProps {
-  editableProduct?: IGroupedProduct;
+  editableProduct?: IBasicProduct;
   setDeletable?: (e: { name: string; id: number }) => void;
   setOpenCheck?: (e: boolean) => void;
   setOpen: (e: boolean) => void;
@@ -28,21 +23,13 @@ interface EditProps {
 
 function EditProduct(props: EditProps) {
   const { editableProduct, setDeletable, setOpenCheck, setOpen, providedModalType } = props;
-  const defaultValue: PostProductDto = {
-    platform: 0,
-    rating: 0,
-    genre: 0,
-    id: editableProduct?.ids[0].id,
+  const defaultValue: updateProductDto = {
+    id: editableProduct?.id,
     name: editableProduct?.name,
-    developers: editableProduct?.developers,
-    publishers: editableProduct?.publishers,
     price: editableProduct?.price,
-    count: editableProduct?.count,
-    totalRating: editableProduct?.totalRating,
-    publicationDate: editableProduct?.publicationDate,
-  } as PostProductDto;
+  } as updateProductDto;
 
-  const [updateDto, setUpdateDto] = useState<PostProductDto>({
+  const [updateDto, setUpdateDto] = useState<updateProductDto>({
     ...editableProduct,
     ...defaultValue,
   });
@@ -56,22 +43,12 @@ function EditProduct(props: EditProps) {
     }));
   };
 
-  const setUnusualValue = (parameter: Platforms | Genre | AgeRating | File, name: string) => {
+  const setUnusualValue = (parameter: File, name: string) => {
     setUpdateDto((prevState) => ({
       ...prevState,
       [name]: parameter,
     }));
   };
-
-  useEffect(() => {
-    const id = editableProduct?.ids.find(
-      (n) => Platforms[n.platform as unknown as keyof typeof Platforms] === updateDto.platform
-    )?.id;
-    if (!id) {
-      return;
-    }
-    setValue(id, "id");
-  }, [updateDto.platform]);
 
   const EditData: { label: string; type: string; name: string; default?: string | number }[] = Object.keys(updateDto)
     .filter((m) => !editData.ignoredProps.includes(m))
@@ -82,7 +59,7 @@ function EditProduct(props: EditProps) {
         name: elem,
       };
       if (editableProduct) {
-        data.default = editableProduct[data.name as keyof IGroupedProduct] as string | number;
+        data.default = editableProduct[data.name as keyof IBasicProduct] as string | number;
       }
       return data;
     });
@@ -136,45 +113,6 @@ function EditProduct(props: EditProps) {
         {editData.fileInputs.map((elem) => (
           <ImagePicker key={elem} label={elem} setValue={(e) => setUnusualValue(e, elem.toLowerCase())} />
         ))}
-
-        <EditDropdown
-          label="Platforms"
-          value={Platforms[updateDto.platform]}
-          options={
-            editableProduct
-              ? editableProduct.ids.map((el) => el.platform.toString())
-              : Object.keys(Platforms)
-                  .filter(StringIsNumber)
-                  .map((key) => Platforms[key as keyof typeof Platforms].toString())
-          }
-          changeHandler={(e: string) => {
-            const key = e as keyof typeof Platforms;
-            setUnusualValue(Platforms[key], "platform");
-          }}
-        />
-
-        <EditDropdown
-          label="Genre"
-          value={Genre[updateDto.genre]}
-          options={Object.keys(Genre)
-            .filter(StringIsNumber)
-            .map((key) => Genre[key as keyof typeof Genre].toString())}
-          changeHandler={(e: string) => {
-            const key = e as keyof typeof Genre;
-            setUnusualValue(Genre[key], "genre");
-          }}
-        />
-        <EditDropdown
-          label="Age rating"
-          value={AgeRating[updateDto.rating]}
-          options={Object.keys(AgeRating)
-            .filter(StringIsNumber)
-            .map((key) => AgeRating[key as keyof typeof AgeRating].toString())}
-          changeHandler={(e: string) => {
-            const key = e as keyof typeof AgeRating;
-            setUnusualValue(AgeRating[key], "rating");
-          }}
-        />
       </div>
       <div className={styles.buttons}>
         {providedModalType === modalType.UPDATE ? (

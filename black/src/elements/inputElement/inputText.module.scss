@@ -24,14 +24,14 @@
   input:focus ~ .caption {
     top: -20px;
     left: 0;
-    color: red;
+    color: #6666ff;
     font-size: 14px;
   }
 
   input:valid ~ .caption {
     top: -20px;
     left: 0;
-    color: red;
+    color: #6666ff;
     font-size: 14px;
   }
 
@@ -46,7 +46,7 @@
   }
 
   .errorLabel {
-    color: red;
+    color: #6666ff;
     position: absolute;
     bottom: -4px;
     left: 0;

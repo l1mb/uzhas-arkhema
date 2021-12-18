@@ -1,35 +1,42 @@
-import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+import styles from "./footer.module.scss";
+import fender from "../../assets/images/footerIcons/fender.svg";
+import gibson from "../../assets/images/footerIcons/gibson.svg";
+import squire from "../../assets/images/footerIcons/squire.svg";
+import jackson from "../../assets/images/footerIcons/jackson.svg";
+import ibanez from "../../assets/images/footerIcons/ibanez.svg";
 
-function Footer() {
+function Footer(): JSX.Element {
   return (
-    <MDBFooter color="unique-color-dark" className="font-small pt-4 ">
-      <MDBContainer fluid className="text-center text-md-left">
-        <MDBRow>
-          <MDBCol md="6">
-            <h5 className="title">Computer rentals</h5>
-            <p>Here you can pick whatever you need to work, rest, sho</p>
-          </MDBCol>
-          <MDBCol md="6">
-            <ul>
-              <li className="list-unstyled">
-                <a href="https://vk.com/tihamey">Vk</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="https://github.com/hassty/uzhas-arkhema/">github</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="https://wiki.archlinux.org/">arch</a>
-              </li>
-            </ul>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-      <div className="footer-copyright text-center py-3">
-        <MDBContainer fluid>
-          &copy; {new Date().getFullYear()} Copyright: <a href="https://vk.com/tihamey">TihCorp</a>
-        </MDBContainer>
+    <footer className={styles.footer}>
+      <span>Incredible convenient</span>
+      <div className={styles.icons}>
+        <div className={styles.footerLogo}>
+          <a href="https://www.fender.com/">
+            <img src={fender} alt="fender" />
+          </a>
+        </div>
+        <div className={styles.footerLogo}>
+          <a href="https://www.gibson.com">
+            <img src={gibson} alt="Valve" />
+          </a>
+        </div>
+        <div className={styles.footerLogo}>
+          <a href="https://www.fender.com/en/squier-electric-guitars/">
+            <img src={squire} alt="RiotProducts" />
+          </a>
+        </div>
+        <div className={styles.footerLogo}>
+          <a href="https://www.jacksonguitars.com/en/start">
+            <img src={jackson} alt="RockStar" />
+          </a>
+        </div>
+        <div className={styles.footerLogo}>
+          <a href="https://www.ibanez.com/">
+            <img src={ibanez} alt="Ubisoft" />
+          </a>
+        </div>
       </div>
-    </MDBFooter>
+    </footer>
   );
 }
 

@@ -1,9 +1,7 @@
 import React, { ChangeEvent, Suspense, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import IGroupedProduct from "@/api/types/products/IGroupedProduct";
 import CategoriesData from "@/components/routesComponent/types/categories/categoriesData";
-import Platforms from "@/api/types/products/enums/platfrom";
 import StateType from "@/redux/types/stateType";
 import orders from "@/api/httpService/orders/orders";
 import setCountDispatch from "@/redux/actions/orders/setCount";
@@ -13,14 +11,14 @@ import errors from "@/types/constants/errors/errors";
 import SmallPlatfroms from "./smallProductCardPlatforms/smallPlatformCards";
 import styles from "./productCard.module.scss";
 import Spinner from "../spinnerElement/spinner";
+import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 
 const EditProduct = React.lazy(() => import("@/components/modalComponent/editProductModal/editProduct"));
 const SureCheck = React.lazy(() => import("@/components/modalComponent/editProductModal/sureCheck/sureCheck"));
 const Modal = React.lazy(() => import("@/components/modalComponent/modalComponent/modal"));
 
-const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ product }) => {
+const ProductCard: React.FC<{ product: updateProductDto }> = React.memo(({ product }) => {
   const [deletableProduct, setDeletableProduct] = useState<{ name: string; id: number }>();
-  const [platform, setPlatform] = useState<Platforms>(product.ids[0].platform);
   const [isOpenCheck, setOpenCheck] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [count, setCount] = useState("1");
@@ -37,17 +35,13 @@ const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ produc
     setCount(data);
   };
 
-  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    setPlatform(e.currentTarget.value as unknown as Platforms);
-  };
-
   const handleAdd = async () => {
     if (!userId) {
       toast.error(errors.authorize);
       return;
     }
 
-    const productId = product.ids.find((n) => n.platform === platform)?.id;
+    const productId = product.id;
 
     if (!productId) {
       toast.error(errors.noproduct);
@@ -56,7 +50,7 @@ const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ produc
 
     const order: Response = await orders.postOrder({
       productId,
-      applicationUserId: userId,
+      userId,
       count: parseInt(count, 10),
     });
 
@@ -93,13 +87,6 @@ const ProductCard: React.FC<{ product: IGroupedProduct }> = React.memo(({ produc
             </button>
           ) : (
             <div className={styles.inputs}>
-              <select defaultValue={Platforms.PC} onChange={handleSelect}>
-                {product.ids.map((m) => (
-                  <option key={m.id} value={m.platform}>
-                    {m.platform}
-                  </option>
-                ))}
-              </select>
               <input type="number" value={count} onChange={handleInput} />
             </div>
           )}

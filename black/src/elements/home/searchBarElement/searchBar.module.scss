@@ -2,16 +2,15 @@
 
 .bar {
   background: transparent;
-  background-color: #101c2c;
+  background-color: $half-transparent-black;
 
   font-size: 16px;
   opacity: 70%;
-  width: 400px;
 
   padding: 10px 12px;
 
   border: 2px solid white;
-  border-radius: 4px;
+  border-radius: 10px;
 
   color: white;
 }
@@ -45,7 +44,7 @@
     margin: 2px;
     border: none;
     height: 1px;
-    background: red;
+    background: #6666ff;
   }
 
   hr:last-child {
@@ -54,19 +53,8 @@
 }
 
 .searchWrapper {
-  display: flex;
-  margin-bottom: 40px;
-
-  justify-content: center;
-  flex-grow: 1;
-  width: 400px;
   position: relative;
-  height: 48px;
-  .searchIcon {
-    posiiton: absolute;
-    left: -45px;
-    color: white;
-  }
+
 }
 
 .createButton {

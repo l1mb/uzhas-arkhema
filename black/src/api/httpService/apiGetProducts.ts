@@ -1,24 +1,16 @@
 import QueryParams from "@/types/interfaces/filter/queryParams";
 import buildString from "@/types/interfaces/filter/queryString";
-import aggregateProductsDto from "../aggregateProductDto";
 import endpoints from "../endpoints";
 import IBasicProduct from "../types/products/IBasicProduct";
-import IGroupedProduct from "../types/products/IGroupedProduct";
 import httpService from "./httpService";
 
-const apiProductsList = async (
-  orderby: string,
-  ordertype: number,
-  displayLimit: number
-): Promise<IGroupedProduct[]> => {
-  const downloadLimit = 9;
+const apiProductsList = async (orderby: string, ordertype: number, displayLimit: number): Promise<IBasicProduct[]> => {
+  const downloadLimit = 3;
   const data = await httpService.get<IBasicProduct[]>(
     `${endpoints.getProductListEndpoint}?Limit=${downloadLimit}&OrderBy=${orderby}&OrderType=${ordertype}`
   );
 
-  const aggregated = aggregateProductsDto(data);
-
-  return aggregated.slice(0, displayLimit);
+  return data.slice(0, downloadLimit);
 };
 
 const apiNonGroupedProductsList = async (
@@ -34,17 +26,15 @@ const apiNonGroupedProductsList = async (
 };
 
 const apiSortedProductsList = async (params: QueryParams): Promise<IBasicProduct[]> => {
-  const query = buildString(params.criteria, params.type, params.limit, params.offset, params.query, params.filterby);
-
+  const query = buildString(params.orderby, params.type, params.limit, params.offset, params.query, params.filterby);
   const data = await httpService.get<IBasicProduct[]>(`${endpoints.getProductListEndpoint + query}`);
 
   return data;
 };
 
-const apiGetSearchProducts = async (name: string): Promise<IGroupedProduct[]> => {
+const apiGetSearchProducts = async (name: string): Promise<IBasicProduct[]> => {
   const data = await httpService.get<IBasicProduct[]>(`${endpoints.getProductSearchEndpoint}?term=${name}&limit=10`);
-  const aggregated = aggregateProductsDto(data);
-  return aggregated;
+  return data;
 };
 
 const apiGetPagedItems = async (limit: number, offset: number) => {
