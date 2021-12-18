@@ -9,9 +9,9 @@ import news from "@/types/interfaces/news/news";
 interface MNFR {
   mnfr: mnfrReadDto;
   handlers: {
-    handleCreate: () => void;
+    handleCreate: (id: number) => void;
     handleDelete: (e: number) => void;
-    handleUpdate: (e: number) => void;
+    handleUpdate: (e: news, id: number) => void;
   };
 }
 
@@ -20,7 +20,7 @@ interface yj {
   news: news;
   handlers: {
     handleDelete: (e: number) => void;
-    handleUpdate: (e: number) => void;
+    handleUpdate: (e: news, id: number) => void;
   };
 }
 
@@ -42,7 +42,7 @@ function Новость(prop: yj) {
           <Button
             variant="outline-light"
             onClick={() => {
-              prop.handlers.handleUpdate(prop.news.id);
+              prop.handlers.handleUpdate(prop.news, prop.news.id);
             }}
           >
             Update
@@ -60,7 +60,12 @@ function SingleMnfr(props: MNFR) {
     <div className={styles.wrapper}>
       <div className={styles.headerLine}>
         <FormLabel>{props.mnfr.name}</FormLabel>
-        <Button variant="outline-light" onClick={props.handlers.handleCreate}>
+        <Button
+          variant="outline-light"
+          onClick={() => {
+            props.handlers.handleCreate(props.mnfr.id);
+          }}
+        >
           Create
         </Button>
       </div>

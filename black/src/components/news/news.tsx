@@ -1,40 +1,46 @@
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import mnfrReadDto from "@/types/interfaces/news/nmfrs";
-import news from "@/api/httpService/news/newsApi";
 import SingleMnfr from "./singleMnfr";
 import getMockNews from "@/data/news/getMockNews";
 import Modal from "../modalComponent/modalComponent/modal";
 import EditNews from "../modalComponent/editProductModal/editNews";
 import modalType from "../modalComponent/editProductModal/modalType";
+import newsApi from "@/api/httpService/news/newsApi";
+import news from "@/types/interfaces/news/news";
 
 function News() {
   const [data, setData] = useState<mnfrReadDto[]>(getMockNews);
   const [open, setOpen] = useState(false);
   const [modal, setModalType] = useState<string>();
+  const [entity, setentity] = useState<news>();
+  const [mnId, setMnId] = useState<number>();
 
   useEffect(() => {
     async function fetchData() {
-      const res = await news.getnews();
+      const res = await newsApi.getMnfrs();
       setData(res);
     }
 
     fetchData();
   }, []);
 
-  const handleUpdate = (id: number) => {
+  const handleUpdate = (e: news, id: number) => {
     console.log(`update news ${id}`);
     setModalType(modalType.UPDATE);
     setOpen(true);
+    setentity(e);
+    setMnId(id);
   };
 
   const handleDelete = (id: number) => {
     console.log(`delete news ${id}`);
   };
 
-  const handleCreate = () => {
+  const handleCreate = (id: number) => {
     setModalType(modalType.CREATE);
     setOpen(true);
+    setMnId(id);
   };
 
   const handlers = {
@@ -53,7 +59,7 @@ function News() {
         </div>
       </div>
       <Modal isOpen={open} setOpen={setOpen}>
-        <EditNews setOpen={setOpen} providedModalType={modal} />
+        <EditNews setOpen={setOpen} editableNews={entity} mnfrId={mnId} providedModalType={modal} />
       </Modal>
     </div>
   );

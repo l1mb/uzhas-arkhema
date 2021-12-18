@@ -43,7 +43,7 @@ function EditNews(props: EditProps) {
       <Label
         content={
           props.providedModalType === modalType.UPDATE
-            ? `Edit card with id ${props.editableNews.id}`
+            ? `Edit card with id ${props.editableNews?.id}`
             : `Create a new product`
         }
       />
@@ -52,8 +52,8 @@ function EditNews(props: EditProps) {
           label="News"
           setValue={(e) => setValue(e)}
           type="text"
-          name={props.editableNews.news}
-          defaultValue={props.editableNews.name}
+          name="news"
+          defaultValue={props.editableNews?.news}
         />
       </div>
       <div className={styles.buttons}>
