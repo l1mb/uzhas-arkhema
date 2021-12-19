@@ -80,6 +80,7 @@ interface EnhancedTableProps {
   orderBy: string;
   rowCount: number;
   role: string;
+  unselect: () => void;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -181,6 +182,7 @@ interface EnhancedTableToolbarProps {
   selected: number[];
   rows: OrderProduct[];
   setRows: (e: OrderProduct[]) => void;
+  unselect: () => void;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
@@ -200,6 +202,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         }
       }
     }
+    props.unselect();
   };
 
   const handleCancell = async () => {
@@ -211,6 +214,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         setRows(res);
       }
     }
+    props.unselect();
   };
 
   const handleDecline = async () => {
@@ -222,6 +226,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         setRows(res);
       }
     }
+    props.unselect();
   };
   const getButtons = () => {
     if (numSelected === 0) {
@@ -350,7 +355,15 @@ export default function EnhancedTable() {
   return (
     <Box sx={{ width: "1150px" }} style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
       <Paper sx={{ width: "100%" }}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected} rows={rows} setRows={setRows} />
+        <EnhancedTableToolbar
+          unselect={() => {
+            setSelected([]);
+          }}
+          numSelected={selected.length}
+          selected={selected}
+          rows={rows}
+          setRows={setRows}
+        />
         <TableContainer style={{ display: "flex", justifyContent: "center", flexGrow: "1" }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
             <EnhancedTableHead
@@ -414,7 +427,6 @@ export default function EnhancedTable() {
                       <TableCell style={{ width: "150px" }} align="right">
                         {row.rentEndDate}
                       </TableCell>
-
                     </TableRow>
                   );
                 })}
