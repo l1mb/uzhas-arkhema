@@ -2,9 +2,10 @@ const pickupsRepository = require('../repositories/pickupsRepository')
 
 const add = async (req, res, next) => {
     try {
-        const added = await pickupsRepository.add(...Object.values(req.body))
+        const { name } = req.fields
+        await pickupsRepository.add(name)
 
-        res.status(201).json(added)
+        res.status(201).json('added pickup')
     } catch (err) {
         next(err)
     }

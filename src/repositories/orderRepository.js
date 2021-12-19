@@ -1,5 +1,6 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
+const date = require('date-and-time')
 
 module.exports.add = async (userId, productId, count) => {
     try {
@@ -85,6 +86,10 @@ module.exports.getAll = async () => {
             const orders = await resultSet.getRows()
             await resultSet.close()
 
+            orders.forEach(
+                (x) => (x.ORDER_DATE = date.format(x.ORDER_DATE, 'DD.MM.YY'))
+            )
+
             return orders.map((x) => keysToCamel(x))
         } catch (err) {
             throw err
@@ -121,12 +126,13 @@ module.exports.getById = async (id) => {
             )
 
             const resultSet = result.outBinds.order
-            const order = keysToCamel((await resultSet.getRows(1))[0])
+            const order = (await resultSet.getRows(1))[0]
+            order.ORDER_DATE = date.format(order.ORDER_DATE, 'DD.MM.YY')
             await resultSet.close()
 
             if (!order) throw new Error('order not found')
 
-            return order
+            return keysToCamel(order)
         } catch (err) {
             throw err
         } finally {

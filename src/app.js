@@ -1,7 +1,8 @@
-const bodyParser = require('body-parser')
 const express = require('express')
 const oracledb = require('oracledb')
-const { port, dbSettings } = require('./config/environment')
+const formidable = require('express-formidable')
+const cloudinary = require('cloudinary')
+const { port, dbSettings, cloudinaryConfig } = require('./config/environment')
 
 const userRouter = require('./routes/userRoute')
 const productRouter = require('./routes/productRoute')
@@ -10,8 +11,7 @@ const pickupsRouter = require('./routes/pickupsRoute')
 const orderRouter = require('./routes/orderRoute')
 
 const app = express()
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(formidable())
 
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
@@ -30,6 +30,8 @@ app.use((err, req, res, next) => {
         error: err.message,
     })
 })
+
+cloudinary.config(cloudinaryConfig)
 
 const server = app.listen(port, () => {
     console.log(`listening on port ${port}`)
