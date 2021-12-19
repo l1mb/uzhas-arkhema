@@ -1,14 +1,21 @@
 const productRepository = require('../repositories/productRepository')
+const cloudinary = require('cloudinary').v2
+const { placeholderImgUrl } = require('../config/environment')
 
 const add = async (req, res, next) => {
     try {
-        const { name, description, price, categoryId, vendorId } = req.body
+        const { name, description, price, categoryId, vendorId } = req.fields
+        const { logo } = req.files
+
+        const img = await cloudinary.uploader.upload(logo.path)
+
         const added = await productRepository.add(
             name,
             description,
             price,
             categoryId,
-            vendorId
+            vendorId,
+            img.url
         )
 
         res.status(201).json(added)
@@ -39,16 +46,17 @@ const getAll = async (req, res, next) => {
             orderby,
             mode
         )
+        products.forEach((p) => (p.imgUrl = p.imgUrl || placeholderImgUrl))
         return res.status(200).json(products)
     } catch (err) {
         next(err)
     }
 }
 
-const getProductsCount = async (req, res, next) => {
+const getProductsCount = async (_, res, next) => {
     try {
-        const products = await productRepository.getAll()
-        return res.status(200).json({ count: products.length })
+        const count = await productRepository.getCount()
+        return res.status(200).json({ count })
     } catch (err) {
         next(err)
     }
@@ -58,6 +66,7 @@ const getById = async (req, res, next) => {
     try {
         const { id } = req.params
         const product = await productRepository.getById(id)
+        product.imgUrl = product.imgUrl || placeholderImgUrl
 
         return res.status(200).json(product)
     } catch (err) {
@@ -67,14 +76,19 @@ const getById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
     try {
-        const { id, name, description, price, categoryId, vendorId } = req.body
+        const { name, description, price, categoryId, vendorId } = req.fields
+        const { logo } = req.files
+
+        const img = await cloudinary.uploader.upload(logo.path)
+
         const updated = await productRepository.updateById(
             id,
             name,
             description,
             price,
             categoryId,
-            vendorId
+            vendorId,
+            img.url
         )
 
         return res.status(201).json(updated)

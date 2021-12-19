@@ -26,11 +26,12 @@ create table users_t (
 drop table products_t;
 create table products_t (
 	id number generated always as identity,
-	name varchar2(50 char) unique not null,
+	name varchar2(50 char) not null,
 	description varchar2(200 char),
 	price number(10, 4) not null,
 	category_id number not null,
 	vendor_id number not null,
+    img_url varchar2(100 char),
     date_deleted date,
 	constraint products_pk primary key (id)
 );
@@ -39,7 +40,6 @@ drop table categories_t;
 create table categories_t (
 	id number generated always as identity,
 	name varchar2(50 char) not null,
-	description varchar2(200 char),
 	constraint categories_pk primary key (id)
 );
 
@@ -77,8 +77,30 @@ create view users_v as
 
 drop view products_v;
 create view products_v as
-    select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor
+    select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor, p.img_url
     from products_t p
     join vendors_t v on p.vendor_id = v.id
     join categories_t c on p.category_id = c.id
     where date_deleted is null;
+
+
+drop index product_vendors;
+create index product_vendors
+    on products_t(vendor_id);
+
+drop index product_categories;
+create index product_categories
+    on products_t(category_id);
+
+drop index product_price;
+create index product_price
+    on products_t(price);
+
+drop index product_not_deleted;
+create index product_not_deleted
+    on products_t(
+        case when date_deleted is null
+            then 1
+            else null
+        end
+    );

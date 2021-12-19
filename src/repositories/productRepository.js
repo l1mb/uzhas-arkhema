@@ -1,12 +1,15 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
+const priceToPrecision = (price) => parseFloat(price.toFixed(4))
+
 module.exports.add = async (
     name,
     description,
     price,
     category_id,
-    vendor_id
+    vendor_id,
+    img_url
 ) => {
     try {
         let connection
@@ -16,13 +19,14 @@ module.exports.add = async (
 
             const result = await connection.execute(
                 `begin rent_products.add(:name, :description, :price,
-                    :category_id, :vendor_id, :added); end;`,
+                    :category_id, :vendor_id, :img_url, :added); end;`,
                 {
                     name,
                     description,
                     price,
                     category_id,
                     vendor_id,
+                    img_url,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -33,6 +37,7 @@ module.exports.add = async (
             const resultSet = result.outBinds.added
             const product = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
@@ -54,7 +59,7 @@ module.exports.add = async (
 module.exports.getAll = async (
     offset = 0,
     limit = -1,
-    filter_by = 'product',
+    filter_by = 'name',
     filter_query = '',
     order_by = 'id',
     order_mode = 'asc'
@@ -64,14 +69,6 @@ module.exports.getAll = async (
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-
-            column_names = {
-                product: 'p.name',
-                vendor: 'v.name',
-                category: 'c.name',
-            }
-            if (filter_by in column_names) filter_by = column_names[filter_by]
-            else filter_by = 'p.name'
 
             const result = await connection.execute(
                 `begin rent_products.get_all(:offset, :limit, :filter_by,
@@ -93,6 +90,10 @@ module.exports.getAll = async (
             const resultSet = result.outBinds.products
             const products = await resultSet.getRows()
             await resultSet.close()
+
+            products.forEach(
+                (product) => (product.PRICE = priceToPrecision(product.PRICE))
+            )
 
             return products.map((x) => keysToCamel(x))
         } catch (err) {
@@ -134,6 +135,7 @@ module.exports.getById = async (id) => {
             await resultSet.close()
 
             if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
@@ -175,6 +177,7 @@ module.exports.deleteById = async (id) => {
             await resultSet.close()
 
             if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
 
             return product
         } catch (err) {
@@ -199,7 +202,8 @@ module.exports.updateById = async (
     description,
     price,
     category_id,
-    vendor_id
+    vendor_id,
+    img_url
 ) => {
     try {
         let connection
@@ -209,7 +213,7 @@ module.exports.updateById = async (
 
             const result = await connection.execute(
                 `begin rent_products.update_by_id(:id, :name, :description,
-                    :price, :category_id, :vendor_id, :updated); end;`,
+                    :price, :category_id, :vendor_id, :img_url, :updated); end;`,
                 {
                     id,
                     name,
@@ -217,6 +221,7 @@ module.exports.updateById = async (
                     price,
                     category_id,
                     vendor_id,
+                    img_url,
                     updated: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -229,8 +234,43 @@ module.exports.updateById = async (
             await resultSet.close()
 
             if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
 
             return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports.getCount = async () => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin rent_products.get_count(:count); end;`,
+                {
+                    count: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.DB_TYPE_NUMBER,
+                    },
+                }
+            )
+
+            return result.outBinds.count
         } catch (err) {
             throw err
         } finally {

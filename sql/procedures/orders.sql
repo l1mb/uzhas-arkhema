@@ -40,10 +40,6 @@ create or replace package body rent_orders as
         commit;
         get_by_id(added_id, added_order);
         out_order := added_order;
-    exception
-        when others then
-            rollback;
-            raise;
     end;
     --
     procedure get_all(

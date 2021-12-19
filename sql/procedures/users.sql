@@ -44,10 +44,6 @@ create or replace package body rent_users as
         commit;
         get_by_id(added_id, added_user);
         out_user := added_user;
-    exception
-        when others then
-            rollback;
-            raise;
     end;
     --
     procedure get_all(out_users out sys_refcursor)
