@@ -1,7 +1,8 @@
 const bodyParser = require('body-parser')
+const cloudinary = require('cloudinary').v2
 const express = require('express')
 const oracledb = require('oracledb')
-const { port, dbSettings } = require('./config/environment')
+const { port, dbConfig, cloudinaryConfig } = require('./config/environment')
 
 const userRouter = require('./routes/userRoute')
 const productRouter = require('./routes/productRoute')
@@ -27,9 +28,11 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
-        error: err.message,
+        error: err.message || 'internal server error',
     })
 })
+
+cloudinary.config(cloudinaryConfig)
 
 const server = app.listen(port, () => {
     console.log(`listening on port ${port}`)
@@ -38,7 +41,7 @@ const server = app.listen(port, () => {
 
 async function initDbConnectionPool() {
     try {
-        await oracledb.createPool(dbSettings)
+        await oracledb.createPool(dbConfig)
     } catch (err) {
         console.error(err.message)
         process.exit(1)

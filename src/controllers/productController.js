@@ -1,4 +1,5 @@
 const productRepository = require('../repositories/productRepository')
+const cloudinary = require('cloudinary').v2
 
 const add = async (req, res, next) => {
     try {
