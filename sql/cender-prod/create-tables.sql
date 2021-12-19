@@ -1,4 +1,4 @@
-drop table orders_t;
+drop table orders_t cascade constraints;
 create table orders_t (
     id number generated always as identity,
     user_id number not null,
@@ -11,7 +11,7 @@ create table orders_t (
 );
 
 
-drop table users_t;
+drop table users_t cascade constraints;
 create table users_t (
     id number generated always as identity,
     username varchar2(50 char) unique not null,
@@ -22,9 +22,9 @@ create table users_t (
     constraint users_chk check (role = 'admin' or role = 'customer')
 );
 
-DROP TABLE products_t;
+DROP TABLE products_t cascade constraints;
 CREATE TABLE products_t (
-    id INT,
+    id number generated always as identity,
     name VARCHAR2(255),
     description VARCHAR2(255),
     logo VARCHAR2(255) NOT NULL,
@@ -34,72 +34,31 @@ CREATE TABLE products_t (
     pickups_id INT NOT NULL,
     constraint products_t_PK PRIMARY KEY (id));
 
-DROP sequence products_t_ID_SEQ;
-CREATE sequence products_t_ID_SEQ;
 
-CREATE trigger BI_products_t_ID
-  before insert on products_t
-  for each row
-begin
-  select products_t_ID_SEQ.nextval into :NEW.id from dual;
-end;
-/
-
-DROP TABLE pickups;
+DROP TABLE pickups cascade constraints;
 CREATE TABLE pickups (
-    id INT,
+    id number generated always as identity,
     name VARCHAR2(255),
     constraint pickups_PK PRIMARY KEY (id));
 
-DROP sequence pickups_ID_SEQ;
-CREATE sequence pickups_ID_SEQ;
 
-CREATE trigger BI_pickups_ID
-  before insert on pickups
-  for each row
-begin
-  select pickups_ID_SEQ.nextval into :NEW.id from dual;
-end;
-/
-
-DROP TABLE Manufacturers;
+DROP TABLE Manufacturers cascade constraints;
 CREATE TABLE Manufacturers (
-    id INT,
+    id number generated always as identity,
     name VARCHAR2(255),
-    newsId INT NOT NULL,
     constraint MANUFACTURERS_PK PRIMARY KEY (id));
 
-DROP sequence MANUFACTURERS_ID_SEQ;
-CREATE sequence MANUFACTURERS_ID_SEQ;
 
-CREATE trigger BI_MANUFACTURERS_ID
-  before insert on Manufacturers
-  for each row
-begin
-  select MANUFACTURERS_ID_SEQ.nextval into :NEW.id from dual;
-end;
-/
-
-DROP TABLE News;
+DROP TABLE News cascade constraints;
 CREATE TABLE News (
-    id INT NOT NULL,
-    news INT NOT NULL,
-    created_at DATE NOT NULL,
+    id number generated always as identity,
+    mnfrId number not null,
+    news varchar2(255) NOT NULL,
+    created_at date default sysdate,
     constraint NEWS_PK PRIMARY KEY (id));
 
-DROP sequence NEWS_ID_SEQ;
-CREATE sequence NEWS_ID_SEQ;
 
-CREATE trigger BI_NEWS_ID
-  before insert on News
-  for each row
-begin
-  select NEWS_ID_SEQ.nextval into :NEW.id from dual;
-end;
-/
-
-
-ALTER TABLE Manufacturers ADD CONSTRAINT Manufacturers_fk0 FOREIGN KEY (newsId) REFERENCES News(id);
+ALTER TABLE news ADD CONSTRAINT news_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
 
 ALTER TABLE products_t ADD CONSTRAINT products_t_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
 
