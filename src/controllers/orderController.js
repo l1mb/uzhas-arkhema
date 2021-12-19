@@ -1,11 +1,22 @@
 const orderRepository = require('../repositories/orderRepository')
-const { status } = require('../config/orderStatuses')
 
 const add = async (req, res, next) => {
     try {
-        const added = await orderRepository.add(...Object.values(req.body))
+        const { userId, productId, count } = req.body
+        await orderRepository.add(userId, productId, count)
 
-        res.status(201).json(added)
+        res.status(201).send('added order')
+    } catch (err) {
+        next(err)
+    }
+}
+
+const updateById = async (req, res, next) => {
+    try {
+        const { id, userId, productId, count } = req.body
+        await orderRepository.updateById(id, userId, productId, count)
+
+        res.status(200).send('updated order')
     } catch (err) {
         next(err)
     }
@@ -31,25 +42,12 @@ const getById = async (req, res, next) => {
     }
 }
 
-const approve = async (req, res, next) => {
+const deleteById = async (req, res, next) => {
     try {
-        const { keys } = req.body
-        for await (const id of keys)
-            orderRepository.changeStatus(id, status.approved)
+        const { id } = req.params
+        await orderRepository.deleteById(id)
 
-        return res.status(204).send()
-    } catch (err) {
-        next(err)
-    }
-}
-
-const reject = async (req, res, next) => {
-    try {
-        const { keys } = req.body
-        for await (const id of keys)
-            orderRepository.changeStatus(id, status.rejected)
-
-        return res.status(204).send()
+        return res.status(200).send('deleted')
     } catch (err) {
         next(err)
     }
@@ -57,8 +55,8 @@ const reject = async (req, res, next) => {
 
 module.exports = {
     add,
+    updateById,
     getAll,
     getById,
-    approve,
-    reject,
+    deleteById,
 }
