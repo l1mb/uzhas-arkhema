@@ -47,8 +47,8 @@ function EditProduct(props: EditProps) {
     name: editableProduct?.name,
     price: editableProduct?.price,
     description: editableProduct?.description,
-    mnfrId: mnfrData.length>0 ? mnfrData[0].id : 0,
-    pickUpId: pickUpData.length>0 ? pickUpData[0].id : 0,
+    mnfrId: mnfrData.length > 0 ? mnfrData[0].id : 0,
+    pickUpId: pickUpData.length > 0 ? pickUpData[0].id : 0,
     shape: editableProduct?.shape,
   } as updateProductDto;
 
@@ -137,7 +137,11 @@ function EditProduct(props: EditProps) {
   return (
     <div className={styles.modalWrapper}>
       <Label
-        content={providedModalType === modalType.UPDATE ? `Edit card with id ${updateDto.id}` : `Create a new product`}
+        content={
+          providedModalType === modalType.UPDATE
+            ? `Edit card with id ${updateDto.id}`.toUpperCase()
+            : `Create a new product`.toUpperCase()
+        }
       />
       <div className={styles.inputs}>
         {EditData.map((element) => (
