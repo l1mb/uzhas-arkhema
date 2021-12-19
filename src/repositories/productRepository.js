@@ -6,9 +6,11 @@ const priceToPrecision = (price) => parseFloat(price.toFixed(4))
 module.exports.add = async (
     name,
     description,
+    logo,
     price,
-    category_id,
-    manufacturer_id
+    mnfrId,
+    shape,
+    pickUpId
 ) => {
     try {
         let connection
@@ -17,14 +19,16 @@ module.exports.add = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.add(:name, :description, :price,
-                    :category_id, :manufacturer_id, :added); end;`,
+                `begin cender_products.add(:name, :description, :logo, :price,
+                    :mnfrId, :shape, :pickUpId, :added); end;`,
                 {
                     name,
                     description,
+                    logo,
                     price,
-                    category_id,
-                    manufacturer_id,
+                    mnfrId,
+                    shape,
+                    pickUpId,
                     added: {
                         dir: oracledb.BIND_OUT,
                         type: oracledb.CURSOR,
@@ -35,6 +39,107 @@ module.exports.add = async (
             const resultSet = result.outBinds.added
             const product = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
+            product.price = priceToPrecision(product.price)
+
+            return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports.updateById = async (
+    id,
+    name,
+    description,
+    logo,
+    price,
+    mnfrId,
+    shape,
+    pickUpId
+) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin cender_products.update_by_id(:id, :name, :description,
+                    :logo, :price, :mnfrId, :shape, :pickUpId, :updated); end;`,
+                {
+                    id,
+                    name,
+                    description,
+                    logo,
+                    price,
+                    mnfrId,
+                    shape,
+                    pickUpId,
+                    updated: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.updated
+            const product = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            if (!product) throw new Error('product not found')
+            product.price = priceToPrecision(product.price)
+
+            return product
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports.getById = async (id) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin cender_products.get_by_id(:id, :product); end;`,
+                {
+                    id,
+                    product: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.product
+            const product = keysToCamel((await resultSet.getRows(1))[0])
+            await resultSet.close()
+
+            if (!product) throw new Error('product not found')
             product.price = priceToPrecision(product.price)
 
             return product
@@ -69,7 +174,7 @@ module.exports.getAll = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.get_all(:offset, :limit, :filter_by,
+                `begin cender_products.get_all(:offset, :limit, :filter_by,
                     :filter_query, :order_by, :order_mode, :products); end;`,
                 {
                     offset,
@@ -110,48 +215,6 @@ module.exports.getAll = async (
     }
 }
 
-module.exports.getById = async (id) => {
-    try {
-        let connection
-        try {
-            connection = await oracledb.getConnection()
-            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-
-            const result = await connection.execute(
-                `begin rent_products.get_by_id(:id, :product); end;`,
-                {
-                    id,
-                    product: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
-                }
-            )
-
-            const resultSet = result.outBinds.product
-            const product = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
-
-            if (!product) throw new Error('product not found')
-            product.price = priceToPrecision(product.price)
-
-            return product
-        } catch (err) {
-            throw err
-        } finally {
-            if (connection) {
-                try {
-                    await connection.close()
-                } catch (err) {
-                    throw err
-                }
-            }
-        }
-    } catch (err) {
-        throw err
-    }
-}
-
 module.exports.deleteById = async (id) => {
     try {
         let connection
@@ -160,7 +223,7 @@ module.exports.deleteById = async (id) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.delete_by_id(:id, :deleted); end;`,
+                `begin cender_products.delete_by_id(:id, :deleted); end;`,
                 {
                     id,
                     deleted: {
@@ -209,7 +272,7 @@ module.exports.updateById = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.update_by_id(:id, :name, :description,
+                `begin cender_products.update_by_id(:id, :name, :description,
                     :price, :category_id, :manufacturer_id, :updated); end;`,
                 {
                     id,
@@ -257,7 +320,7 @@ module.exports.getCount = async () => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin rent_products.get_count(:count); end;`,
+                `begin cender_products.get_count(:count); end;`,
                 {
                     count: {
                         dir: oracledb.BIND_OUT,

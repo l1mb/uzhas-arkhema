@@ -6,7 +6,7 @@ const { port, dbSettings } = require('./config/environment')
 const userRouter = require('./routes/userRoute')
 const productRouter = require('./routes/productRoute')
 const manufacturerRouter = require('./routes/manufacturerRoute')
-const categoryRouter = require('./routes/categoryRoute')
+const pickupsRouter = require('./routes/pickupsRoute')
 const orderRouter = require('./routes/orderRoute')
 
 const app = express()
@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/manufacturers', manufacturerRouter)
-app.use('/api/categories', categoryRouter)
+app.use('/api/pickups', pickupsRouter)
 app.use('/api/orders', orderRouter)
 
 app.use((req, res, next) => {

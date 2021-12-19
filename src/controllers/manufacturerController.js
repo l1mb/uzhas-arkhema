@@ -1,17 +1,5 @@
 const manufacturerRepository = require('../repositories/manufacturerRepository')
 
-const add = async (req, res, next) => {
-    try {
-        const added = await manufacturerRepository.add(
-            ...Object.values(req.body)
-        )
-
-        res.status(201).json(added)
-    } catch (err) {
-        next(err)
-    }
-}
-
 const getAll = async (_, res, next) => {
     try {
         const manufacturers = await manufacturerRepository.getAll()
@@ -21,7 +9,51 @@ const getAll = async (_, res, next) => {
     }
 }
 
+const getById = async (_, res, next) => {
+    try {
+        const { id } = req.params
+        const manufacturer = await manufacturerRepository.getById(id)
+        return res.status(200).json(manufacturer)
+    } catch (err) {
+        next(err)
+    }
+}
+
+const postNews = async (req, res, next) => {
+    try {
+        const { manufacturerId, news } = req.body
+        await manufacturerRepository.createNews(manufacturerId, news)
+        return res.status(200).send("created");
+    } catch (err) {
+        next(err)
+    }
+}
+
+const putNews = async (req, res, next) => {
+    try {
+        const { id, news } = req.body
+        await manufacturerRepository.updateNews(id, news)
+        return res.status(200).send("updated");
+    } catch (err) {
+        next(err)
+    }
+}
+
+const deleteNews = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        await manufacturerRepository.deleteNewsById(id)
+        return res.status(200).send("deleted");
+    } catch (err) {
+        next(err)
+    }
+}
+
+
 module.exports = {
-    add,
     getAll,
+    getById,
+    postNews,
+    putNews,
+    deleteNews
 }

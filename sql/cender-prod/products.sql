@@ -1,4 +1,4 @@
-create or replace package rent_products as
+create or replace package cender_products as
     procedure add(
         in_name products_t.name%type,
         in_description products_t.description%type,
@@ -36,22 +36,25 @@ create or replace package rent_products as
     );
 end;
 /
+show errors;
 
-create or replace package body rent_products as
+create or replace package body cender_products as
     procedure add(
         in_name products_t.name%type,
         in_description products_t.description%type,
+        in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_category_id products_t.category_id%type,
-        in_vendor_id products_t.vendor_id%type,
+        in_mnfrId products_t.mnfrId%type,
+        in_shape products_t.shape%type,
+        in_pickupId products_t.pickups_id%type,
         out_product out sys_refcursor
     )
     as
         added_id products_t.id%type;
         added_product sys_refcursor;
     begin
-        insert into products_t(name, description, price, category_id, vendor_id)
-            values(in_name, in_description, in_price, in_category_id, in_vendor_id)
+        insert into products_t(name, description,logo, price, mnfrId, shape, pickups_id)
+            values(in_name, in_description,in_logo, in_price,in_mnfrId, in_shape, in_pickupId)
             returning id into added_id;
         commit;
         get_by_id(added_id, added_product);
@@ -116,9 +119,11 @@ create or replace package body rent_products as
         in_id products_t.id%type,
         in_name products_t.name%type,
         in_description products_t.description%type,
+        in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_category_id products_t.category_id%type,
-        in_vendor_id products_t.vendor_id%type,
+        in_mnfrId products_t.mnfrId%type,
+        in_shape products_t.shape%type,
+        in_pickupId products_t.pickups_id%type,
         out_product out sys_refcursor
     )
     as
@@ -126,9 +131,13 @@ create or replace package body rent_products as
         updated_product sys_refcursor;
     begin
         update products_t
-            set name = in_name, description = in_description,
-                price = in_price, category_id = in_category_id,
-                vendor_id = in_vendor_id 
+            set name = in_name,
+             description = in_description,
+             logo = in_logo,
+              price = in_price,
+               mnfrId = in_mnfrId,
+                shape = in_shape,
+                 pickups_id = in_pickupId 
         where id = in_id
         returning id into updated_id;
         commit;
