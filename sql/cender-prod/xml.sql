@@ -2,12 +2,10 @@ create or replace directory cender_xml as 'cender_dir';
 
 create or replace package cender_utils as
     procedure export_table(in_table_name varchar2);
-    procedure import_users;
-    procedure import_manufacturers;
-    procedure import_categories;
-    procedure import_products;
+    procedure import_orders;
 end;
 /
+
 
 create or replace package body cender_utils as
     procedure export_table(in_table_name varchar2)
@@ -16,68 +14,35 @@ create or replace package body cender_utils as
         doc dbms_xmldom.domdocument;
         v_sql varchar2(500 char);
     begin
-        v_sql := 'select * from cender.'|| in_table_name ||'_t';
+        v_sql := 'select * from cender.'|| in_table_name;
         open rc for v_sql;
         doc := dbms_xmldom.newdomdocument(xmltype(rc));
-        dbms_xmldom.writetofile(doc, 'cender_XML/' || in_table_name || '.xml');
+        dbms_xmldom.writetofile(doc, 'CENDER_XML/' || in_table_name || '.xml');
     end;
     --
-    procedure import_users
+    procedure import_orders
     as begin
-        insert into users_t (username, email, password_hash, role)
-        select ExtractValue(value(user_xml), '//USERNAME') as username,
-               ExtractValue(value(user_xml), '//EMAIL') as email,
-               ExtractValue(value(user_xml), '//PASSWORD_HASH') as password_hash,
-               ExtractValue(value(user_xml), '//ROLE') as role
-        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/users.xml'),
-            nls_charset_id('utf-8')),'/ROWSET/ROW'))) user_xml;
-        commit;
-    end;
-    --
-    procedure import_manufacturers
-    as begin
-        insert into manufacturers_t (name)
-        select ExtractValue(value(manufacturer_xml), '//NAME') as name
-        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/manufacturers.xml'),
-            nls_charset_id('utf-8')),'/ROWSET/ROW'))) manufacturer_xml;
-        commit;
-    end;
-    --
-    procedure import_categories
-    as begin
-        insert into categories_t(name)
-        select ExtractValue(value(category_xml), '//NAME') as name
-        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/categories.xml'),
-            nls_charset_id('utf-8')),'/ROWSET/ROW'))) category_xml;
-        commit;
-    end;
-    --
-    procedure import_products
-    as begin
-        insert into products_t (name, description, price, category_id, manufacturer_id, date_deleted)
-        select ExtractValue(value(product_xml), '//NAME') as name,
-               ExtractValue(value(product_xml), '//DESCRIPTION') as description,
-               ExtractValue(value(product_xml), '//PRICE') as price,
-               ExtractValue(value(product_xml), '//CATEGORY_ID') as category_id,
-               ExtractValue(value(product_xml), '//manufacturer_ID') as manufacturer_id,
-               ExtractValue(value(product_xml), '//DATE_DELETED') as date_deleted
-        from table(xmlsequence(extract(xmltype(bfilename('cender_XML', '/import/products.xml'),
-            nls_charset_id('utf-8')),'/ROWSET/ROW'))) product_xml;
+        insert into orders_t (user_id, product_id, count, order_date, status)
+        select ExtractValue(value(order_xml), '//USER_ID') as user_id,
+               ExtractValue(value(order_xml), '//PRODUCT_ID') as product_id,
+               ExtractValue(value(order_xml), '//COUNT') as count,
+               ExtractValue(value(order_xml), '//ORDER_DATE') as order_date,
+               ExtractValue(value(order_xml), '//STATUS') as status
+        from table(xmlsequence(extract(xmltype(bfilename('CENDER_XML', '/import/orders.xml'),
+            nls_charset_id('utf-8')),'/ROWSET/ROW'))) order_xml;
         commit;
     end;
 end;
 /
 show errors;
 
--- begin
---     cender_utils.export_table('users');
--- end;
--- /
-
 begin
-    cender_utils.import_categories;
-    cender_utils.import_manufacturers;
-    cender_utils.import_users;
-    cender_utils.import_products;
+  cender_utils.import_orders;
+end;
+/
+
+
+begin 
+  cender_utils.export_table ('orders_t');
 end;
 /
