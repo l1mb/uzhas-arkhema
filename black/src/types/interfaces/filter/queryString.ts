@@ -21,8 +21,9 @@ const buildString = (
   initQuery += type ? handleFirstItem(initQuery, `mode=desc`) : "";
   initQuery += limit ? handleFirstItem(initQuery, `limit=${limit}`) : "";
   initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
-  initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
-  initQuery += offset ? handleFirstItem(initQuery, `offset=${offset}`) : "";
+  initQuery += shape ? handleFirstItem(initQuery, `shape=${offset}`) : "";
+  initQuery += mnfrId ? handleFirstItem(initQuery, `mnfrId=${offset}`) : "";
+  initQuery += pickUpId ? handleFirstItem(initQuery, `pickUpId=${offset}`) : "";
   return initQuery;
 };
 

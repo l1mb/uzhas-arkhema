@@ -22,7 +22,7 @@ const putProduct = async (prop: updateProductDto): Promise<Response> => {
 };
 
 const apiGetMnfrs = async (): Promise<{ id: number; name: string }[] | null> => {
-  const tdata = await fetch(`${endpoints.vendors}`, getOptions("GET", true));
+  const tdata = await fetch(`${endpoints.mnfrs}`, getOptions("GET", true));
 
   if (tdata.status === 200) {
     return tdata.json();
@@ -30,7 +30,7 @@ const apiGetMnfrs = async (): Promise<{ id: number; name: string }[] | null> => 
   return null;
 };
 const apiGetPickUps = async (): Promise<{ id: number; name: string }[] | null> => {
-  const tdata = await fetch(`${endpoints.categories}`, getOptions("GET", true));
+  const tdata = await fetch(`${endpoints.pickups}`, getOptions("GET", true));
 
   if (tdata.status === 200) {
     return tdata.json();

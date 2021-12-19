@@ -4,6 +4,15 @@ const add = async (req, res, next) => {
     try {
         const { name, description, logo, price, mnfrId, shape, pickUpId } =
             req.body
+            console.log(
+                name,
+                description,
+                logo,
+                price,
+                mnfrId,
+                shape,
+                pickUpId
+            );
         const added = await productRepository.add(
             name,
             description,

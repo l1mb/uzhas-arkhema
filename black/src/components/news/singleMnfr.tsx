@@ -69,7 +69,7 @@ function SingleMnfr(props: MNFR) {
           Create
         </Button>
       </div>
-      {props.mnfr.news.map((elem) => (
+      {(props.mnfr.news)&& (props.mnfr.news.length>0) && props.mnfr.news.map((elem) => (
         <Новость handlers={props.handlers} key={elem.id} role={role} news={elem} />
       ))}
     </div>

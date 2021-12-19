@@ -2,7 +2,7 @@ export interface updateProductDto {
   id?: number;
   name: string;
   description: string;
-  logo: string;
+  logo: string|File;
   price: number;
   mnfrId: number;
   shape: string;
