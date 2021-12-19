@@ -1,3 +1,4 @@
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
 import IBasicProduct from "@/api/types/products/IBasicProduct";
 import userDto from "@/api/types/user/userDto";
 import mnfrReadDto from "@/types/interfaces/news/nmfrs";
@@ -35,10 +36,10 @@ const setRole = (
 });
 
 const setProducts = (
-  Products: IBasicProduct[]
+  Products: readProductDto[]
 ): {
   type: string;
-  payload: IBasicProduct[];
+  payload: readProductDto[];
 } => ({
   type: SET_PRODUCTS,
   payload: Products,

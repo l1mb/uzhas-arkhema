@@ -4,13 +4,15 @@ import apiGetProducts from "@/api/httpService/apiGetProducts";
 import ProductsApi from "@/api/httpService/products/productsApi";
 import actions from "../actions";
 import ProductActions from "../manufacturers/newsActionTypes";
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
+import endpoints from "@/api/endpoints";
 
 const detectPromise = (actionType: string, body: FormData | number): Promise<Response> => {
   switch (actionType) {
     case ProductActions.CREATE:
-      return ProductsApi.postProduct(body as FormData);
+      return fetch(`${endpoints.products}`, { method: "POST", body });
     case ProductActions.UPDATE:
-      return ProductsApi.putProduct(body as FormData);
+      return fetch(`${endpoints.products}`, { method: "PUT", body });
     case ProductActions.DELETE:
       return ProductsApi.deleteProduct(body as number);
 
@@ -24,7 +26,7 @@ const ProductInteractions =
   async (
     dispatch: Dispatch<{
       type: string;
-      payload: IGroupedProduct[];
+      payload: readProductDto[];
     }>
   ): Promise<void> => {
     const promise: Promise<Response> = detectPromise(actionType, body);

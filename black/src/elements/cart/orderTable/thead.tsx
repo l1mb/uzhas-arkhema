@@ -8,7 +8,7 @@ function Thead({ data }) {
       <thead style={{ textAlign: "center" }}>
         <tr>
       {data.map((m) => (
-        <th key={m}>{m}</th>
+        <th key={m}>{m}</th>  
       ))}
     </tr>
     </thead></>
