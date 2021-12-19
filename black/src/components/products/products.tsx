@@ -84,6 +84,7 @@ function Items(props: itemsProps) {
           <ProductCard
             product={item}
             key={item.name}
+            img={item.logo}
             label={item.name}
             price={item.price}
             setMode={props.setMode}
