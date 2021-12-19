@@ -1,6 +1,35 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
+module.exports.add = async (name) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            await connection.execute(
+                `begin cender_manufacturers.add(:name); end;`,
+                {
+                    name,
+                }
+            )
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
 module.exports.getAll = async () => {
     try {
         let connection
@@ -80,22 +109,18 @@ module.exports.getById = async (id) => {
     }
 }
 
-
-
-module.exports.createNews = async (
-    mnfrId, news
-) => {
+module.exports.createNews = async (mnfrId, news) => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-            console.log("i can reach post " + mnfrId +" " + news)
-            const result = await connection.execute(
+
+            await connection.execute(
                 `begin cender_news.create_news(:mnfrId, :news); end;`,
                 {
                     mnfrId,
-                    news
+                    news,
                 }
             )
         } catch (err) {
@@ -114,23 +139,18 @@ module.exports.createNews = async (
     }
 }
 
-
-
-module.exports.updateNews = async (
-    newsId, news
-) => {
+module.exports.updateNews = async (newsId, news) => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-            console.log("i can reach update " + newsId +" " + news)
 
-            const result = await connection.execute(
+            await connection.execute(
                 `begin cender_news.update_news(:newsId, :news); end;`,
                 {
-                    newsId, 
-                    news
+                    newsId,
+                    news,
                 }
             )
         } catch (err) {
@@ -149,24 +169,19 @@ module.exports.updateNews = async (
     }
 }
 
-module.exports.deleteNewsById = async (
-    newsId
-) => {
+module.exports.deleteNewsById = async (newsId) => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-            console.log("i can reach delete " + newsId )
 
             await connection.execute(
                 `begin cender_news.delete_news(:newsId); end;`,
                 {
-                    newsId
+                    newsId,
                 }
             )
-
-            console.log("suka")
         } catch (err) {
             throw err
         } finally {
@@ -182,5 +197,3 @@ module.exports.deleteNewsById = async (
         throw err
     }
 }
-
-
