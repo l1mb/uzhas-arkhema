@@ -26,10 +26,6 @@ create or replace package body rent_categories as
         commit;
         get_by_id(added_id, added_category);
         out_category := added_category;
-    exception
-        when others then
-            rollback;
-            raise;
     end;
     --
     procedure get_all(out_categories out sys_refcursor)

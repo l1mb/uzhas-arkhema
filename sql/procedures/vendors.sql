@@ -26,10 +26,6 @@ create or replace package body rent_vendors as
         commit;
         get_by_id(added_id, added_vendor);
         out_vendor := added_vendor;
-    exception
-        when others then
-            rollback;
-            raise;
     end;
     --
     procedure get_all(out_vendors out sys_refcursor)

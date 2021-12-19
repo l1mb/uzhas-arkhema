@@ -56,10 +56,6 @@ create or replace package body rent_products as
         commit;
         get_by_id(added_id, added_product);
         out_product := added_product;
-    exception
-        when others then
-            rollback;
-            raise;
     end;
     --
     procedure delete_by_id(
