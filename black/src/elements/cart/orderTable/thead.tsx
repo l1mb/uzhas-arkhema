@@ -2,14 +2,18 @@ interface TheadProps {
   data: string[];
 }
 
-const Thead: React.FC<TheadProps> = ({ data }) => (
-  <thead>
-    <tr>
+function Thead({ data }) {
+  return (
+    <>
+      <thead style={{ textAlign: "center" }}>
+        <tr>
       {data.map((m) => (
         <th key={m}>{m}</th>
       ))}
     </tr>
-  </thead>
-);
+    </thead></>
+
+  );
+}
 
 export default Thead;

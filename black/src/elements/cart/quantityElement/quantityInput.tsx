@@ -11,7 +11,7 @@ interface quantityProps {
   setValue: (e: number, id: number) => void;
 }
 
-const QuantityInput: React.FC<quantityProps> = (props) => {
+function QuantityInput(props: quantityProps) {
   const [disable, setDisable] = useState(true);
 
   const [buffer, setBuffer] = useState<string>(props.count.toString());
@@ -42,7 +42,7 @@ const QuantityInput: React.FC<quantityProps> = (props) => {
             type="button"
             onClick={() => {
               setDisable(false);
-            }}
+            } }
           >
             <img src={edit} alt="edit" />
           </button>
@@ -59,6 +59,6 @@ const QuantityInput: React.FC<quantityProps> = (props) => {
       </div>
     </td>
   );
-};
+}
 
 export default QuantityInput;

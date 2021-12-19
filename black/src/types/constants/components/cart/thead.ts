@@ -1,3 +1,3 @@
-const orderTheadData = ["Selected", "Name", "Platform", "Order", "Amount", "Price"];
+const orderTheadData = ["Selected", "Name", "Shape", "Order", "Amount", "Price"];
 
 export default orderTheadData;

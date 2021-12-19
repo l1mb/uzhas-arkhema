@@ -29,7 +29,7 @@ function CartRow(props: OrderItemWithId) {
       </td>
       <td>{props.name}</td>
       <td>{props.shape}</td>
-      <td>{props.orderDate.toString()}</td>
+      <td>{JSON.stringify(props.orderDate)}</td>
       <QuantityInput count={props.amount} orderId={props.orderId} setValue={props.changeAmount} />
       <td>{props.price}</td>
     </tr>
