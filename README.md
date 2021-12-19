@@ -46,6 +46,9 @@ DB_USERNAME="your_username"
 DB_PASSWORD="your_password"
 DB_URL="host:port/pdbname.localdomain"
 TOKEN_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CLOUDINARY_CLOUD="cloud_name"
+CLOUDINARY_KEY="api_key"
+CLOUDINARY_SECRET="api_secret"
 ```
 
 You can generate token secret using nodejs
