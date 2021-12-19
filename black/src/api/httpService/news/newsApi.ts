@@ -5,7 +5,7 @@ import updateNews from "@/types/interfaces/news/updateNews";
 import postNews from "@/types/interfaces/news/postNews";
 
 const getMnfrs = async (): Promise<mnfrReadDto[]> => {
-  const data = await fetch(`${endpoints.products}`, getOptions("GET", false));
+  const data = await fetch(`${endpoints.mnfrs}`, getOptions("GET", false));
 
   return data.json();
 };

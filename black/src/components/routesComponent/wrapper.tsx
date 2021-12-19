@@ -15,6 +15,7 @@ import Products from "../products/products";
 import getRole from "@/helpers/token/getRole";
 import Home from "../homeComponent/homeComponent/home";
 import News from "../news/news";
+import setNewsDispatch from "@/redux/actions/manufacturers/setNews";
 
 const SignIn = React.lazy(() => import("../authComponents/signIn"));
 const SignUp = React.lazy(() => import("../authComponents/signUp"));
@@ -36,6 +37,7 @@ function Wrapper() {
   useEffect(() => {
     dispatch(setCountDispatch());
     dispatch(signInDispatch());
+    dispatch(setNewsDispatch());
     dispatch(actions.setRole(getRole()));
   }, []);
 

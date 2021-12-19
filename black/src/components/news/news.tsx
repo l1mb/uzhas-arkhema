@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import mnfrReadDto from "@/types/interfaces/news/nmfrs";
 import SingleMnfr from "./singleMnfr";
-import getMockNews from "@/data/news/getMockNews";
 import Modal from "../modalComponent/modalComponent/modal";
 import EditNews from "../modalComponent/editProductModal/editNews";
 import modalType from "../modalComponent/editProductModal/modalType";
@@ -10,7 +9,7 @@ import newsApi from "@/api/httpService/news/newsApi";
 import news from "@/types/interfaces/news/news";
 
 function News() {
-  const [data, setData] = useState<mnfrReadDto[]>(getMockNews);
+  const [data, setData] = useState<mnfrReadDto[]>();
   const [open, setOpen] = useState(false);
   const [modal, setModalType] = useState<string>();
   const [entity, setentity] = useState<news>();

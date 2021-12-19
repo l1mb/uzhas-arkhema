@@ -29,7 +29,7 @@ function EditNews(props: EditProps) {
   };
 
   const handleCreateClick = () => {
-    dispatch(MnfrsInteractions(NewsActions.CREATE, { manufacrurerId: props.mnfrId, news: новость }));
+    dispatch(MnfrsInteractions(NewsActions.CREATE, { manufacturerId: props.mnfrId, news: новость }));
     props.setOpen(false);
   };
 

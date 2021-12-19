@@ -27,7 +27,7 @@ const setProductsDispatch =
     let Products: IBasicProduct[] = [];
     switch (actionType) {
       case ProductActions.INIT_LIST:
-        // Products = await apiGetProducts.apiProductsList();
+        Products = await apiGetProducts.apiProductsList("", 0, 0);
 
         break;
       case ProductActions.QUERIFIED_LIST:
