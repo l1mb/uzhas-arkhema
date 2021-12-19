@@ -1,39 +1,53 @@
 const oracledb = require('oracledb')
 const { keysToCamel } = require('./utils')
 
-module.exports.add = async (
-    user_id,
-    product_id,
-    phone,
-    cender_start_date,
-    cender_end_date
-) => {
+module.exports.add = async (userId, productId, count) => {
     try {
         let connection
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
-            const result = await connection.execute(
-                `begin cender_orders.add(:user_id, :product_id, :phone, :cender_start_date, :cender_end_date, :added); end;`,
+            await connection.execute(
+                `begin cender_orders.add(:userId, :productId, :count); end;`,
                 {
-                    user_id,
-                    product_id,
-                    phone,
-                    cender_start_date,
-                    cender_end_date,
-                    added: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
+                    userId,
+                    productId,
+                    count,
                 }
             )
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
 
-            const resultSet = result.outBinds.added
-            const order = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
+module.exports.updateById = async (id, userId, productId, count) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
-            return order
+            await connection.execute(
+                `begin cender_orders.add(:id, :userId, :productId, :count); end;`,
+                {
+                    id,
+                    userId,
+                    productId,
+                    count,
+                }
+            )
         } catch (err) {
             throw err
         } finally {
@@ -129,7 +143,7 @@ module.exports.getById = async (id) => {
     }
 }
 
-module.exports.changeStatus = async (id, new_status) => {
+module.exports.deleteById = async (id) => {
     try {
         let connection
         try {
@@ -137,11 +151,8 @@ module.exports.changeStatus = async (id, new_status) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             await connection.execute(
-                `begin cender_orders.set_status(:id, :new_status); end;`,
-                {
-                    id,
-                    new_status,
-                }
+                `begin cender_orders.delete_by_id(:id); end;`,
+                { id }
             )
         } catch (err) {
             throw err
