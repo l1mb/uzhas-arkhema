@@ -7,14 +7,14 @@ const deleteProduct = async (prop: number): Promise<Response> => {
   return data;
 };
 
-const postProduct = async (prop: updateProductDto): Promise<Response> => {
+async function postProduct(prop: FormData): Promise<Response> {
   const token = getToken();
   const data = await fetch(`${endpoints.products}`, getOptions("POST", true, prop));
 
   return data;
-};
+}
 
-const putProduct = async (prop: updateProductDto): Promise<Response> => {
+const putProduct = async (prop: FormData): Promise<Response> => {
   const token = getToken();
   const data = await fetch(`${endpoints.products}`, getOptions("PUT", true, prop));
   return data;

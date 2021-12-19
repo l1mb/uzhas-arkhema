@@ -6,8 +6,8 @@ import { updateProductDto } from "@/api/types/newProduct/productUpdateDto";
 interface ModalProps {
   isOpen: boolean;
   mode: string;
-  save: (e: updateProductDto) => void;
-  update: (e: updateProductDto) => void;
+  save: (e: FormData) => void;
+  update: (e: FormData) => void;
   setOpen: (e: boolean) => void;
   product?: updateProductDto;
 }
@@ -40,6 +40,7 @@ function BtEditModal(props: ModalProps) {
   const [price, setPrice] = useState<number>(0);
   const [vendor, setVendor] = useState<{ id: number; name: string }>();
   const [category, setCategory] = useState<{ id: number; name: string }>();
+  const [image, setImage] = useState<File>();
 
   useEffect(() => {
     if (product) {
@@ -79,9 +80,37 @@ function BtEditModal(props: ModalProps) {
     });
   };
 
+  const fileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setImage(event.target.files[0]);
+    }
+  };
+
   useEffect(() => {
     submit();
+    console.log(image);
   }, [name, price, description, vendor, category]);
+
+  const buildFormData = (): FormData => {
+    const data = new FormData();
+    if (answer) {
+      Object.keys(answer).forEach((key) => data.append(key, answer[key as keyof typeof answer] as string | Blob));
+      data.append("logo", image);
+    } else {
+      alert("ne troj");
+    }
+    return data;
+  };
+
+  const innerSaveHandler = () => {
+    const result = buildFormData();
+    props.save(result);
+  };
+
+  const innerUpdateHandler = () => {
+    const result = buildFormData();
+    props.update(result);
+  };
 
   return (
     <Modal key={product} show={props.isOpen && (props.mode === "create" || props.mode === "update")} centered>
@@ -118,6 +147,10 @@ function BtEditModal(props: ModalProps) {
               value={price}
               onChange={(e) => handlePriceChange(e.currentTarget.value)}
             />
+          </Form.Group>
+          <Form.Group onChange={fileChange} controlId="formFile" className="mb-3">
+            <Form.Label>Default file input example</Form.Label>
+            <Form.Control type="file" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCustomer">
             <Form.Label>Vendor</Form.Label>
@@ -165,10 +198,10 @@ function BtEditModal(props: ModalProps) {
           onClick={() => {
             if (props.mode === "create") {
               if (answer) {
-                props.save(answer);
+                innerSaveHandler();
               }
             } else if (answer) {
-              props.update(answer);
+              innerUpdateHandler();
             }
           }}
         >

@@ -40,6 +40,7 @@ function CreateOrderModal(props: createModalProp) {
     props.setOpen(false);
   }
 
+
   return (
     <Modal size="sm" show={props.show} aria-labelledby="contained-modal-title-vcenter" centered sx={{ width: "320px" }}>
       <Modal.Header>

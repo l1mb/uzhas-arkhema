@@ -160,7 +160,7 @@ function Products() {
   const dispatch = useDispatch();
 
   const data = useSelector<StateType, updateProductDto[]>((state) => state.Products);
-  const handleSave = async (e: updateProductDto) => {
+  const handleSave = async (e: FormData) => {
     const response = await productsApi.postProduct(e);
     if (response.status === 201) {
       toast.success("Yay");
@@ -171,7 +171,10 @@ function Products() {
     setOpen(false);
     setProduct({} as updateProductDto);
   };
-  const handleUpdate = async (e: updateProductDto) => {
+
+
+
+  async function handleUpdate(e: FormData) {
     const response = await productsApi.putProduct(e);
     if (response.status === 201) {
       toast.success("Yay");
@@ -181,7 +184,7 @@ function Products() {
     }
     setOpen(false);
     setProduct({} as updateProductDto);
-  };
+  }
 
   useEffect(() => {
     async function getCount() {
