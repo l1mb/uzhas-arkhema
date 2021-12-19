@@ -60,6 +60,11 @@ function FilterBar(props: FilterProps) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log(mnfrData);
+    console.log(pickUpData);
+  }, [mnfrData, pickUpData]);
+
   return (
     <div className={styles.filterContainer}>
       <Label content={shape} classname={styles.firstname} />
@@ -78,7 +83,7 @@ function FilterBar(props: FilterProps) {
           changeHandler={(e: QueryItem) => setType(e)}
         />
       </div>
-      {pickUpData && (
+      {pickUpData && pickUpData.length > 0 && (
         <div>
           <Label content={filterData.label.genres} classname={styles.names} />
           <RadioButtons
@@ -88,7 +93,7 @@ function FilterBar(props: FilterProps) {
           />
         </div>
       )}
-      {mnfrData && (
+      {mnfrData && mnfrData.length > 0 && (
         <div>
           <Label content={filterData.label.age} classname={styles.names} />
           <RadioButtons

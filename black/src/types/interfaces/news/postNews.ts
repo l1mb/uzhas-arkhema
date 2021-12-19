@@ -1,5 +1,5 @@
 interface postNews {
-  manufacrurerId: number;
+  manufacturerId: number;
   news: string;
 }
 

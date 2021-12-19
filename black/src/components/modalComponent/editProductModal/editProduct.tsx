@@ -12,6 +12,7 @@ import modalType from "./modalType";
 import styles from "./editProduct.module.scss";
 import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 import { readProductDto } from "@/api/types/newProduct/rProductDto";
+import getOptions from "@/api/httpService/tokenedOptions";
 
 interface EditProps {
   editableProduct?: readProductDto;
@@ -64,7 +65,18 @@ function EditProduct(props: EditProps) {
       return data;
     });
 
+  const sendImageToCloudinary = async () => {
+    const formData = new FormData();
+    formData.append("logo", updateDto.logo);
+    const linkISuppose = await fetch(
+      "https://api.cloudinary.com/v1_1/dbu4voh2q/upload",
+      getOptions("POST", false, formData)
+    );
+    return linkISuppose;
+  };
+
   const buildFormData = (): FormData => {
+    sendImageToCloudinary();
     const data = new FormData();
     Object.keys(updateDto).forEach((key) =>
       data.append(key, updateDto[key as keyof typeof updateDto] as string | Blob)
