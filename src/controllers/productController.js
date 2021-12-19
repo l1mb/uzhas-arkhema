@@ -1,5 +1,6 @@
 const productRepository = require('../repositories/productRepository')
 const cloudinary = require('cloudinary').v2
+const { placeholderImgUrl } = require('../config/environment')
 
 const add = async (req, res, next) => {
     try {
@@ -61,7 +62,7 @@ const getById = async (req, res, next) => {
     try {
         const { id } = req.params
         const product = await productRepository.getById(id)
-        product.imgUrl = product.imgUrl || placeholderImgUrl
+        product.logo = product.logo || placeholderImgUrl
 
         return res.status(200).json(product)
     } catch (err) {
@@ -80,7 +81,7 @@ const getAll = async (req, res, next) => {
             orderby,
             mode
         )
-        products.forEach((p) => (p.imgUrl = p.imgUrl || placeholderImgUrl))
+        products.forEach((p) => (p.logo = p.logo || placeholderImgUrl))
 
         return res.status(200).json(products)
     } catch (err) {
@@ -99,7 +100,7 @@ const deleteById = async (req, res, next) => {
     }
 }
 
-const getProductsCount = async (_, res, next) => {
+const getPages = async (req, res, next) => {
     try {
         const count = await productRepository.getCount()
         return res.status(200).json({ count })
@@ -114,5 +115,5 @@ module.exports = {
     getAll,
     getById,
     updateById,
-    getProductsCount,
+    getPages,
 }
