@@ -22,8 +22,8 @@ const getById = async (_, res, next) => {
 const postNews = async (req, res, next) => {
     try {
         const { manufacturerId, news } = req.body
-        const manufacturer = await manufacturerRepository.createNews(manufacturerId, news)
-        return res.status(200).json(manufacturer)
+        await manufacturerRepository.createNews(manufacturerId, news)
+        return res.status(200).send("created");
     } catch (err) {
         next(err)
     }
@@ -32,8 +32,8 @@ const postNews = async (req, res, next) => {
 const putNews = async (req, res, next) => {
     try {
         const { id, news } = req.body
-        const manufacturer = await manufacturerRepository.updateNews(id, news)
-        return res.status(200).json(manufacturer)
+        await manufacturerRepository.updateNews(id, news)
+        return res.status(200).send("updated");
     } catch (err) {
         next(err)
     }
@@ -41,9 +41,9 @@ const putNews = async (req, res, next) => {
 
 const deleteNews = async (req, res, next) => {
     try {
-        const { id } = req.params
-        const manufacturer = await manufacturerRepository.deleteNewsById(id)
-        return res.status(200).json(manufacturer)
+        const { id } = req.params;
+        await manufacturerRepository.deleteNewsById(id)
+        return res.status(200).send("deleted");
     } catch (err) {
         next(err)
     }

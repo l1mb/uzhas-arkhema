@@ -92,19 +92,12 @@ module.exports.createNews = async (
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
             console.log("i can reach post " + mnfrId +" " + news)
             const result = await connection.execute(
-                `begin cender_products.createNews(:mnfrId, :news); end;`,
+                `begin cender_news.create_news(:mnfrId, :news); end;`,
                 {
                     mnfrId,
-                    news,
-                    added: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
+                    news
                 }
             )
-
-            const resultSet = result.outBinds.added
-            await resultSet.close()
         } catch (err) {
             throw err
         } finally {
@@ -134,19 +127,12 @@ module.exports.updateNews = async (
             console.log("i can reach update " + newsId +" " + news)
 
             const result = await connection.execute(
-                `begin cender_products.updateNews(:newsId, :news); end;`,
+                `begin cender_news.update_news(:newsId, :news); end;`,
                 {
                     newsId, 
-                    news,
-                    added: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
+                    news
                 }
             )
-
-            const resultSet = result.outBinds.added
-            await resultSet.close()
         } catch (err) {
             throw err
         } finally {
@@ -171,20 +157,16 @@ module.exports.deleteNewsById = async (
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+            console.log("i can reach delete " + newsId )
 
-            const result = await connection.execute(
-                `begin cender_products.deleteNews(:newsId); end;`,
+            await connection.execute(
+                `begin cender_news.delete_news(:newsId); end;`,
                 {
-                    newsId, 
-                    added: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
+                    newsId
                 }
             )
 
-            const resultSet = result.outBinds.added
-            await resultSet.close()
+            console.log("suka")
         } catch (err) {
             throw err
         } finally {
