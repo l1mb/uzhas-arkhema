@@ -44,6 +44,36 @@ module.exports.add = async (username, email, passwordHash) => {
     }
 }
 
+module.exports.confirmEmail = async (id) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin cender_users.confirm(:id); end;`,
+                {
+                    id
+                }
+            )
+        } catch (err) {
+            if (err.errorNum === 1) throw new Error('problemi s dostupom k jojykazino')
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
 module.exports.getByUsername = async (username) => {
     try {
         let connection
