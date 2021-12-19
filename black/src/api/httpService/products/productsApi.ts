@@ -14,6 +14,8 @@ async function postProduct(prop: FormData): Promise<Response> {
   return data;
 }
 
+
+
 const putProduct = async (prop: FormData): Promise<Response> => {
   const token = getToken();
   const data = await fetch(`${endpoints.products}`, getOptions("PUT", true, prop));

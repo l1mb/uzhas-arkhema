@@ -102,12 +102,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
       label: "Computer name",
     },
     {
-      id: "price",
-      numeric: true,
-      disablePadding: false,
-      label: "Price",
-    },
-    {
       id: "status",
       numeric: true,
       disablePadding: false,
@@ -128,10 +122,16 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         },
 
     {
-      id: "registered",
+      id: "rentStartDate",
       numeric: true,
       disablePadding: false,
-      label: "Registred ar",
+      label: "Start date",
+    },
+    {
+      id: "rentEndDate",
+      numeric: true,
+      disablePadding: false,
+      label: "End date",
     },
   ];
 
@@ -269,7 +269,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       ) : (
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
-          Nutrition
+          Computer rentals
         </Typography>
       )}
       {getButtons()}
@@ -397,9 +397,6 @@ export default function EnhancedTable() {
                         {row.name}
                       </TableCell>
                       <TableCell style={{ width: "150px" }} align="right">
-                        {row.price}
-                      </TableCell>
-                      <TableCell style={{ width: "150px" }} align="right">
                         {row.status}
                       </TableCell>
                       {userRole === roles.admin ? (
@@ -412,8 +409,12 @@ export default function EnhancedTable() {
                         </TableCell>
                       )}
                       <TableCell style={{ width: "150px" }} align="right">
-                        {row.registered}
+                        {row.rentStartDate}
                       </TableCell>
+                      <TableCell style={{ width: "150px" }} align="right">
+                        {row.rentEndDate}
+                      </TableCell>
+
                     </TableRow>
                   );
                 })}

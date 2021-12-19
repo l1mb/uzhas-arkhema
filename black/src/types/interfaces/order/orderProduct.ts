@@ -3,8 +3,9 @@ interface OrderProduct {
   name: string;
   status: string;
   vendor: string;
-  registered: string;
   price: string;
   userId?: number;
+  rentStartDate: string;
+  rentEndDate: string;
 }
 export default OrderProduct;
