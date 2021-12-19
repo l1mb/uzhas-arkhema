@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Label from "@/elements/home/labelElement/label";
 import ImagePicker from "@/elements/home/productCardElement/editImagePicker/imagePicker";
 import EditInputElement from "@/elements/home/productCardElement/editInputs/editInputElement";
@@ -13,6 +13,9 @@ import styles from "./editProduct.module.scss";
 import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
 import { readProductDto } from "@/api/types/newProduct/rProductDto";
 import getOptions from "@/api/httpService/tokenedOptions";
+import StateType from "@/redux/types/stateType";
+import mnfrReadDto from "@/types/interfaces/news/nmfrs";
+import productsApi from "@/api/httpService/products/productsApi";
 
 interface EditProps {
   editableProduct?: readProductDto;
@@ -24,10 +27,29 @@ interface EditProps {
 
 function EditProduct(props: EditProps) {
   const { editableProduct, setDeletable, setOpenCheck, setOpen, providedModalType } = props;
+
+  const [pickUpData, setPickUpData] = useState<{ id: number; name: string }[]>([]);
+  const [mnfrData, setMnfrData] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const p = await productsApi.apiGetPickUps();
+      const m = await productsApi.apiGetMnfrs();
+
+      setPickUpData(p);
+      setMnfrData(m);
+    }
+    fetchData();
+  }, []);
+
   const defaultValue: updateProductDto = {
     id: editableProduct?.id,
     name: editableProduct?.name,
     price: editableProduct?.price,
+    description: editableProduct?.description,
+    mnfrId: mnfrData.length>0 ? mnfrData[0].id : 0,
+    pickUpId: pickUpData.length>0 ? pickUpData[0].id : 0,
+    shape: editableProduct?.shape,
   } as updateProductDto;
 
   const [updateDto, setUpdateDto] = useState<updateProductDto>({
@@ -51,11 +73,18 @@ function EditProduct(props: EditProps) {
     }));
   };
 
+  console.log(
+    `keys ${JSON.stringify({
+      ...editableProduct,
+      ...defaultValue,
+    })}`
+  );
+
   const EditData: { label: string; type: string; name: string; default?: string | number }[] = Object.keys(updateDto)
     .filter((m) => !editData.ignoredProps.includes(m))
     .map((elem) => {
       const data: { label: string; type: string; name: string; default?: string | number } = {
-        label: elem.toString(),
+        label: elem.toString().toUpperCase(),
         type: detectParameterType(elem),
         name: elem,
       };

@@ -13,7 +13,7 @@ const ignoredProps = [
   "rating",
 ];
 
-const fileInputs = ["Logo", "Background"];
+const fileInputs = ["Cover"];
 
 const editData = {
   ignoredProps,
