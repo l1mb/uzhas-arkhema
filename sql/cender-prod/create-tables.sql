@@ -102,4 +102,11 @@ end;
 ALTER TABLE Manufacturers ADD CONSTRAINT Manufacturers_fk0 FOREIGN KEY (newsId) REFERENCES News(id);
 
 ALTER TABLE products_t ADD CONSTRAINT products_t_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
+
 ALTER TABLE products_t ADD CONSTRAINT products_t_fk1 FOREIGN KEY (pickups) REFERENCES pickups(id);
+
+alter table orders_t add constraint orders_users_fk foreign key (user_id)
+   references users_t(id);
+
+alter table orders_t add constraint orders_products_fk foreign key (product_id)
+    references products_t(id);
