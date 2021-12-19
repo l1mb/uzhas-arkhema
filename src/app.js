@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const cloudinary = require('cloudinary').v2
 const express = require('express')
+const formidable = require('express-formidable')
 const oracledb = require('oracledb')
 const { port, dbConfig, cloudinaryConfig } = require('./config/environment')
 
@@ -13,6 +14,7 @@ const orderRouter = require('./routes/orderRoute')
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(formidable())
 
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)

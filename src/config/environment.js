@@ -23,6 +23,8 @@ config.cloudinaryConfig = {
     api_secret: env.parsed.CLOUDINARY_SECRET,
     secure: true,
 }
+config.placeholderImgUrl =
+    'http://res.cloudinary.com/dbu4voh2q/image/upload/v1639929352/napea3wmdmelbb8osr0m.jpg'
 config.port = process.env.PORT || 5000
 config.jwtSecret = env.parsed.TOKEN_SECRET
 

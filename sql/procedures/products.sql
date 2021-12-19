@@ -5,6 +5,7 @@ create or replace package rent_products as
         in_price products_t.price%type,
         in_category_id products_t.category_id%type,
         in_vendor_id products_t.vendor_id%type,
+        in_img_url products_t.img_url%type,
         out_product out sys_refcursor
     );
     procedure delete_by_id(
@@ -32,6 +33,7 @@ create or replace package rent_products as
         in_price products_t.price%type,
         in_category_id products_t.category_id%type,
         in_vendor_id products_t.vendor_id%type,
+        in_img_url products_t.img_url%type,
         out_product out sys_refcursor
     );
 end;
@@ -44,14 +46,15 @@ create or replace package body rent_products as
         in_price products_t.price%type,
         in_category_id products_t.category_id%type,
         in_vendor_id products_t.vendor_id%type,
+        in_img_url products_t.img_url%type,
         out_product out sys_refcursor
     )
     as
         added_id products_t.id%type;
         added_product sys_refcursor;
     begin
-        insert into products_t(name, description, price, category_id, vendor_id)
-            values(in_name, in_description, in_price, in_category_id, in_vendor_id)
+        insert into products_t(name, description, price, category_id, vendor_id, img_url)
+            values(in_name, in_description, in_price, in_category_id, in_vendor_id, in_img_url)
             returning id into added_id;
         commit;
         get_by_id(added_id, added_product);
@@ -115,6 +118,7 @@ create or replace package body rent_products as
         in_price products_t.price%type,
         in_category_id products_t.category_id%type,
         in_vendor_id products_t.vendor_id%type,
+        in_img_url products_t.img_url%type,
         out_product out sys_refcursor
     )
     as
@@ -124,7 +128,7 @@ create or replace package body rent_products as
         update products_t
             set name = in_name, description = in_description,
                 price = in_price, category_id = in_category_id,
-                vendor_id = in_vendor_id 
+                vendor_id = in_vendor_id, img_url = in_img_url
         where id = in_id
         returning id into updated_id;
         commit;

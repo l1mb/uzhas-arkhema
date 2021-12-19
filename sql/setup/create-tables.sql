@@ -31,6 +31,7 @@ create table products_t (
 	price number(10, 4) not null,
 	category_id number not null,
 	vendor_id number not null,
+    img_url varchar2(100 char),
     date_deleted date,
 	constraint products_pk primary key (id)
 );
@@ -76,7 +77,7 @@ create view users_v as
 
 drop view products_v;
 create view products_v as
-    select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor
+    select p.id, p.name, p.description, p.price, c.name as category, v.name as vendor, p.img_url
     from products_t p
     join vendors_t v on p.vendor_id = v.id
     join categories_t c on p.category_id = c.id
