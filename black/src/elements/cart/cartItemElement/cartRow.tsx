@@ -18,7 +18,7 @@ function CartRow(props: OrderItemWithId) {
     const value = e.currentTarget.checked;
 
     props.pushId((prevState: number[]) =>
-      value ? [...prevState, props.orderId] : prevState.filter((m) => m !== props.props.orderId)
+      value ? [...prevState, props.orderId] : prevState.filter((m) => m !== props.orderId)
     );
   };
 
@@ -29,7 +29,7 @@ function CartRow(props: OrderItemWithId) {
       </td>
       <td>{props.name}</td>
       <td>{props.shape}</td>
-      <td>{props.orderDate}</td>
+      <td>{props.orderDate.toString()}</td>
       <QuantityInput count={props.amount} orderId={props.orderId} setValue={props.changeAmount} />
       <td>{props.price}</td>
     </tr>

@@ -82,6 +82,7 @@ function Cart() {
   useEffect(() => {
     const data = params.map((e) => Number(e.price) * Number(e.count)).reduce((acc, a) => acc + a, 0);
     setPrice(data);
+    console.log(params);
   }, [params]);
 
   return (
@@ -92,7 +93,8 @@ function Cart() {
             <table>
               <Thead data={orderTheadData} />
               <tbody>
-                {params.length > 0 &&
+                {params.length &&
+                  params.length > 0 &&
                   params.map((u) => (
                     <CartRow
                       key={u.id}

@@ -32,6 +32,7 @@ const setProductsDispatch =
         break;
       case ProductActions.QUERIFIED_LIST:
         if (params) {
+          console.log(params);
           Products = await apiGetProducts.apiSortedProductsList(params);
         }
         break;

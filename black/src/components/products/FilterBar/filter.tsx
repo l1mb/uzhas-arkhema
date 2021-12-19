@@ -46,8 +46,9 @@ function FilterBar(props: FilterProps) {
   };
 
   useEffect(() => {
+    console.log(mnfr?.id);
     pushParameters();
-  }, [orderby, type, shape]);
+  }, [orderby, type, shape, pickUp, mnfr]);
 
   useEffect(() => {
     async function fetchData() {
@@ -85,7 +86,7 @@ function FilterBar(props: FilterProps) {
       </div>
       {pickUpData && pickUpData.length > 0 && (
         <div>
-          <Label content={filterData.label.genres} classname={styles.names} />
+          <Label content={filterData.label.pickups} classname={styles.names} />
           <RadioButtons
             options={pickUpData}
             checkedValue={pickUp?.name}
@@ -95,7 +96,7 @@ function FilterBar(props: FilterProps) {
       )}
       {mnfrData && mnfrData.length > 0 && (
         <div>
-          <Label content={filterData.label.age} classname={styles.names} />
+          <Label content={filterData.label.mnfrs} classname={styles.names} />
           <RadioButtons
             options={mnfrData}
             checkedValue={mnfr?.name}

@@ -1,7 +1,8 @@
 const orderBy = "Order by";
 const orderType = "Order type";
 const genres = "Genres";
-const age = "Age";
+const mnfrs = "MANUFACTURERS";
+const pickups = "PICKUPS";
 const sort = "Sort";
 
 const filterData = {
@@ -9,8 +10,9 @@ const filterData = {
     orderBy,
     orderType,
     genres,
-    age,
+    mnfrs,
     sort,
+    pickups
   },
 };
 
