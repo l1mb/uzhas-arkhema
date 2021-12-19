@@ -2,7 +2,7 @@ const orderRepository = require('../repositories/orderRepository')
 
 const add = async (req, res, next) => {
     try {
-        const { userId, productId, count } = req.body
+        const { userId, productId, count } = req.fields
         await orderRepository.add(userId, productId, count)
 
         res.status(201).send('added order')
@@ -13,7 +13,7 @@ const add = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
     try {
-        const { id, userId, productId, count } = req.body
+        const { id, userId, productId, count } = req.fields
         await orderRepository.updateById(id, userId, productId, count)
 
         res.status(200).send('updated order')

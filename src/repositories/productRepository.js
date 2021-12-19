@@ -8,9 +8,9 @@ module.exports.add = async (
     description,
     logo,
     price,
-    mnfrId,
+    mnfr_id,
     shape,
-    pickUpId
+    pickups_id
 ) => {
     try {
         let connection
@@ -18,30 +18,19 @@ module.exports.add = async (
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
-            const result = await connection.execute(
+            await connection.execute(
                 `begin cender_products.add(:name, :description, :logo, :price,
-                    :mnfrId, :shape, :pickUpId, :added); end;`,
+                    :mnfr_id, :shape, :pickups_id); end;`,
                 {
                     name,
                     description,
                     logo,
                     price,
-                    mnfrId,
+                    mnfr_id,
                     shape,
-                    pickUpId,
-                    added: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
+                    pickups_id,
                 }
             )
-
-            const resultSet = result.outBinds.added
-            const product = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
-            product.price = priceToPrecision(product.price)
-
-            return product
         } catch (err) {
             throw err
         } finally {
@@ -64,9 +53,9 @@ module.exports.updateById = async (
     description,
     logo,
     price,
-    mnfrId,
+    mnfr_id,
     shape,
-    pickUpId
+    pickups_id
 ) => {
     try {
         let connection
@@ -76,31 +65,18 @@ module.exports.updateById = async (
 
             const result = await connection.execute(
                 `begin cender_products.update_by_id(:id, :name, :description,
-                    :logo, :price, :mnfrId, :shape, :pickUpId, :updated); end;`,
+                    :logo, :price, :mnfr_id, :shape, :pickups_id); end;`,
                 {
                     id,
                     name,
                     description,
                     logo,
                     price,
-                    mnfrId,
+                    mnfr_id,
                     shape,
-                    pickUpId,
-                    updated: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
+                    pickups_id,
                 }
             )
-
-            const resultSet = result.outBinds.updated
-            const product = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
-
-            if (!product) throw new Error('product not found')
-            product.price = priceToPrecision(product.price)
-
-            return product
         } catch (err) {
             throw err
         } finally {
@@ -234,61 +210,6 @@ module.exports.deleteById = async (id) => {
             )
 
             const resultSet = result.outBinds.deleted
-            const product = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
-
-            if (!product) throw new Error('product not found')
-            product.price = priceToPrecision(product.price)
-
-            return product
-        } catch (err) {
-            throw err
-        } finally {
-            if (connection) {
-                try {
-                    await connection.close()
-                } catch (err) {
-                    throw err
-                }
-            }
-        }
-    } catch (err) {
-        throw err
-    }
-}
-
-module.exports.updateById = async (
-    id,
-    name,
-    description,
-    price,
-    category_id,
-    manufacturer_id
-) => {
-    try {
-        let connection
-        try {
-            connection = await oracledb.getConnection()
-            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-
-            const result = await connection.execute(
-                `begin cender_products.update_by_id(:id, :name, :description,
-                    :price, :category_id, :manufacturer_id, :updated); end;`,
-                {
-                    id,
-                    name,
-                    description,
-                    price,
-                    category_id,
-                    manufacturer_id,
-                    updated: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
-                }
-            )
-
-            const resultSet = result.outBinds.updated
             const product = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
 

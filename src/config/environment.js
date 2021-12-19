@@ -17,6 +17,12 @@ config.dbSettings = {
     poolMin: config.threadpoolSize || 0,
     poolMax: config.threadpoolSize || 4,
 }
+config.cloudinaryConfig = {
+    cloud_name: env.parsed.CLOUDINARY_CLOUD,
+    api_key: env.parsed.CLOUDINARY_KEY,
+    api_secret: env.parsed.CLOUDINARY_SECRET,
+    secure: true,
+}
 config.port = process.env.PORT || 5000
 config.jwtSecret = env.parsed.TOKEN_SECRET
 

@@ -4,7 +4,7 @@ create or replace package cender_products as
         in_description products_t.description%type,
         in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_mnfrId products_t.mnfrId%type,
+        in_mnfr_id products_t.mnfr_id%type,
         in_shape products_t.shape%type,
         in_pickups_id products_t.pickups_id%type
     );
@@ -29,7 +29,7 @@ create or replace package cender_products as
         in_description products_t.description%type,
         in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_mnfrId products_t.mnfrId%type,
+        in_mnfr_id products_t.mnfr_id%type,
         in_shape products_t.shape%type,
         in_pickups_id products_t.pickups_id%type
     );
@@ -42,14 +42,14 @@ create or replace package body cender_products as
         in_description products_t.description%type,
         in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_mnfrId products_t.mnfrId%type,
+        in_mnfr_id products_t.mnfr_id%type,
         in_shape products_t.shape%type,
         in_pickups_id products_t.pickups_id%type
     )
     as begin
-        insert into products_t(name, description, logo, price, mnfrId, shape,
+        insert into products_t(name, description, logo, price, mnfr_id, shape,
                                pickups_id)
-            values(in_name, in_description,in_logo, in_price,in_mnfrId,
+            values(in_name, in_description,in_logo, in_price, in_mnfr_id,
                    in_shape, in_pickups_id);
         commit;
     end;
@@ -106,14 +106,14 @@ create or replace package body cender_products as
         in_description products_t.description%type,
         in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_mnfrId products_t.mnfrId%type,
+        in_mnfr_id products_t.mnfr_id%type,
         in_shape products_t.shape%type,
         in_pickups_id products_t.pickups_id%type
     )
     as begin
         update products_t
             set name = in_name, description = in_description, logo = in_logo,
-            price = in_price, mnfrId = in_mnfrId, shape = in_shape,
+            price = in_price, mnfr_id = in_mnfr_id, shape = in_shape,
             pickups_id = in_pickups_id 
         where id = in_id;
         commit;
