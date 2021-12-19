@@ -79,3 +79,126 @@ module.exports.getById = async (id) => {
         throw err
     }
 }
+
+
+
+module.exports.createNews = async (
+    mnfrId, news
+) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+            console.log("i can reach post " + mnfrId +" " + news)
+            const result = await connection.execute(
+                `begin cender_products.createNews(:mnfrId, :news); end;`,
+                {
+                    mnfrId,
+                    news,
+                    added: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.added
+            await resultSet.close()
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+
+
+module.exports.updateNews = async (
+    newsId, news
+) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+            console.log("i can reach update " + newsId +" " + news)
+
+            const result = await connection.execute(
+                `begin cender_products.updateNews(:newsId, :news); end;`,
+                {
+                    newsId, 
+                    news,
+                    added: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.added
+            await resultSet.close()
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports.deleteNewsById = async (
+    newsId
+) => {
+    try {
+        let connection
+        try {
+            connection = await oracledb.getConnection()
+            oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
+
+            const result = await connection.execute(
+                `begin cender_products.deleteNews(:newsId); end;`,
+                {
+                    newsId, 
+                    added: {
+                        dir: oracledb.BIND_OUT,
+                        type: oracledb.CURSOR,
+                    },
+                }
+            )
+
+            const resultSet = result.outBinds.added
+            await resultSet.close()
+        } catch (err) {
+            throw err
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close()
+                } catch (err) {
+                    throw err
+                }
+            }
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
+
