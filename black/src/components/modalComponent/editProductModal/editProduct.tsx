@@ -81,7 +81,7 @@ function EditProduct(props: EditProps) {
   }
 
   const handleDelete = async () => {
-    const res =  await fetch(`${endpoints.products}/${id}`);
+    const res =  await fetch(`${endpoints.products}/${id}` ,{method:"DELETE"});
     props.setOpen(false);
   }
 
