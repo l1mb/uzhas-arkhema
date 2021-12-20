@@ -53,10 +53,22 @@ const deleteById = async (req, res, next) => {
     }
 }
 
+const complete = async (req, res, next) => {
+    try {
+        const { keys } = req.fields
+        for await (const id of keys)
+            orderRepository.changeStatus(id, 'completed')
+
+        return res.status(204).send()
+    } catch (err) {
+        next(err)
+    }
+}
 module.exports = {
     add,
     updateById,
     getAll,
     getById,
     deleteById,
+    complete,
 }
