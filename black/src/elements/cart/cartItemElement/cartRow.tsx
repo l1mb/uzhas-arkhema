@@ -1,3 +1,4 @@
+import OrderItem from "@/api/types/order/orderItem";
 import React, { ChangeEvent } from "react";
 import QuantityInput from "../quantityElement/quantityInput";
 import styles from "./cartrow.module.scss";
@@ -10,6 +11,7 @@ interface OrderItemWithId {
   orderDate: string;
   amount: number;
   orderId: number;
+  elem:OrderItem;
   price: number;
 }
 
@@ -27,11 +29,11 @@ function CartRow(props: OrderItemWithId) {
       <td>
         <input type="checkbox" onChange={handleCheck} />
       </td>
-      <td>{props.name}</td>
-      <td>{props.shape}</td>
-      <td>{JSON.stringify(props.orderDate)}</td>
-      <QuantityInput count={props.amount} orderId={props.orderId} setValue={props.changeAmount} />
-      <td>{props.price}</td>
+      <td>{props.elem.userId}</td>
+      <td>{props.elem.productId}</td>
+      <td>{props.elem.status}</td>
+      <QuantityInput elem={props.elem} count={props.elem.count} orderId={props.orderId} setValue={props.changeAmount} />
+      <td>{props.elem.orderDate}</td>
     </tr>
   );
 }

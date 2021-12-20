@@ -5,12 +5,6 @@ export interface readProductDto {
   logo: string;
   price: number;
   shape: string;
-  pickups: {
-    id: number;
-    label: string;
-  };
-  manufacturer: {
-    id: number;
-    label: string;
-  };
+  pickups?:number;
+  mnfrId:number;
 }

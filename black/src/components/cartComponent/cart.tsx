@@ -97,6 +97,7 @@ function Cart() {
                   params.length > 0 &&
                   params.map((u) => (
                     <CartRow
+                    elem={u}
                       key={u.id}
                       name={u.name}
                       pushId={setId}
