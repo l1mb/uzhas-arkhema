@@ -1,21 +1,11 @@
 /* eslint-disable react/require-default-props */
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Label from "@/elements/home/labelElement/label";
-import ImagePicker from "@/elements/home/productCardElement/editImagePicker/imagePicker";
-import EditInputElement from "@/elements/home/productCardElement/editInputs/editInputElement";
-import detectParameterType from "@/helpers/basic/detectParameters";
-import ProductActions from "@/redux/actions/products/productActionTypes";
-import ProductInteractions from "@/redux/actions/products/productInterator";
-import editData from "@/types/constants/adminModals/editGame";
-import modalType from "./modalType";
-import styles from "./editProduct.module.scss";
-import { updateProductDto } from "@/api/types/newProduct/cuProductDto";
+import { Button, Form } from "react-bootstrap";
 import { readProductDto } from "@/api/types/newProduct/rProductDto";
-import getOptions from "@/api/httpService/tokenedOptions";
-import StateType from "@/redux/types/stateType";
-import mnfrReadDto from "@/types/interfaces/news/nmfrs";
 import productsApi from "@/api/httpService/products/productsApi";
+import modalType from "./modalType";
+import endpoints from "@/api/endpoints";
+import { toast } from "react-toastify";
 
 interface EditProps {
   editableProduct?: readProductDto;
@@ -31,6 +21,16 @@ function EditProduct(props: EditProps) {
   const [pickUpData, setPickUpData] = useState<{ id: number; name: string }[]>([]);
   const [mnfrData, setMnfrData] = useState<{ id: number; name: string }[]>([]);
 
+  const [name, setName] = useState(editableProduct?.name);
+  const [description, setDescription] = useState(editableProduct?.description);
+  const [price, setPrice] = useState(editableProduct?.price);
+  const [logo, setLogo] = useState<File>();
+  const [shape, setShape] = useState(editableProduct?.shape);
+  const [pickup, setPickup] = useState(editableProduct?.pickups);
+  const [mnfrId, setMnfrId] = useState(editableProduct?.mnfrId);
+  const [id, setId] = useState(editableProduct?.id);
+
+
   useEffect(() => {
     async function fetchData() {
       const p = await productsApi.apiGetPickUps();
@@ -42,146 +42,103 @@ function EditProduct(props: EditProps) {
     fetchData();
   }, []);
 
-  const defaultValue: updateProductDto = {
-    id: editableProduct?.id,
-    name: editableProduct?.name,
-    price: editableProduct?.price,
-    description: editableProduct?.description,
-    mnfrId: mnfrData.length > 0 ? mnfrData[0].id : 0,
-    pickUpId: pickUpData.length > 0 ? pickUpData[0].id : 0,
-    shape: editableProduct?.shape,
-  } as updateProductDto;
-
-  const [updateDto, setUpdateDto] = useState<updateProductDto>({
-    ...editableProduct,
-    ...defaultValue,
-  });
-
-  const dispatch = useDispatch();
-
-  const setValue = (parameter: string | number | Date, name: string) => {
-    setUpdateDto((prevState) => ({
-      ...prevState,
-      [name]: parameter,
-    }));
-  };
-
-  const setUnusualValue = (parameter: File, name: string) => {
-    setUpdateDto((prevState) => ({
-      ...prevState,
-      [name]: parameter,
-    }));
-  };
-
-  console.log(
-    `keys ${JSON.stringify({
-      ...editableProduct,
-      ...defaultValue,
-    })}`
-  );
-
-  const EditData: { label: string; type: string; name: string; default?: string | number }[] = Object.keys(updateDto)
-    .filter((m) => !editData.ignoredProps.includes(m))
-    .map((elem) => {
-      const data: { label: string; type: string; name: string; default?: string | number } = {
-        label: elem.toString().toUpperCase(),
-        type: detectParameterType(elem),
-        name: elem,
-      };
-      if (editableProduct) {
-        data.default = editableProduct[data.name as keyof readProductDto] as string | number;
-      }
-      return data;
-    });
-
-  const sendImageToCloudinary = async () => {
+  const getdefaultFormData = () => {
     const formData = new FormData();
-    formData.append("logo", updateDto.logo);
-    const linkISuppose = await fetch(
-      "https://api.cloudinary.com/v1_1/dbu4voh2q/upload",
-      getOptions("POST", false, formData)
-    );
-    return linkISuppose;
-  };
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("mnfrId", mnfrId);
+    formData.append("shape", shape);
+    formData.append("pickUpId", pickup);
+    formData.append("logo", logo);
 
-  const buildFormData = (): FormData => {
-    sendImageToCloudinary();
-    const data = new FormData();
-    Object.keys(updateDto).forEach((key) =>
-      data.append(key, updateDto[key as keyof typeof updateDto] as string | Blob)
-    );
-    return data;
-  };
+    return formData;
+  }
 
-  const handleRemoveClick = () => {
-    if (updateDto.id && editableProduct && setDeletable) {
-      setDeletable({ id: updateDto.id, name: editableProduct.name });
+  const  handleSubmit = async () => {
+    const form = getdefaultFormData();
+    let result = undefined;
+    if(props.providedModalType === modalType.UPDATE){
+        form.append("id", id);
+       result = await fetch(endpoints.products, {method:"PUT", body:form})
+
     }
-    setOpen(false);
-    if (setOpenCheck) {
-      setOpenCheck(true);
+    else{
+      result  = await fetch(endpoints.products, {method:"POST", body:form})
+
     }
-  };
+    console.log(...form);
 
-  const handleCreateClick = () => {
-    dispatch(ProductInteractions(ProductActions.CREATE, buildFormData()));
-    setOpen(false);
-  };
 
-  const handleUpdateClick = () => {
-    dispatch(ProductInteractions(ProductActions.UPDATE, buildFormData()));
+    if(result.status===201){
+      toast.success("Haosh")
+    }
+    else{
+      toast.error("ploh");
+    }
 
-    setOpen(false);
-  };
+    props.setOpen(false)
+  }
+
+  const handleDelete = async () => {
+    const res =  await fetch(`${endpoints.products}/${id}` ,{method:"DELETE"});
+    props.setOpen(false);
+  }
 
   return (
-    <div className={styles.modalWrapper}>
-      <Label
-        content={
-          providedModalType === modalType.UPDATE
-            ? `Edit card with id ${updateDto.id}`.toUpperCase()
-            : `Create a new product`.toUpperCase()
-        }
-      />
-      <div className={styles.inputs}>
-        {EditData.map((element) => (
-          <EditInputElement
-            key={element.label}
-            label={element.label}
-            setValue={(e) => setValue(e, element.name)}
-            type={element.type}
-            name={element.name}
-            defaultValue={element.default}
-          />
-        ))}
+    <Form>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Name</Form.Label>
+        <Form.Control type="text" placeholder="Enter name" value={name} onChange={(e) => setName(e.currentTarget.value)} />
+        <Form.Label>Description</Form.Label>
+        <Form.Control type="text" placeholder="Enter description"  value={description} onChange={(e)=>setDescription(e.currentTarget.value)}/>
+        <Form.Label>Price</Form.Label>
+        <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e)=>setPrice(Number(e.currentTarget.value))} />
+        <Form.Text className="text-muted">Tell people more about our guitars</Form.Text>
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Pick up id</Form.Label>
+        <Form.Select aria-label="Default select example" value={pickup} onChange={(e)=> setPickup(e.target.value)}>
+          <option>Choose pickups</option>
+          {pickUpData &&
+            pickUpData.map((elem) => {
+              return <option value={elem.id}>{elem.name}</option>;
+            })}
+        </Form.Select>
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Select aria-label="Default select example" value={shape} onChange={(e)=> setShape(e.target.value)}>
+          <option>Shape of your guitar</option>
+          <option value="stratocaster">Stratocaster</option>
+          <option value="jazzmaster">Jazzmaster</option>
+          <option value="telecaster">Telecaster</option>
+        </Form.Select>
+      </Form.Group>
 
-        {editData.fileInputs.map((elem) => (
-          <ImagePicker key={elem} label={elem} setValue={(e) => setUnusualValue(e, elem.toLowerCase())} />
-        ))}
-      </div>
-      <div className={styles.buttons}>
-        {providedModalType === modalType.UPDATE ? (
-          <>
-            <button type="button" onClick={handleUpdateClick}>
-              Update
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                handleRemoveClick();
-                setOpen(true);
-              }}
-            >
-              Delete
-            </button>
-          </>
-        ) : (
-          <button type="button" onClick={handleCreateClick}>
-            Create
-          </button>
-        )}
-      </div>
-    </div>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Select aria-label="Default select example" value={mnfrId} onChange={(e)=> setMnfrId(e.target.value)}>
+          <option>Manufacturer id</option>
+          {mnfrData &&
+            mnfrData.map((elem) => {
+              return <option value={elem.id}>{elem.name}</option>;
+            })}
+        </Form.Select>
+      </Form.Group>
+
+      <Form.Group controlId="formFile" className="mb-3">
+        <Form.Label>Logo</Form.Label>
+        <Form.Control type="file" onChange={(e)=> setLogo(e.target.files[0])} />
+      </Form.Group>
+
+      <Button variant="primary" type="button" onClick={()=> {handleSubmit()}}>
+        Submit
+      </Button>
+       {
+         props.providedModalType===modalType.UPDATE&&(<Button variant="primary" type="button" onClick={()=> {handleDelete()}}>
+         delete
+       </Button>)
+       }
+    </Form>
   );
 }
 

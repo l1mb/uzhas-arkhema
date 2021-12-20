@@ -5,15 +5,19 @@ const ignoredProps = [
   "genre",
   "platform",
   "id",
+  "pickups",
+  "pickupsId",
+  "manufacturer",
   "platforms",
   "platform",
   "ids",
   "id",
   "dateCreated",
   "rating",
+  "logo",
 ];
 
-const fileInputs = ["Cover"];
+const fileInputs = ["logo"];
 
 const editData = {
   ignoredProps,

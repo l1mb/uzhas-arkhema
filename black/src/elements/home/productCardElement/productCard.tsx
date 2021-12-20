@@ -68,13 +68,13 @@ const ProductCard: React.FC<{ product: readProductDto }> = React.memo(({ product
           <div className={styles.bottomColumns}>
             <p>{product?.name}</p>
             <p>{product?.price}$</p>
-            <p>Rating: {product?.manufacturer.label}</p>
+            <p>Manufacturer: {product?.mnfrId}</p>
           </div>
         </div>
         <div className={styles.flipBack}>
           <div className={styles.backText}>
             <p>{product?.description}</p>
-            <p>{product?.pickups.label}</p>
+            <p>{product?.pickups}</p>
           </div>
 
           {role === roles.admin ? (

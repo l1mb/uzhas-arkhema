@@ -4,17 +4,19 @@ import styles from "./quantity.module.scss";
 import edit from "../../../assets/icons/editing.png";
 import save from "../../../assets/icons/diskette.png";
 import discard from "../../../assets/icons/cancel.png";
+import OrderItem from "@/api/types/order/orderItem";
 
 interface quantityProps {
   count: number;
   orderId: number;
   setValue: (e: number, id: number) => void;
+  elem: OrderItem;
 }
 
 function QuantityInput(props: quantityProps) {
   const [disable, setDisable] = useState(true);
 
-  const [buffer, setBuffer] = useState<string>(props.count.toString());
+  const [buffer, setBuffer] = useState<string>(props.elem.count.toString());
   const [amount, setAmount] = useState(props.count);
 
   const handleInput = (e: string) => {

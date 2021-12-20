@@ -26,25 +26,25 @@ const setProductsDispatch =
       payload: readProductDto[];
     }>
   ): Promise<void> => {
+    // TODO uncomment this
     console.log(`Im here`)
     let Products: readProductDto[] = [];
     console.log(actionType);
     switch (actionType) {
       case ProductActions.INIT_LIST:
-        Products = getMockProducts;
-        // Products = await apiGetProducts.apiProductsList("", 0, 0);
-        // if (!Products) {
-        //   Products = getMockProducts;
-        // }
+        Products = await apiGetProducts.apiProductsList("", 0, 0);
+        if (!Products) {
+          Products = getMockProducts;
+        }
         break;
       case ProductActions.QUERIFIED_LIST:
         if (params) {
           Products = getMockProducts;
-          // Products = await apiGetProducts.apiSortedProductsList(params);
-          // console.log(`Products ${Products}`);
-          // if (!Products) {
-          //   Products = getMockProducts;
-          // }
+          Products = await apiGetProducts.apiSortedProductsList(params);
+          console.log(`Products ${Products}`);
+          if (!Products) {
+            Products = getMockProducts;
+          }
         }
         break;
       default:
