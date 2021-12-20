@@ -35,17 +35,13 @@ function Navigation(props: HeaderProps): JSX.Element {
           </NavLink>
         </li>
 
-        <li>
-          {!appState.user.authenticated ? (
+        {
+          !appState.user.authenticated&&(
             <NavLink activeClassName={styles.active} to={props.data.signIn.route}>
               {props.data.signIn.label}
             </NavLink>
-          ) : (
-            <NavLink activeClassName={styles.active} to={props.data.profile.route}>
-              {appState.role === roles.admin ? appState.role : appState.user.username}
-            </NavLink>
-          )}
-        </li>
+          )
+        }
 
         {!appState.user.authenticated ? (
           <li>

@@ -21,7 +21,7 @@ function Products(): JSX.Element {
     <div className={styles.wrapper}>
       <Label content={headerLabel} />
       <div className={styles.ProductsContainer}>
-        {products && products?.map((u) => <ProductCard key={u.name} product={u} />)}
+        {products && products?.map((u) => <ProductCard key={u.id} product={u} />)}
       </div>
     </div>
   );

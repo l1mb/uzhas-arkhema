@@ -7,17 +7,14 @@ const OrderByOptions: Array<{ label: string; value: string }> = [
     value: "name",
   },
   {
-    label: "Vendor",
+    label: "Manufacturer",
     value: "vendor",
   },
   {
-    label: "Category",
+    label: "Pickups",
     value: "category",
   },
-  {
-    label: "Price",
-    value: "price",
-  },
+
 ];
 const OrderTypeOptions: Array<QueryItem> = [
   {

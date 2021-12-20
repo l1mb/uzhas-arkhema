@@ -1,29 +1,29 @@
 const productRepository = require('../repositories/productRepository')
+const cloudinary = require('cloudinary').v2
+const { placeholderImgUrl } = require('../config/environment')
 
 const add = async (req, res, next) => {
     try {
-        const { name, description, logo, price, mnfrId, shape, pickUpId } =
-            req.body
-            console.log(
-                name,
-                description,
-                logo,
-                price,
-                mnfrId,
-                shape,
-                pickUpId
-            );
-        const added = await productRepository.add(
+        const { name, description, price, mnfrId, shape, pickUpId } = req.fields
+        const { logo } = req.files
+
+        let url = ''
+        if (logo) {
+            const img = await cloudinary.uploader.upload(logo.path)
+            url = img.url
+        }
+
+        await productRepository.add(
             name,
             description,
-            logo,
+            url,
             price,
             mnfrId,
             shape,
             pickUpId
         )
 
-        res.status(201).json(added)
+        res.status(201).send('added')
     } catch (err) {
         next(err)
     }
@@ -31,20 +31,28 @@ const add = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
     try {
-        const { id, name, description, logo, price, mnfrId, shape, pickUpId } =
-            req.body
-        const updated = await productRepository.updateById(
+        const { id, name, description, price, mnfrId, shape, pickUpId } =
+            req.fields
+        const { logo } = req.files
+
+        const url = ''
+        if (logo) {
+            const img = await cloudinary.uploader.upload(logo.path)
+            url = img.url
+        }
+
+        await productRepository.updateById(
             id,
             name,
             description,
-            logo,
+            url,
             price,
             mnfrId,
             shape,
             pickUpId
         )
 
-        return res.status(201).json(updated)
+        return res.status(201).json('updated')
     } catch (err) {
         next(err)
     }
@@ -54,6 +62,7 @@ const getById = async (req, res, next) => {
     try {
         const { id } = req.params
         const product = await productRepository.getById(id)
+        product.logo = product.logo || placeholderImgUrl
 
         return res.status(200).json(product)
     } catch (err) {
@@ -72,6 +81,8 @@ const getAll = async (req, res, next) => {
             orderby,
             mode
         )
+        products.forEach((p) => (p.logo = p.logo || placeholderImgUrl))
+
         return res.status(200).json(products)
     } catch (err) {
         next(err)
@@ -81,15 +92,15 @@ const getAll = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
     try {
         const { id } = req.params
-        const deleted = await productRepository.deleteById(id)
+        await productRepository.deleteById(id)
 
-        return res.status(200).json(deleted)
+        return res.status(200).json('deleted')
     } catch (err) {
         next(err)
     }
 }
 
-const getProductsCount = async (req, res, next) => {
+const getPages = async (req, res, next) => {
     try {
         const count = await productRepository.getCount()
         return res.status(200).json({ count })
@@ -104,5 +115,5 @@ module.exports = {
     getAll,
     getById,
     updateById,
-    getProductsCount,
+    getPages,
 }

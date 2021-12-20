@@ -31,7 +31,7 @@ const verifyUser = async(req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const { username, password } = req.body
+        const { username, password } = req.fields
 
         const user = await userRepository.getByUsername(username)
         if(user.status != "active"){

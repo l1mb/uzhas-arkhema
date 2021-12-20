@@ -29,10 +29,10 @@ CREATE TABLE products_t (
     name VARCHAR2(255),
     description VARCHAR2(255),
     logo VARCHAR2(255) NOT NULL,
-    price INT NOT NULL,
-    mnfrId INT NOT NULL,
+    price NUMBER(10,4) NOT NULL,
+    mnfr_id number NOT NULL,
     shape VARCHAR2(255) NOT NULL,
-    pickups_id INT NOT NULL,
+    pickups_id number NOT NULL,
     constraint products_t_PK PRIMARY KEY (id));
 
 
@@ -53,15 +53,15 @@ CREATE TABLE Manufacturers (
 DROP TABLE News cascade constraints;
 CREATE TABLE News (
     id number generated always as identity,
-    mnfrId number not null,
+    mnfr_id number not null,
     news varchar2(255) NOT NULL,
     created_at date default sysdate,
     constraint NEWS_PK PRIMARY KEY (id));
 
 
-ALTER TABLE news ADD CONSTRAINT news_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
+ALTER TABLE news ADD CONSTRAINT news_fk0 FOREIGN KEY (mnfr_id) REFERENCES Manufacturers(id);
 
-ALTER TABLE products_t ADD CONSTRAINT products_t_fk0 FOREIGN KEY (mnfrId) REFERENCES Manufacturers(id);
+ALTER TABLE products_t ADD CONSTRAINT products_t_fk0 FOREIGN KEY (mnfr_id) REFERENCES Manufacturers(id);
 
 ALTER TABLE products_t ADD CONSTRAINT products_t_fk1 FOREIGN KEY (pickups_id) REFERENCES pickups(id);
 

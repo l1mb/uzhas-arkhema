@@ -2,15 +2,13 @@ create or replace package cender_products as
     procedure add(
         in_name products_t.name%type,
         in_description products_t.description%type,
+        in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_category_id products_t.category_id%type,
-        in_vendor_id products_t.vendor_id%type,
-        out_product out sys_refcursor
+        in_mnfr_id products_t.mnfr_id%type,
+        in_shape products_t.shape%type,
+        in_pickups_id products_t.pickups_id%type
     );
-    procedure delete_by_id(
-        in_id products_t.id%type,
-        out_product out sys_refcursor
-    );
+    procedure delete_by_id(in_id products_t.id%type);
     procedure get_all(
         in_offset int,
         in_limit int,
@@ -29,14 +27,14 @@ create or replace package cender_products as
         in_id products_t.id%type,
         in_name products_t.name%type,
         in_description products_t.description%type,
+        in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_category_id products_t.category_id%type,
-        in_vendor_id products_t.vendor_id%type,
-        out_product out sys_refcursor
+        in_mnfr_id products_t.mnfr_id%type,
+        in_shape products_t.shape%type,
+        in_pickups_id products_t.pickups_id%type
     );
 end;
 /
-show errors;
 
 create or replace package body cender_products as
     procedure add(
@@ -44,34 +42,21 @@ create or replace package body cender_products as
         in_description products_t.description%type,
         in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_mnfrId products_t.mnfrId%type,
+        in_mnfr_id products_t.mnfr_id%type,
         in_shape products_t.shape%type,
-        in_pickupId products_t.pickups_id%type,
-        out_product out sys_refcursor
-    )
-    as
-        added_id products_t.id%type;
-        added_product sys_refcursor;
-    begin
-        insert into products_t(name, description,logo, price, mnfrId, shape, pickups_id)
-            values(in_name, in_description,in_logo, in_price,in_mnfrId, in_shape, in_pickupId)
-            returning id into added_id;
-        commit;
-        get_by_id(added_id, added_product);
-        out_product := added_product;
-    exception
-        when others then
-            rollback;
-            raise;
-    end;
-    --
-    procedure delete_by_id(
-        in_id products_t.id%type,
-        out_product out sys_refcursor
+        in_pickups_id products_t.pickups_id%type
     )
     as begin
-        get_by_id(in_id, out_product);
-        update products_t set date_deleted = sysdate
+        insert into products_t(name, description, logo, price, mnfr_id, shape,
+                               pickups_id)
+            values(in_name, in_description,in_logo, in_price, in_mnfr_id,
+                   in_shape, in_pickups_id);
+        commit;
+    end;
+    --
+    procedure delete_by_id(in_id products_t.id%type)
+    as begin
+        delete products_t
         where id = in_id;
         commit;
     end;
@@ -89,7 +74,7 @@ create or replace package body cender_products as
         v_sql varchar2(500 char);
     begin
     v_sql := 'select *'
-            ||' from products_v p'
+            ||' from products_t p'
             ||' where '|| in_filter_by || ' like ''%'
             || in_filter_query ||'%'' collate binary_ci'
             ||' order by '|| in_order_by ||' '|| in_order_mode
@@ -106,13 +91,13 @@ create or replace package body cender_products as
     )
     as begin
         open out_product for
-            select * from products_v
+            select * from products_t
             where id = in_id;
     end;
     --
     procedure get_count(out_count out number)
     as begin
-        select count(id) into out_count from products_v;
+        select count(id) into out_count from products_t;
     end;
     --
     procedure update_by_id(
@@ -121,28 +106,17 @@ create or replace package body cender_products as
         in_description products_t.description%type,
         in_logo products_t.logo%type,
         in_price products_t.price%type,
-        in_mnfrId products_t.mnfrId%type,
+        in_mnfr_id products_t.mnfr_id%type,
         in_shape products_t.shape%type,
-        in_pickupId products_t.pickups_id%type,
-        out_product out sys_refcursor
+        in_pickups_id products_t.pickups_id%type
     )
-    as
-        updated_id products_t.id%type;
-        updated_product sys_refcursor;
-    begin
+    as begin
         update products_t
-            set name = in_name,
-             description = in_description,
-             logo = in_logo,
-              price = in_price,
-               mnfrId = in_mnfrId,
-                shape = in_shape,
-                 pickups_id = in_pickupId 
-        where id = in_id
-        returning id into updated_id;
+            set name = in_name, description = in_description, logo = in_logo,
+            price = in_price, mnfr_id = in_mnfr_id, shape = in_shape,
+            pickups_id = in_pickups_id 
+        where id = in_id;
         commit;
-        get_by_id(updated_id, updated_product);
-        out_product := updated_product;
     end;
 end;
 /

@@ -1,12 +1,8 @@
-insert into news(news) values('pasasi');
-insert into manufacturers(name) values ('fender');
-insert into manufacturers(name) values ('ibanez');
-insert into manufacturers(name) values ('jackson');
-insert into manufacturers(name) values ('gibson');
-insert into manufacturers(name) values ('squire');
-
-select * from manufacturers;
-select * from news;
+-- insert into manufacturers(name) values ('fender');
+-- insert into manufacturers(name) values ('ibanez');
+-- insert into manufacturers(name) values ('jackson');
+-- insert into manufacturers(name) values ('gibson');
+-- insert into manufacturers(name) values ('squire');
 
 create or replace package cender_news as
     procedure get_news(out_news out sys_refcursor);
@@ -20,8 +16,6 @@ create or replace package cender_news as
         in_news_id in news.id%type);
 end;
 /
-
-describe news;
 
 create or replace package body cender_news 
     as
@@ -39,7 +33,7 @@ create or replace package body cender_news
             news_id news.id%type;
             company_name manufacturers.name%type;
         begin
-            insert into news(news, mnfrId) values (in_news, in_manufacturer_id);
+            insert into news(news, mnfr_id) values (in_news, in_manufacturer_id);
             commit;       
     end;
 
@@ -65,6 +59,3 @@ create or replace package body cender_news
 end;
 /
 show errors;
-
-
-            delete news where id = 1;

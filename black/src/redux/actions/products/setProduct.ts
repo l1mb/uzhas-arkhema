@@ -4,6 +4,8 @@ import QueryParams from "@/types/interfaces/filter/queryParams";
 import actions from "../actions";
 import ProductActions from "../manufacturers/newsActionTypes";
 import IBasicProduct from "@/api/types/products/IBasicProduct";
+import { readProductDto } from "@/api/types/newProduct/rProductDto";
+import getMockProducts from "@/data/products/getMockProducts";
 
 const mockData: IBasicProduct[] = [
   { id: 1, company: "kok", name: "Acer aspire", shortDescription: "nu zaebis noutbuk, nu ohuenniy", price: "750$" },
@@ -21,18 +23,28 @@ const setProductsDispatch =
   async (
     dispatch: Dispatch<{
       type: string;
-      payload: IBasicProduct[];
+      payload: readProductDto[];
     }>
   ): Promise<void> => {
-    let Products: IBasicProduct[] = [];
+    console.log(`Im here`)
+    let Products: readProductDto[] = [];
+    console.log(actionType);
     switch (actionType) {
       case ProductActions.INIT_LIST:
-        Products = await apiGetProducts.apiProductsList("", 0, 0);
-
+        Products = getMockProducts;
+        // Products = await apiGetProducts.apiProductsList("", 0, 0);
+        // if (!Products) {
+        //   Products = getMockProducts;
+        // }
         break;
       case ProductActions.QUERIFIED_LIST:
         if (params) {
-          Products = await apiGetProducts.apiSortedProductsList(params);
+          Products = getMockProducts;
+          // Products = await apiGetProducts.apiSortedProductsList(params);
+          // console.log(`Products ${Products}`);
+          // if (!Products) {
+          //   Products = getMockProducts;
+          // }
         }
         break;
       default:
