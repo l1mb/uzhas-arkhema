@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { jwtSecret } = require('../config/environment')
 const userRepository = require('../repositories/userRepository')
-const sendConfirmationEmail = require('../config/nodemailer.config')
 const sender = require('thisismyfirstbeat');
 
 
@@ -16,13 +15,7 @@ const register = async (req, res, next) => {
 
         const passwordHash = await bcrypt.hash(password, 10)
         const added = await userRepository.add(username, email, passwordHash, token)
-
-        sendConfirmationEmail(
-            username,
-            email,
-            token
-        );
-
+    
         res.status(201).json(added)
     } catch (err) {
         next(err)
@@ -30,12 +23,9 @@ const register = async (req, res, next) => {
 }
 
 const verifyUser = async(req, res, next) => {
-    const {username, token} = req.params; 
-    const user =  await userRepository.getByUsername(username);
-      if(!user){
-          res.status(200).send();
-      }
-    await userRepository.confirmEmail(user.id);
+    const {id} = req.params;
+    console.log(`blya ${id}`)
+    await userRepository.confirmEmail(id);
     return res.status(200).send();
   };
 

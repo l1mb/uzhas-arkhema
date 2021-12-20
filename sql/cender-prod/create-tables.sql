@@ -18,6 +18,7 @@ create table users_t (
     email varchar2(50 char) not null,
     password_hash varchar2(100 char) not null,
     role varchar2(10 char) default 'customer',
+    status varchar2(15 char) default 'inactive',
     constraint users_pk primary key (id),
     constraint users_chk check (role = 'admin' or role = 'customer')
 );

@@ -50,7 +50,6 @@ module.exports.confirmEmail = async (id) => {
         try {
             connection = await oracledb.getConnection()
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
-
             const result = await connection.execute(
                 `begin cender_users.confirm(:id); end;`,
                 {
@@ -95,9 +94,7 @@ module.exports.getByUsername = async (username) => {
             const resultSet = result.outBinds.user
             const user = keysToCamel((await resultSet.getRows(1))[0])
             await resultSet.close()
-
-            if (!user) throw new Error('user not found')
-
+                    console.log(`user:${user}`);
             return user
         } catch (err) {
             throw err

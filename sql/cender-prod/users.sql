@@ -6,6 +6,7 @@ create or replace package cender_users as
         out_user out sys_refcursor
     );
     procedure get_all(out_users out sys_refcursor);
+    procedure confirm(in_id in users_t.id%type);
     procedure get_by_id(
         in_id users_t.id%type,
         out_user out sys_refcursor
@@ -51,6 +52,13 @@ create or replace package body cender_users as
     as begin
         open out_users for
             select * from users_t;
+    end;
+
+    procedure confirm(in_id in users_t.id%type)
+    as
+    begin
+        update users_t set status = 'active' where id = in_id;
+        commit;
     end;
     --
     procedure get_by_id(
