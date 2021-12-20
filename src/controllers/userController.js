@@ -5,7 +5,7 @@ const userRepository = require('../repositories/userRepository')
 
 const register = async (req, res, next) => {
     try {
-        const { username, email, password } = req.body
+        const { username, email, password } = req.fields
         const passwordHash = await bcrypt.hash(password, 10)
 
         const added = await userRepository.add(username, email, passwordHash)
@@ -18,7 +18,7 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const { username, password } = req.body
+        const { username, password } = req.fields
 
         const user = await userRepository.getByUsername(username)
 

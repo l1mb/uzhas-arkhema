@@ -9,21 +9,11 @@ module.exports.add = async (name) => {
             oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 
             const result = await connection.execute(
-                `begin cender_pickups.add(:name, :added); end;`,
+                `begin cender_pickups.add(:name); end;`,
                 {
                     name,
-                    added: {
-                        dir: oracledb.BIND_OUT,
-                        type: oracledb.CURSOR,
-                    },
                 }
             )
-
-            const resultSet = result.outBinds.added
-            const pickups = keysToCamel((await resultSet.getRows(1))[0])
-            await resultSet.close()
-
-            return pickups
         } catch (err) {
             throw err
         } finally {
