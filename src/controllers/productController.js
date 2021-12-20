@@ -35,7 +35,7 @@ const updateById = async (req, res, next) => {
             req.fields
         const { logo } = req.files
 
-        const url = ''
+        let url = ''
         if (logo) {
             const img = await cloudinary.uploader.upload(logo.path)
             url = img.url
