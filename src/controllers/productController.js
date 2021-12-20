@@ -109,6 +109,19 @@ const getPages = async (req, res, next) => {
     }
 }
 
+const search = async (req, res, next) => {
+    try {
+        const { term, limit } = req.query
+        const products = await productRepository.getAll(
+            (0, limit, 'name', term)
+        )
+        products.forEach((p) => (p.logo = p.logo || placeholderImgUrl))
+
+        return res.status(200).json(products)
+    } catch (err) {
+        next(err)
+    }
+}
 module.exports = {
     add,
     deleteById,
@@ -116,4 +129,5 @@ module.exports = {
     getById,
     updateById,
     getPages,
+    search,
 }

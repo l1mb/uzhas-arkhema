@@ -7,6 +7,7 @@ router.post('/', productController.add)
 router.put('/', productController.updateById)
 router.get('/', productController.getAll)
 router.get('/pages', productController.getPages)
+router.get('/search', productController.search)
 router.get('/:id', productController.getById)
 router.delete('/:id', productController.deleteById)
 
